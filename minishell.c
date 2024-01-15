@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/15 15:35:29 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/15 20:25:04 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	execute_line(char *command_line_str)
+{
+	t_command_line	*command_line;
+
+	// todo history fct
+	command_line = parse_cmd_line(command_line_str);
+	if (command_line)
+		print_command_line(command_line, 0);
+		// todo execute_command_line(command_line);
+	// todo free command_line
+}
 
 int	main(void)
 {
