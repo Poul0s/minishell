@@ -21,30 +21,44 @@ HEADER	=	-I$(LFT_DIR)/header -Iinclude
 
 NAME	=	minishell
 
+RED = \033[0;31m
+GREEN = \033[0;32m
+YELLOW = \033[1;33m
+PURPULE = \e[0;35m
+NC = \033[0m
+
 all: $(NAME)
 
 # LIBS
 
 $(LFT):
-	@echo "Building libraries..."
-	@make -C $(LFT_DIR) -s
+	@echo "$(PURPULE)Building libft...$(NC)"
+	@make -C $(LFT_DIR) -s -j
 
 # COMMANDS
 
 $(NAME): $(LFT) $(OBJ_DIR) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
+	@echo "$(GREEN)Linking $(NAME)...$(NC)"
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
 
 obj/%.o: %.c
-	$(CC) $(CFLAGS) $(HEADER) $^ -o $@ -c
+	@echo "$(YELLOW)Compiling $(notdir $<)...$(NC)"
+	@$(CC) $(CFLAGS) $(HEADER) $^ -o $@ -c
 
 $(OBJ_DIR):
 	@mkdir -p $@
 
 clean:
-	rm -rf obj/
+	@echo "$(RED)Cleaning object files...$(NC)"
+	@rm -rf obj/
 
-fclean: clean
-	rm -rf $(NAME)
+lclean:
+	@echo "$(RED)Cleaning libft...$(NC)"
+	@make -C $(LFT_DIR) fclean -s -j
+
+fclean: clean lclean
+	@echo "$(RED)Cleaning executable $(NAME)...$(NC)"
+	@rm -rf $(NAME)
 
 re: fclean all
 
