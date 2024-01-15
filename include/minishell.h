@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:36 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/15 14:55:29 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/15 15:22:38 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_sh_data
 char	*get_hostname(void);
 char	*ft_pwd(void);
 void	refresh_prompt(t_sh_data *shell_data);
+char	*get_path(void);
 
 
 #endif

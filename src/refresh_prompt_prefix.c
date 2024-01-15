@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:46:29 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/15 14:54:03 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/15 15:41:11 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	refresh_prompt(t_sh_data *shell_data)
 	size_t	prompt_str_len;
 
 	username = getenv("USER");
-	pwd = ft_pwd();
+	pwd = get_path();
 	prompt_str_len = ft_strlen(username) +
 				ft_strlen(shell_data->hostname) +
 				ft_strlen(pwd) + 5;
@@ -34,6 +34,6 @@ void	refresh_prompt(t_sh_data *shell_data)
 		ft_strlcat(shell_data->prompt, pwd, prompt_str_len);
 		ft_strlcat(shell_data->prompt, "$ ", prompt_str_len);
 	}
-	free(username);
+	// free(username);
 	free(pwd);
 }
