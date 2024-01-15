@@ -1,34 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/15 12:18:36 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/15 14:41:01 by babonnet         ###   ########.fr       */
+/*   Created: 2024/01/15 14:39:42 by babonnet          #+#    #+#             */
+/*   Updated: 2024/01/15 14:40:31 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
-# include "command.h"
-# include "libft.h"
-# include <fcntl.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <stdio.h>
-# include <sys/stat.h>
-# include <unistd.h>
-
-typedef struct s_sh_data
+char *ft_pwd(void)
 {
-	char	*prompt;
-	char	*hostname;
-}			t_sh_data;
+	static int	buffer_size = 1;
+	char			*res;
+	char		*buff;
 
-char		*get_hostname(void);
-char		*ft_pwd(void);
-
-#endif
+	buff = malloc(buffer_size);
+	if (!buff)
+		return (NULL);
+	res = getcwd(buff, buffer_size);
+	while (res != buff)
+	{
+		buffer_size *= 2;
+		free(buff);
+		buff = malloc(buffer_size);
+		if (!buff)
+			return (NULL);
+		res = getcwd(buff, buffer_size);
+	}
+	return (buff);
+}
