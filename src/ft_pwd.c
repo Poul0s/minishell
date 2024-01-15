@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:39:42 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/15 15:21:06 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/15 15:22:04 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ char	*get_path(void)
 	{
 		path = strdup(pass + strlen(home) - 1);
 		path[0] = '~';
+		free(pass);
+		return (path);
 	}
-	free(pass);
-	return (path);
+	return (pass);
 }
