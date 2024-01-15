@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:36 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/15 14:41:01 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/15 14:55:29 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ typedef struct s_sh_data
 	char	*hostname;
 }			t_sh_data;
 
-char		*get_hostname(void);
-char		*ft_pwd(void);
+char	*get_hostname(void);
+char	*ft_pwd(void);
+void	refresh_prompt(t_sh_data *shell_data);
+
 
 #endif
