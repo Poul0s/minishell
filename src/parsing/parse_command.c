@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 16:36:03 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/15 18:52:30 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/15 23:07:51 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char	*ft_strfjoinc(char *s1, char c)
 	return (newstr);
 }
 
-static void	parse_variable(char *argument, t_string_index *command_line, t_current_focus *focus)
+static void	parse_variable(char **argument, t_string_index *command_line)
 {
 	size_t	start;
 	size_t	end;
@@ -48,13 +48,8 @@ static void	parse_variable(char *argument, t_string_index *command_line, t_curre
 	end = command_line->i + 1;
 	while (command_line->str[end])
 	{
-		if (command_line->str[end] == '"')
+		if (!ft_isalnum(command_line->str[end]))
 			break;
-		if (command_line->str[end] == '\'')
-			break;
-		if (command_line->str[end] == ' ')
-			break;
-		// todo complete
 		end++;
 	}
 	var_name = ft_substr(command_line->str, start, end - start);
@@ -62,16 +57,15 @@ static void	parse_variable(char *argument, t_string_index *command_line, t_curre
 	{
 		var_res = getenv(var_name);
 		free(var_name);
-		ft_strfjoin(argument, var_res);
+		*argument = ft_strfjoin(*argument, var_res);
 	}
-	command_line->i = end;
+	command_line->i = end - 1;
 }
 
-static inline bool	*is_end_arg(t_string_index *command_line)
+static bool	is_end_arg(t_string_index *command_line)
 {
 	if (command_line->str[command_line->i] == '|' ||
 		command_line->str[command_line->i] == '&' ||
-		command_line->str[command_line->i] == ';' ||
 		command_line->str[command_line->i] == ')' ||
 		command_line->str[command_line->i] == ' ')
 		return (true);
@@ -80,12 +74,12 @@ static inline bool	*is_end_arg(t_string_index *command_line)
 
 static char	*parse_argument(t_string_index *command_line)
 {
-	size_t			start;
 	char			*argument;
 	t_current_focus	focus;
 	char			c;
 
 	ft_bzero(&focus, sizeof(t_current_focus));
+	str_i_skip_spaces(command_line);
 	argument = NULL;
 	while (command_line->str[command_line->i])
 	{
@@ -93,14 +87,14 @@ static char	*parse_argument(t_string_index *command_line)
 		if (c == '\'' && !focus.dbl_quote)
 			focus.quote = !focus.quote;
 		else if (c == '$' && !focus.quote)
-			parse_variable(argument, command_line, &focus);
+			parse_variable(&argument, command_line);
 		else if (c == '"' && !focus.quote)
 			focus.dbl_quote = !focus.dbl_quote;
 		else if (!focus.quote && !focus.dbl_quote && is_end_arg(command_line)) // arg end
 			break ;
 		else
-			ft_strfjoin(argument, c);
-		
+			argument = ft_strfjoinc(argument, c);
+		command_line->i++;
 	}
 	return (argument);
 }
@@ -132,7 +126,7 @@ void	parse_command(t_string_index *command_line, t_command *command)
 		command->arguments[i++] = arguments->content;
 		arguments = arguments->next;
 	}
-	command->arguments[i] = 0;
+	command->arguments[i] = NULL;
 }
 
 // todo parse infile outfile heredocuments

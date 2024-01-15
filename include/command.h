@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:01:28 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/15 20:14:46 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/15 23:19:51 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,21 @@ typedef struct s_command
 {
 	char					*executable;
 	char					**arguments;
-	t_list					*infiles; // chained list of t_infile
+	t_infile				*infile;
 	t_list					*outfiles; // chained list of t_outfile
 	t_list					*here_documents; // chained list of t_heredoc
-	struct s_command_line	*on_success;
-	struct s_command_line	*on_error;
+	struct s_command_group	*on_success;
+	struct s_command_group	*on_error;
 	
 }	t_command;
 
-typedef struct s_command_line
+// todo change in s_command_grp
+typedef struct s_command_group
 {
 	t_command				*command;
-	struct s_command_line	*pipe_next;
-	struct s_command_line	*next;
-}	t_command_line;
+	struct s_command_group	*pipe_next;
+}	t_command_group;
 
-t_command_line	*parse_cmd_line(char *command_line);
+t_command_group	*parse_cmd_line(char *command_line);
 
 #endif
