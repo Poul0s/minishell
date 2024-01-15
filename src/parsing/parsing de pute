@@ -1,0 +1,6 @@
+si:
+E=echo
+CA=cat
+
+$E lol > echo lol
+$E
