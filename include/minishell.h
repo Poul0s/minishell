@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:36 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/16 00:51:40 by babonnet         ###   ########.fr       */
-/*   Updated: 2024/01/15 23:20:26 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/16 16:03:02 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -40,4 +40,7 @@ void		print_command_line(t_command_group *command, int depth);
 int			ft_pwd(void);
 int			ft_cd(char *path);
 int			ft_env(char **env);
+
+void	init_signal_handler(void);
+
 #endif

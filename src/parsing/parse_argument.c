@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/16 01:43:32 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/16 15:35:45 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,22 @@ static char	*ft_strfjoin_chr(char *s1, char c)
 	return (newstr);
 }
 
+static bool	is_end_arg(t_string_index *command_line, bool stop_file_redirect)
+{
+	if (command_line->str[command_line->i] == '|' ||
+		command_line->str[command_line->i] == '&' ||
+		command_line->str[command_line->i] == ')' ||
+		command_line->str[command_line->i] == ' ')
+		return (true);
+	if (stop_file_redirect)
+	{
+		if (command_line->str[command_line->i] == '<' ||
+			command_line->str[command_line->i] == '>')
+			return (true);
+	}
+	return (false);
+}
+
 static void	parse_variable(char **argument, t_string_index *command_line)
 {
 	size_t	start;
@@ -51,30 +67,20 @@ static void	parse_variable(char **argument, t_string_index *command_line)
 			break;
 		end++;
 	}
-	var_name = ft_substr(command_line->str, start, end - start);
-	if (var_name)
+	command_line->i = end;
+	if (is_end_arg(command_line, true))
+		*argument = ft_strdup("$");
+	else
 	{
-		var_res = getenv(var_name);
-		free(var_name);
-		*argument = ft_strfjoin(*argument, var_res);
+		var_name = ft_substr(command_line->str, start, end - start);
+		if (var_name)
+		{
+			var_res = getenv(var_name);
+			free(var_name);
+			*argument = ft_strfjoin(*argument, var_res);
+		}
 	}
 	command_line->i = end - 1;
-}
-
-static bool	is_end_arg(t_string_index *command_line, bool stop_file_redirect)
-{
-	if (command_line->str[command_line->i] == '|' ||
-		command_line->str[command_line->i] == '&' ||
-		command_line->str[command_line->i] == ')' ||
-		command_line->str[command_line->i] == ' ')
-		return (true);
-	if (stop_file_redirect)
-	{
-		if (command_line->str[command_line->i] == '<' ||
-			command_line->str[command_line->i] == '>')
-			return (true);
-	}
-	return (false);
 }
 
 char	*parse_argument(t_string_index *command_line, t_command *cmd)

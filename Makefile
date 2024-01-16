@@ -14,6 +14,7 @@ SRC		=	src/get_path.c \
 			src/parsing/parse_argument.c \
 			src/parsing/parse_file_redirection.c \
 			debug.c \
+			src/signal/handler.c \
 			minishell.c \
 
 OBJ		=	$(addprefix obj/, $(SRC:.c=.o))
