@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_hostname.c                                     :+:      :+:    :+:   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/15 14:15:14 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/15 19:29:14 by babonnet         ###   ########.fr       */
+/*   Created: 2024/01/15 17:41:11 by babonnet          #+#    #+#             */
+/*   Updated: 2024/01/15 19:01:19 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "ft_print.h"
+#include <errno.h>
+#include <string.h>
+#include <unistd.h>
 
-char	*get_hostname(void)
+int	ft_cd(char *path)
 {
-	char	*hostname;
-	char	*hostname_end;
-	int		fd;
-
-	fd = open("/etc/hostname", O_RDONLY);
-	hostname = get_next_line(fd);
-	close_next_line(fd);
-	hostname_end = ft_strchr(hostname, '.');
-	if (hostname_end != 0)
-		*hostname_end = 0;
-	return (hostname);
+	if (*path == 0)
+		return (1);
+	if (chdir(path) == -1)
+	{
+		ft_dprintf(2, "cd: %s: %s\n", strerror(errno), path);
+		return (1);
+	}
+	return (0);
 }

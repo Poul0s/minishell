@@ -1,58 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:39:42 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/15 15:22:04 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/15 19:35:26 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-
-char	*ft_pwd(void)
-{
-	static int	buffer_size = 1;
-	char		*res;
-	char		*buff;
-
-	buff = malloc(buffer_size);
-	if (!buff)
-		return (NULL);
-	res = getcwd(buff, buffer_size);
-	while (res != buff)
-	{
-		buffer_size *= 2;
-		free(buff);
-		buff = malloc(buffer_size);
-		if (!buff)
-			return (NULL);
-		res = getcwd(buff, buffer_size);
-	}
-	return (buff);
-}
+#include "libft.h"
+#include "minishell.h"
 
 char	*get_path(void)
 {
 	char	*pass;
 	char	*home;
 	char	*path;
+	int		home_len;
 
-	pass = ft_pwd();
+	pass = return_pwd();
 	if (!pass)
 		return (NULL);
 	home = getenv("HOME");
-	if (home)
-	{
-		path = strdup(pass + strlen(home) - 1);
-		path[0] = '~';
-		free(pass);
-		return (path);
-	}
-	return (pass);
+	if (!home || !home[0])
+		return (pass);
+	home_len = ft_strlen(home);
+	if (ft_strncmp(pass, home, home_len))
+		return (pass);
+	if (home[home_len - 1] == '/' || !(pass[home_len] == '/' || pass[home_len] == 0))
+		return (pass);
+	path = ft_strdup(pass + home_len - 1);
+	path[0] = '~';
+	free(pass);
+	return (path);
 }

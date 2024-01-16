@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_hostname.c                                     :+:      :+:    :+:   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/15 14:15:14 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/15 19:29:14 by babonnet         ###   ########.fr       */
+/*   Created: 2024/01/15 18:31:04 by babonnet          #+#    #+#             */
+/*   Updated: 2024/01/15 19:39:54 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-char	*get_hostname(void)
+int ft_env(char **env)
 {
-	char	*hostname;
-	char	*hostname_end;
-	int		fd;
-
-	fd = open("/etc/hostname", O_RDONLY);
-	hostname = get_next_line(fd);
-	close_next_line(fd);
-	hostname_end = ft_strchr(hostname, '.');
-	if (hostname_end != 0)
-		*hostname_end = 0;
-	return (hostname);
+	if (!env)
+		return (1);
+	while(*env)
+	{
+		ft_printf("%s\n", *env);
+		env++;
+	}
+	return (0);
 }

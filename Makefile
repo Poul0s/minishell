@@ -1,10 +1,12 @@
 CC		=	cc
 
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror -g
 
-SRC		=	src/ft_pwd.c \
+SRC		=	src/get_path.c \
 			src/get_hostname.c \
 			src/refresh_prompt_prefix.c \
+			src/find_match_cmd.c \
+			src/cmd/ft_pwd.c \
 			minishell.c \
 
 OBJ		=	$(addprefix obj/, $(SRC:.c=.o))
