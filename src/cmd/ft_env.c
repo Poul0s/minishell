@@ -6,13 +6,13 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:31:04 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/15 19:39:54 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/16 15:35:49 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int ft_env(char **env)
+int ft_env(const char **env)
 {
 	if (!env)
 		return (1);

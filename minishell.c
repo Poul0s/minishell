@@ -3,37 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
 /*   Updated: 2024/01/16 18:48:06 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/16 15:33:19 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell.h"
 #include <readline/readline.h>
-
-char *autocompletion(const char *str, int status)
-{
-	static t_list *head = NULL;
-	char *word;
-
-	if (!head)
-	{
-		word = wich_word();
-		if (!word)
-			return (NULL);
-		head = find_match_cmd(word);
-		free(word);
-	}
-	(void)str;
-	if (status)
-		head = head->next;
-	if (!head)
-		return(NULL);
-	return ((char *)head->content);
-}
 
 static void	execute_line(char *command_line_str, char **env)
 {

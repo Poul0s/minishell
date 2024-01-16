@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:41:11 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/15 19:01:19 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/16 15:35:40 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <string.h>
 #include <unistd.h>
 
-int	ft_cd(char *path)
+int	ft_cd(const char *path)
 {
 	if (*path == 0)
 		return (1);

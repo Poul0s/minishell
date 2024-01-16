@@ -5,8 +5,10 @@ CFLAGS	=	-Wall -Wextra -Werror -g
 SRC		=	src/get_path.c \
 			src/get_hostname.c \
 			src/refresh_prompt_prefix.c \
-			src/autocompletion/find_match_cmd.c \
+			src/autocompletion/find_match.c \
 			src/autocompletion/wich_word.c \
+			src/autocompletion/autocompletion.c \
+			src/autocompletion/autocompletion_dir.c \
 			src/cmd/ft_pwd.c \
 			src/parsing/parse_command_line.c \
 			src/parsing/parse_commands.c \

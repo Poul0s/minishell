@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:36 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/16 16:03:02 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/16 19:06:27 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,16 @@ char		*return_pwd(void);
 char		*get_path(void);
 
 t_list		*find_match_cmd(const char *start_cmd);
+t_list		*find_match_file(const char *start_cmd);
 char		*wich_word(void);
-void		print_command_line(t_command_group *command, int depth);
+t_list		*autocompletion_dir(const char *path);
+char		*autocompletion(const char *str, int status);
 
-int			ft_pwd(void);
-int			ft_cd(char *path);
-int			ft_env(char **env);
+void		print_command_line(t_command_group *command, int depth);
 
 void	init_signal_handler(void);
 
+int			ft_cd(const char *path);
+int			ft_env(const char **env);
+int			ft_echo(const char *strs);
 #endif

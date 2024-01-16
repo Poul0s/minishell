@@ -6,14 +6,14 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 19:39:16 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/15 20:23:21 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/16 15:35:13 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <fcntl.h>
 
-int	ft_echo(char **strs)
+int	ft_echo(const char **strs)
 {
 	bool	n_flag;
 

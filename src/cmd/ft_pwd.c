@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:27:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/15 19:37:01 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/16 15:36:46 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 char	*return_pwd(void)
 {
-	static int	buffer_size = 1;
+	static int	buffer_size = 128;
 	char		*res;
 	char		*buff;
 

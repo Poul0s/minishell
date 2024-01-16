@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   find_match_cmd.c                                   :+:      :+:    :+:   */
+/*   find_match.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:59:51 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/16 03:11:31 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/16 18:44:37 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <dirent.h>
 
-void	find_match_from_dir(t_list **head, char *pwd, const char *start_cmd)
+static void	find_match_from_dir(t_list **head, char *pwd, const char *start_cmd)
 {
 	int		start_len;
 	DIR		*dir;
@@ -35,8 +35,23 @@ void	find_match_from_dir(t_list **head, char *pwd, const char *start_cmd)
 			ft_lstadd_front(head, ft_lstnew(ft_strdup(dirent->d_name)));
 		dirent = readdir(dir);
 	}
-	(void)head;
 	closedir(dir);
+}
+
+static void	free_split(char **strs)
+{
+	int	i;
+
+	i = 0;
+	if (!strs)
+		return ;
+	while (strs[i])
+	{
+		if (strs[i])
+			free(strs[i]);
+		i++;
+	}
+	free(strs);
 }
 
 t_list *find_match_cmd(const char *start_cmd)
@@ -57,8 +72,34 @@ t_list *find_match_cmd(const char *start_cmd)
 		find_match_from_dir(&head, *paths, start_cmd);
 		paths++;
 	}
-	//free_split();
-	//lst_clear();
-	(void)paths_cpy;
+	free_split(paths_cpy);
+	return (head);
+}
+
+t_list *find_match_file(const char *start_cmd)
+{
+	t_list			*head;
+	DIR				*dir;
+	struct dirent	*dirent;
+
+	head = NULL;
+	dir = opendir(".");
+	if (!dir)
+		return (NULL);
+	dirent = readdir(dir);
+	dirent = readdir(dir);
+	dirent = readdir(dir);
+	while (dirent)
+	{
+		if (ft_strncmp(start_cmd, dirent->d_name, ft_strlen(start_cmd)) == 0)
+		{
+			if (dirent->d_type == DT_DIR)
+				ft_lstadd_back(&head, ft_lstnew(ft_strjoin(dirent->d_name, "/")));
+			else
+				ft_lstadd_back(&head, ft_lstnew(ft_strdup(dirent->d_name)));
+		}
+		dirent = readdir(dir);
+	}
+	closedir(dir);
 	return (head);
 }
