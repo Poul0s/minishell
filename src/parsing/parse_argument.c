@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/16 18:52:57 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/16 19:01:02 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ static void	parse_variable(char **argument, t_string_index *command_line)
 			var_res = getenv(var_name);
 			free(var_name);
 			*argument = ft_strfjoin(*argument, var_res);
+			// todo split -> last element of split will be argument and precedents arguments will be added in back of list of arguments
 		}
 	}
 	command_line->i = end - 1;
