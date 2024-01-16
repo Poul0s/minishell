@@ -6,13 +6,34 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:24:31 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/15 23:20:08 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/16 01:50:31 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 void	print_command_line(t_command_group *command, int depth);
+
+static void print_heredoc(void *heredoc_data)
+{
+	t_heredoc	*heredoc = heredoc_data;
+	ft_printf(" %d<< %s", heredoc->fd, heredoc->delimiter);
+}
+
+static void print_infile(void *infile_data)
+{
+	t_infile	*infile = infile_data;
+	ft_printf(" %d< %s", infile->fd, infile->filename);
+}
+
+static void print_outfile(void *outfile_data)
+{
+	t_outfile	*outfile = outfile_data;
+	ft_printf(" %d>", outfile->fd);
+	if (outfile->append)
+		ft_printf(">");
+	ft_printf(" %s", outfile->filename);
+}
 
 static void	print_command(t_command *command, int depth)
 {
@@ -23,6 +44,9 @@ static void	print_command(t_command *command, int depth)
 	arguments = command->arguments;
 	while (*++arguments)
 		ft_printf(" %s", *arguments);
+	ft_lstiter(command->infiles, &print_infile);
+	ft_lstiter(command->here_documents, &print_heredoc);
+	ft_lstiter(command->outfiles, &print_outfile);
 	ft_printf("\n%*c\n", depth * 4 + 1, '{');
 	if (command->on_success)
 	{

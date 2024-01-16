@@ -9,6 +9,8 @@ SRC		=	src/ft_pwd.c \
 			src/parsing/parse_command_line.c \
 			src/parsing/parse_commands.c \
 			src/parsing/parse_command.c \
+			src/parsing/parse_argument.c \
+			src/parsing/parse_file_redirection.c \
 			debug.c \
 			\
 			minishell.c \

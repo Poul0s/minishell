@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:01:28 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/15 23:19:51 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/16 02:04:59 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ typedef struct s_infile
 
 typedef struct s_outfile
 {
-	int		fd;
-	bool	append;
+	int		fd; // if fd == -1 : write all outputs
 	char	*filename;
+	bool	append;
 }	t_outfile;
 
 typedef struct s_heredoc
@@ -42,7 +42,7 @@ typedef struct s_command
 {
 	char					*executable;
 	char					**arguments;
-	t_infile				*infile;
+	t_list					*infiles; // if multime infile has same fd -> write only on last file but create both files
 	t_list					*outfiles; // chained list of t_outfile
 	t_list					*here_documents; // chained list of t_heredoc
 	struct s_command_group	*on_success;
