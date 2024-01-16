@@ -5,19 +5,15 @@ CFLAGS	=	-Wall -Wextra -Werror -g
 SRC		=	src/get_path.c \
 			src/get_hostname.c \
 			src/refresh_prompt_prefix.c \
-<<<<<<< HEAD
-			src/find_match_cmd.c \
+			src/autocompletion/find_match_cmd.c \
+			src/autocompletion/wich_word.c \
 			src/cmd/ft_pwd.c \
-=======
-			\
 			src/parsing/parse_command_line.c \
 			src/parsing/parse_commands.c \
 			src/parsing/parse_command.c \
 			src/parsing/parse_argument.c \
 			src/parsing/parse_file_redirection.c \
 			debug.c \
-			\
->>>>>>> 31c5ea3a28ab17f8e1874406f028015fe3907887
 			minishell.c \
 
 OBJ		=	$(addprefix obj/, $(SRC:.c=.o))
