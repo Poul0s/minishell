@@ -6,7 +6,7 @@
 #    By: psalame <psalame@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/31 11:02:12 by psalame           #+#    #+#              #
-#    Updated: 2024/01/13 11:06:43 by psalame          ###   ########.fr        #
+#    Updated: 2024/01/16 18:48:25 by psalame          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRCS		=	ft_string/ft_strlen.c \
 				ft_string/ft_strmapi.c \
 				ft_string/ft_strtrim.c \
 				ft_string/ft_substr.c \
+				ft_string/ft_strs.c \
 				\
 				ft_is/ft_isalpha.c \
 				ft_is/ft_isdigit.c \

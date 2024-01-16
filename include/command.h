@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:01:28 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/16 02:04:59 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/16 18:09:27 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,11 @@ typedef struct s_command
 // todo change in s_command_grp
 typedef struct s_command_group
 {
+	char					**env;
 	t_command				*command;
 	struct s_command_group	*pipe_next;
 }	t_command_group;
 
-t_command_group	*parse_cmd_line(char *command_line);
+t_command_group	*parse_cmd_line(char *command_line, char **env);
 
 #endif

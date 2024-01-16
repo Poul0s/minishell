@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 21:59:42 by psalame           #+#    #+#             */
-/*   Updated: 2023/11/21 16:56:47 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/16 17:54:53 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,8 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 char	*ft_strnstr(const char *big, const char *little, size_t len);
 char	*ft_strdup(const char *s);
+void	ft_free_strs(char **strs);
+size_t	ft_strs_len(char **strs);
+char	**ft_strs_dup(char **src);
 
 #endif

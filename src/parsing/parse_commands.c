@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:43:44 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/15 22:36:38 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/16 18:40:00 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static size_t	operator_get_end(t_string_index *command_line, int operator_type)
 	return (end);
 }
 
-static void	parse_operator(t_string_index *command_line, t_command *cmd, int operator_type)
+static void	parse_operator(t_string_index *command_line, t_command *cmd, int operator_type, char **env)
 {
 	size_t	end;
 	char	end_char;
@@ -52,13 +52,13 @@ static void	parse_operator(t_string_index *command_line, t_command *cmd, int ope
 	end_char = command_line->str[end];
 	command_line->str[end] = 0;
 	if (operator_type == 0)
-		cmd->on_success = parse_command_grp(command_line);
+		cmd->on_success = parse_command_grp(command_line, env);
 	else
-		cmd->on_error = parse_command_grp(command_line);
+		cmd->on_error = parse_command_grp(command_line, env);
 	command_line->str[end] = end_char;
 }
 
-t_command	*parse_commands(t_string_index *command_line)
+t_command	*parse_commands(t_string_index *command_line, char **env)
 {
 	t_command	*cmd;
 
@@ -73,9 +73,9 @@ t_command	*parse_commands(t_string_index *command_line)
 	}
 	str_i_skip_spaces(command_line);
 	if (ft_strncmp(command_line->str + command_line->i, "&&", 2) == 0)
-		parse_operator(command_line, cmd, 0);
+		parse_operator(command_line, cmd, 0, env);
 	str_i_skip_spaces(command_line);
 	if (ft_strncmp(command_line->str + command_line->i, "||", 2) == 0)
-		parse_operator(command_line, cmd, 1);
+		parse_operator(command_line, cmd, 1, env);
 	return (cmd);
 }

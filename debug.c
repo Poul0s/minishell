@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:24:31 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/16 01:50:31 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/16 18:13:20 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	print_command(t_command *command, int depth)
 		print_command_line(command->on_error, depth + 1);
 		ft_printf("\033[0m");
 	}
-	ft_printf("\n%*c\n", depth * 4 + 1, '}');
+	ft_printf("\n%*c", depth * 4 + 1, '}');
 }
 
 void	print_command_line(t_command_group *command, int depth)
@@ -68,6 +68,7 @@ void	print_command_line(t_command_group *command, int depth)
 	if (command)
 	{
 		print_command(command->command, depth);
+		ft_printf(" env: %p\n", command->env);
 		if (command->pipe_next)
 			print_command_line(command->pipe_next, depth + 1);
 	}

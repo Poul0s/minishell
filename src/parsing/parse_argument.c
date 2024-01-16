@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/16 15:35:45 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/16 18:52:57 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	parse_variable(char **argument, t_string_index *command_line)
 		end++;
 	}
 	command_line->i = end;
-	if (is_end_arg(command_line, true))
+	if (end == start && is_end_arg(command_line, true))
 		*argument = ft_strdup("$");
 	else
 	{
