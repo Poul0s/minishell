@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:01:28 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/17 17:06:18 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/17 20:28:40 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,14 @@ typedef struct s_command
 	t_list					*infiles; // if multime infile has same fd -> write only on last file but create both files
 	t_list					*outfiles; // chained list of t_outfile
 	t_list					*here_documents; // chained list of t_heredoc
-	struct s_command_group	*on_success;
-	struct s_command_group	*on_error;
-	
 }	t_command;
 
 typedef struct s_command_group
 {
 	t_env_tree				*env;
 	t_command				*command;
+	struct s_command_group	*on_success;
+	struct s_command_group	*on_error;
 	struct s_command_group	*pipe_next;
 }	t_command_group;
 
