@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:01:28 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/16 18:09:27 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/17 17:06:18 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define COMMAND_H
 # include <stdbool.h>
 # include "libft.h"
+# include "environment_manager.h"
 
 // files structures
 
@@ -50,14 +51,13 @@ typedef struct s_command
 	
 }	t_command;
 
-// todo change in s_command_grp
 typedef struct s_command_group
 {
-	char					**env;
+	t_env_tree				*env;
 	t_command				*command;
 	struct s_command_group	*pipe_next;
 }	t_command_group;
 
-t_command_group	*parse_cmd_line(char *command_line, char **env);
+t_command_group	*parse_cmd_line(char *command_line, t_env_tree *env);
 
 #endif

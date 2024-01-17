@@ -3,28 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/16 18:48:06 by psalame          ###   ########.fr       */
-/*   Updated: 2024/01/16 15:33:19 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/17 17:57:52 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 #include "minishell.h"
 #include "autocompleion.h"
 
-static void	execute_line(char *command_line_str, char **env)
+static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 {
 	t_command_group	*command_line;
 
-	command_line = parse_cmd_line(command_line_str, env);
+	command_line = parse_cmd_line(command_line_str, shell_data->env);
 	if (command_line)
 		print_command_line(command_line, 0);
 		// todo execute_command_line(command_line);
-	else
-		ft_free_strs(env);
 	// todo free command_line
 }
 
@@ -35,6 +33,7 @@ int	main(int ac, char **av, char **envp)
 
 	(void) ac;
 	(void) av;
+	shell_data.env = create_env_tree(NULL, envp);
 	shell_data.hostname = get_hostname();
 	refresh_prompt(&shell_data);
 	line_readed = NULL;
@@ -48,7 +47,7 @@ int	main(int ac, char **av, char **envp)
 		if (!line_readed)
 			break ;
 		else
-			execute_line(line_readed, ft_strs_dup(envp));
+			execute_line(line_readed, &shell_data);
 	}
 	ft_dprintf(1, "exit\n");
 	return (0);

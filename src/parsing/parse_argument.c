@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_argument.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/17 16:20:24 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/17 17:58:52 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static bool	is_end_arg(t_string_index *command_line, bool stop_file_redirect)
 	return (false);
 }
 
-static void	insert_variable_data(char **argument, char *var_name, t_list **prev_arguments)
+static void	insert_variable_data(char **argument, char *var_name, t_list **prev_arguments, t_env_tree *env)
 {
 	char	*var_res;
 	char	**var_res_list;
@@ -60,7 +60,7 @@ static void	insert_variable_data(char **argument, char *var_name, t_list **prev_
 
 	if (var_name)
 	{
-		var_res = getenv(var_name);
+		var_res = get_env_value(env->env, var_name);
 		free(var_name);
 		if (!prev_arguments)
 		{
@@ -82,7 +82,7 @@ static void	insert_variable_data(char **argument, char *var_name, t_list **prev_
 	}
 }
 
-static void	parse_variable(char **argument, t_string_index *command_line, t_list **prev_arguments)
+static void	parse_variable(char **argument, t_string_index *command_line, t_list **prev_arguments, t_env_tree *env)
 {
 	size_t	start;
 	size_t	end;
@@ -102,12 +102,12 @@ static void	parse_variable(char **argument, t_string_index *command_line, t_list
 	else
 	{
 		var_name = ft_substr(command_line->str, start, end - start);
-		insert_variable_data(argument, var_name, prev_arguments);
+		insert_variable_data(argument, var_name, prev_arguments, env);
 	}
 	command_line->i = end - 1;
 }
 
-char	*parse_argument(t_string_index *command_line, t_command *cmd, t_list **prev_arguments)
+char	*parse_argument(t_string_index *command_line, t_command *cmd, t_list **prev_arguments, t_env_tree *env)
 {
 	char			*argument;
 	t_current_focus	focus;
@@ -122,13 +122,13 @@ char	*parse_argument(t_string_index *command_line, t_command *cmd, t_list **prev
 		if (c == '\'' && !focus.dbl_quote)
 			focus.quote = !focus.quote;
 		else if (c == '$' && !focus.quote)
-			parse_variable(&argument, command_line, prev_arguments);
+			parse_variable(&argument, command_line, prev_arguments, env);
 		else if (c == '"' && !focus.quote)
 			focus.dbl_quote = !focus.dbl_quote;
 		else if (!focus.quote && !focus.dbl_quote && is_end_arg(command_line, !cmd))
 			break ;
 		else if (c == '<' || c == '>')
-			parse_file_redirection(command_line, &argument, cmd);
+			parse_file_redirection(command_line, &argument, cmd, env);
 		else
 			argument = ft_strfjoin_chr(argument, c);
 		command_line->i++;

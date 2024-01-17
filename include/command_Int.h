@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_Int.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:41:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/17 13:32:01 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/17 17:07:54 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ typedef struct s_string_index
 }	t_string_index;
 
 void			str_i_skip_spaces(t_string_index *command_line);
-char			*parse_argument(t_string_index *command_line, t_command *cmd, t_list **prev_arguments);
-void			parse_command(t_string_index *command_line, t_command *command);
-t_command		*parse_commands(t_string_index *command_line, char **env);
-t_command_group	*parse_command_grp(t_string_index *command_line, char **env);
-void			parse_file_redirection(t_string_index *command_line, char **argument, t_command *cmd);
+char			*parse_argument(t_string_index *command_line, t_command *cmd, t_list **prev_arguments, t_env_tree *env);
+void			parse_command(t_string_index *command_line, t_command *command, t_env_tree *env);
+t_command		*parse_commands(t_string_index *command_line, t_env_tree *env);
+t_command_group	*parse_command_grp(t_string_index *command_line, t_env_tree *env);
+void			parse_file_redirection(t_string_index *command_line, char **argument, t_command *cmd, t_env_tree *env);
 
 #endif

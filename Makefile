@@ -10,6 +10,14 @@ SRC		=	src/get/get_path.c \
 			src/autocompletion/autocompletion.c \
 			src/autocompletion/autocompletion_dir.c \
 			src/cmd/ft_pwd.c \
+			src/environment_manager/add_env_tree_children.c \
+			src/environment_manager/convert_env_data_to_strs.c \
+			src/environment_manager/convert_strs_to_env_data.c \
+			src/environment_manager/create_env_tree_children.c \
+			src/environment_manager/create_env_tree.c \
+			src/environment_manager/del_env_var.c \
+			src/environment_manager/edit_env_var.c \
+			src/environment_manager/get_env_data.c \
 			src/parsing/parse_command_line.c \
 			src/parsing/parse_commands.c \
 			src/parsing/parse_command.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_command_line.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 15:48:52 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/16 18:39:19 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/17 16:59:30 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static size_t	get_cmd_grp_end(t_string_index *command_line, t_command_group *com
 	is_in_parenthesis = command_line->str[command_line->i] == '(';
 	if (!is_in_parenthesis)
 		return (ft_strlen(command_line->str));
-	command_group->env = ft_strs_dup(command_group->env);
+	command_group->env = create_env_tree_children(command_group->env);
 	command_line->i++;
 	end = command_line->i;
 	nb_parenthesis = 0;
@@ -46,7 +46,7 @@ static size_t	get_cmd_grp_end(t_string_index *command_line, t_command_group *com
 	return (end);
 }
 
-t_command_group	*parse_command_grp(t_string_index *command_line, char **env)
+t_command_group	*parse_command_grp(t_string_index *command_line, t_env_tree *env)
 {
 	t_command_group	*res;
 	char			end_char;
@@ -77,7 +77,7 @@ t_command_group	*parse_command_grp(t_string_index *command_line, char **env)
 	return (res);
 }
 
-t_command_group	*parse_cmd_line(char *command_line, char **env)
+t_command_group	*parse_cmd_line(char *command_line, t_env_tree *env)
 {
 	t_string_index	str;
 

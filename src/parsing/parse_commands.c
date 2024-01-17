@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_commands.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:43:44 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/16 18:40:00 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/17 17:00:51 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static size_t	operator_get_end(t_string_index *command_line, int operator_type)
 	return (end);
 }
 
-static void	parse_operator(t_string_index *command_line, t_command *cmd, int operator_type, char **env)
+static void	parse_operator(t_string_index *command_line, t_command *cmd, int operator_type, t_env_tree *env)
 {
 	size_t	end;
 	char	end_char;
@@ -58,14 +58,14 @@ static void	parse_operator(t_string_index *command_line, t_command *cmd, int ope
 	command_line->str[end] = end_char;
 }
 
-t_command	*parse_commands(t_string_index *command_line, char **env)
+t_command	*parse_commands(t_string_index *command_line, t_env_tree *env)
 {
 	t_command	*cmd;
 
 	cmd = ft_calloc(1, sizeof(t_command));
 	if (!cmd)
 		return (cmd);
-	parse_command(command_line, cmd);
+	parse_command(command_line, cmd, env);
 	if (cmd->executable == NULL)
 	{
 		free(cmd);

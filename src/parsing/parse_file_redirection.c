@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_file_redirection.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:17:35 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/17 13:44:40 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/17 17:09:06 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ static bool	is_str_digits(const char *str)
 		return (false);
 }
 
-static void	parse_here_doc(t_string_index *command_line, t_command *cmd, int fd)
+static void	parse_here_doc(t_string_index *command_line, t_command *cmd, int fd, t_env_tree *env)
 {
 	char		*delimiter;
 	t_heredoc	*heredoc_data;
 	t_list		*node;
 
 	command_line->i += 2;
-	delimiter = parse_argument(command_line, NULL, NULL);
+	delimiter = parse_argument(command_line, NULL, NULL, env);
 	heredoc_data = malloc(sizeof(t_heredoc));
 	node = ft_lstnew(NULL);
 	if (!delimiter || !heredoc_data || !node)
@@ -54,7 +54,7 @@ static void	parse_here_doc(t_string_index *command_line, t_command *cmd, int fd)
 	ft_lstadd_back(&(cmd->here_documents), node);
 }
 
-static void	parse_outfile(t_string_index *command_line, t_command *cmd, int fd)
+static void	parse_outfile(t_string_index *command_line, t_command *cmd, int fd, t_env_tree *env)
 {
 	char		*filename;
 	t_outfile	*outfile_data;
@@ -63,7 +63,7 @@ static void	parse_outfile(t_string_index *command_line, t_command *cmd, int fd)
 
 	append_mode = command_line->str[command_line->i + 1] == '>';
 	command_line->i += 1 + append_mode;
-	filename = parse_argument(command_line, NULL, NULL);
+	filename = parse_argument(command_line, NULL, NULL, env);
 	outfile_data = malloc(sizeof(t_outfile));
 	node = ft_lstnew(NULL);
 	if (!filename || !outfile_data || !node)
@@ -80,14 +80,14 @@ static void	parse_outfile(t_string_index *command_line, t_command *cmd, int fd)
 	ft_lstadd_back(&(cmd->outfiles), node);
 }
 
-static void parse_infile(t_string_index *command_line, t_command *cmd, int fd)
+static void parse_infile(t_string_index *command_line, t_command *cmd, int fd, t_env_tree *env)
 {
 	char		*filename;
 	t_infile	*infile_data;
 	t_list		*node;
 
 	command_line->i += 1;
-	filename = parse_argument(command_line, NULL, NULL);
+	filename = parse_argument(command_line, NULL, NULL, env);
 	infile_data = malloc(sizeof(t_infile));
 	node = ft_lstnew(NULL);
 	if (!filename || !infile_data || !node)
@@ -105,7 +105,7 @@ static void parse_infile(t_string_index *command_line, t_command *cmd, int fd)
 	// todo remove (if exist) precedent infile/heredoc with same infile fd
 	ft_lstadd_back(&(cmd->infiles), node);
 }
-void	parse_file_redirection(t_string_index *command_line, char **argument, t_command *cmd)
+void	parse_file_redirection(t_string_index *command_line, char **argument, t_command *cmd, t_env_tree *env)
 {
 	int	fd;
 
@@ -118,10 +118,10 @@ void	parse_file_redirection(t_string_index *command_line, char **argument, t_com
 	if (command_line->str[command_line->i] == '<')
 	{
 		if (command_line->str[command_line->i + 1] == '<')
-			parse_here_doc(command_line, cmd, fd);
+			parse_here_doc(command_line, cmd, fd, env);
 		else
-			parse_infile(command_line, cmd, fd);
+			parse_infile(command_line, cmd, fd, env);
 	}
 	else
-		parse_outfile(command_line, cmd, fd);
+		parse_outfile(command_line, cmd, fd, env);
 }

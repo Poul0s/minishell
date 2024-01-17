@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:36 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/17 16:23:30 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/17 17:58:12 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # define MINISHELL_H
 
 # include "command.h"
+# include "environment_manager.h"
 # include "libft.h"
 # include <fcntl.h>
 # include <readline/history.h>
@@ -24,8 +25,9 @@
 
 typedef struct s_sh_data
 {
-	char	*prompt;
-	char	*hostname;
+	char		*prompt;
+	char		*hostname;
+	t_env_tree	*env;
 }			t_sh_data;
 
 char		*get_hostname(void);
