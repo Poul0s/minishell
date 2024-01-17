@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:24:31 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/16 18:13:20 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/17 13:56:09 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	print_command(t_command *command, int depth)
 	ft_printf("%s", command->executable);
 	arguments = command->arguments;
 	while (*++arguments)
-		ft_printf(" %s", *arguments);
+		ft_printf(" {%s}", *arguments);
 	ft_lstiter(command->infiles, &print_infile);
 	ft_lstiter(command->here_documents, &print_heredoc);
 	ft_lstiter(command->outfiles, &print_outfile);

@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:38:09 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/16 19:46:36 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/17 13:51:54 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	signal_handler(int signal, siginfo_t *info, void *old_info)
 	}
 	else
 	{
-		// (void) term_data;
+		(void) term_data;
 		// not working first time + remove ^C print...
 		// tcgetattr(0, &term_data);
 		// term_data.c_lflag = term_data.c_lflag & (~ECHOCTL);

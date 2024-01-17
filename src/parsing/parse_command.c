@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 16:36:03 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/16 01:06:53 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/17 13:48:41 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ void	parse_command(t_string_index *command_line, t_command *command)
 	while (command_line->str[command_line->i] == ' ')
 		command_line->i++;
 	arguments = NULL;
-	argument = parse_argument(command_line, command);
+	argument = parse_argument(command_line, command, &arguments);
 	while (argument)
 	{
 		ft_lstadd_back(&arguments, ft_lstnew(argument)); // todo free argument if ft_lstnew fail
-		argument = parse_argument(command_line, command);
+		argument = parse_argument(command_line, command, &arguments);
 	}
 	if (ft_lstsize(arguments) == 0)
 		return ;
@@ -42,5 +42,3 @@ void	parse_command(t_string_index *command_line, t_command *command)
 	}
 	command->arguments[i] = NULL;
 }
-
-// todo parse infile outfile heredocuments

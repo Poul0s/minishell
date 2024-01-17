@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/16 19:01:02 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/17 13:53:28 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,41 @@ static bool	is_end_arg(t_string_index *command_line, bool stop_file_redirect)
 	return (false);
 }
 
-static void	parse_variable(char **argument, t_string_index *command_line)
+static void	insert_variable_data(char **argument, char *var_name, t_list **prev_arguments)
+{
+	char	*var_res;
+	char	**var_res_list;
+	size_t	i;
+
+	if (var_name)
+	{
+		var_res = getenv(var_name);
+		free(var_name);
+		if (!prev_arguments)
+		{
+			*argument = ft_strfjoin(*argument, var_res);
+			return ;
+		}
+		var_res_list = ft_split(var_res, ' ');
+		if (!var_res_list)
+		{
+			*argument = ft_strfjoin(*argument, var_res);
+			return ;
+		}
+		i = 0;
+		while (var_res_list[i] && var_res_list[i + 1])
+			ft_lstadd_back(prev_arguments, ft_lstnew(var_res_list[i++])); // todo free arg if lstnew fail
+		*argument = ft_strfjoin(*argument, var_res_list[i]);
+		free(var_res_list[i]);
+		free(var_res_list);
+	}
+}
+
+static void	parse_variable(char **argument, t_string_index *command_line, t_list **prev_arguments)
 {
 	size_t	start;
 	size_t	end;
 	char	*var_name;
-	char	*var_res;
 
 	start = command_line->i + 1;
 	end = command_line->i + 1;
@@ -73,18 +102,12 @@ static void	parse_variable(char **argument, t_string_index *command_line)
 	else
 	{
 		var_name = ft_substr(command_line->str, start, end - start);
-		if (var_name)
-		{
-			var_res = getenv(var_name);
-			free(var_name);
-			*argument = ft_strfjoin(*argument, var_res);
-			// todo split -> last element of split will be argument and precedents arguments will be added in back of list of arguments
-		}
+		insert_variable_data(argument, var_name, prev_arguments);
 	}
 	command_line->i = end - 1;
 }
 
-char	*parse_argument(t_string_index *command_line, t_command *cmd)
+char	*parse_argument(t_string_index *command_line, t_command *cmd, t_list **prev_arguments)
 {
 	char			*argument;
 	t_current_focus	focus;
@@ -99,7 +122,7 @@ char	*parse_argument(t_string_index *command_line, t_command *cmd)
 		if (c == '\'' && !focus.dbl_quote)
 			focus.quote = !focus.quote;
 		else if (c == '$' && !focus.quote)
-			parse_variable(&argument, command_line);
+			parse_variable(&argument, command_line, prev_arguments);
 		else if (c == '"' && !focus.quote)
 			focus.dbl_quote = !focus.dbl_quote;
 		else if (!focus.quote && !focus.dbl_quote && is_end_arg(command_line, !cmd))
