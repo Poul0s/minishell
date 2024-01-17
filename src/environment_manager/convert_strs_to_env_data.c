@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 14:39:52 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/17 17:14:45 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/17 18:15:44 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ t_env_data	*convert_strs_to_env_data(char **env)
 				prev->next = current;
 			else
 				parent = current;
-			env++;
 		}
 	}
 	return (parent);
