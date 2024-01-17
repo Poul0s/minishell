@@ -13,13 +13,12 @@
 
 
 #include "minishell.h"
-#include <readline/readline.h>
+#include "autocompleion.h"
 
 static void	execute_line(char *command_line_str, char **env)
 {
 	t_command_group	*command_line;
 
-	// todo history fct
 	command_line = parse_cmd_line(command_line_str, env);
 	if (command_line)
 		print_command_line(command_line, 0);

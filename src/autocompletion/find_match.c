@@ -6,11 +6,10 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:59:51 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/16 18:44:37 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/17 16:36:16 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_print.h"
 #include "libft.h" 
 #include <stdlib.h>
 #include <dirent.h>

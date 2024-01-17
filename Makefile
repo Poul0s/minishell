@@ -2,9 +2,9 @@ CC		=	cc
 
 CFLAGS	=	-Wall -Wextra -Werror -g
 
-SRC		=	src/get_path.c \
-			src/get_hostname.c \
-			src/refresh_prompt_prefix.c \
+SRC		=	src/get/get_path.c \
+			src/get/get_hostname.c \
+			src/get/refresh_prompt_prefix.c \
 			src/autocompletion/find_match.c \
 			src/autocompletion/wich_word.c \
 			src/autocompletion/autocompletion.c \

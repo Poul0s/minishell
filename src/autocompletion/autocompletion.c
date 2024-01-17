@@ -6,15 +6,12 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:33:31 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/16 18:56:26 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/17 16:35:59 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_linkedList.h"
-#include "ft_string.h"
-#include "minishell.h"
+#include "autocompleion.h"
 #include <dirent.h>
-#include <readline/readline.h>
 
 void	pop(void *value)
 {

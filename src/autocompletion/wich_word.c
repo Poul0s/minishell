@@ -6,14 +6,11 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 03:32:08 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/16 04:15:44 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/17 16:38:23 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_print.h"
-#include "libft.h"
-#include "minishell.h"
-#include <readline/readline.h>
+#include "autocompleion.h"
 
 static char *create_string(const char *start, const char *end)
 {
@@ -32,7 +29,6 @@ static char *create_string(const char *start, const char *end)
 		i++;
 	}
 	str[i] = 0;
-	//printf("\n%s", str);
 	return (str);
 }
 
