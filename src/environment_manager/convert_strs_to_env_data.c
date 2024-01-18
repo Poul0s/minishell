@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 14:39:52 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/18 14:37:22 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/18 22:29:43 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static t_env_data	*convert_str_to_env_data(char *env_var)
 	res = malloc(sizeof(t_env_data));
 	if (!res)
 		return (NULL);
-	separator_index = env_var - ft_strchr(env_var, '=');
+	separator_index = ft_strchr(env_var, '=') - env_var;
 	res->key = ft_substr(env_var, 0, separator_index);
 	res->value = ft_substr(env_var, separator_index + 1, ft_strlen(env_var));
 	res->next = NULL;

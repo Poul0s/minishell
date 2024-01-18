@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:24:31 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/17 20:37:30 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/18 22:23:47 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,12 @@ void	print_command_line(t_command_group *command, int depth)
 	if (command)
 	{
 		print_command(command->command, depth);
+		if (ft_strncmp(command->command->executable, "env", 4) == 0)
+		{
+			char **env = convert_env_data_to_strs(command->env->env);
+			while (*env)
+				ft_printf("%s\n", *env++);
+		}
 		ft_printf("\n%*c\n", depth * 4 + 1, '{');
 		if (command->on_success)
 		{
