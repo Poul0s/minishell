@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/17 17:57:52 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/17 21:23:52 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	main(int ac, char **av, char **envp)
 
 	(void) ac;
 	(void) av;
+	rl_completion_entry_function = autocompletion;
 	shell_data.env = create_env_tree(NULL, envp);
 	shell_data.hostname = get_hostname();
 	refresh_prompt(&shell_data);
@@ -40,7 +41,6 @@ int	main(int ac, char **av, char **envp)
 	init_signal_handler();
 	while (1)
 	{
-		rl_completion_entry_function = autocompletion;
 		if (line_readed && *line_readed)
 			add_history(line_readed);
 		line_readed = readline(shell_data.prompt);

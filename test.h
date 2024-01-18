@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   autocompleion.h                                    :+:      :+:    :+:   */
+/*   test.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 16:20:55 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/17 22:23:05 by babonnet         ###   ########.fr       */
+/*   Created: 2024/01/18 01:43:53 by babonnet          #+#    #+#             */
+/*   Updated: 2024/01/18 01:43:59 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AUTOCOMPLETION_H
-# define AUTOCOMPLETION_H
+#ifndef TEST_H
+# define TEST_H
 
-# include "libft.h"
-# include <readline/readline.h>
+# ifndef __KM_VA_ARGS__
+#  define __KM_VA_ARGS__
 
-t_list	*find_match_cmd(const char *start_cmd);
-t_list	*find_match_file(const char *start_cmd);
-char	*wich_word(void);
-t_list	*autocompletion_dir(const char *path);
-char	*autocompletion(const char *str, int status);
-int	is_first(void);
+typedef char	*km_va_list;
+#  define km_va_start(ap, parmn) (void)((ap) = (char *)(&(parmn) + 1))
+#  define km_va_arg(ap, type) (((type *)((ap) = ((ap) + sizeof(type))))[-1])
+#  define km_va_end(ap) (void)((ap) = 0)
+
+# endif
 
 #endif

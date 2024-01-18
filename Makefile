@@ -9,6 +9,7 @@ SRC		=	src/get/get_path.c \
 			src/autocompletion/wich_word.c \
 			src/autocompletion/autocompletion.c \
 			src/autocompletion/autocompletion_dir.c \
+			src/autocompletion/is_first.c \
 			src/cmd/ft_pwd.c \
 			src/environment_manager/add_env_tree_children.c \
 			src/environment_manager/convert_env_data_to_strs.c \
