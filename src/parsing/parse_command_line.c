@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 15:48:52 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/17 20:59:53 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/18 13:46:53 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,18 @@ static size_t	get_cmd_grp_end(t_string_index *command_line, t_command_group *com
 	command_group->env = create_env_tree_children(command_group->env);
 	command_line->i++;
 	end = command_line->i;
-	nb_parenthesis = 0;
+	nb_parenthesis = 1;
 	while (command_line->str[end])
 	{
 		if (command_line->str[end] == '(')
 			nb_parenthesis++;
-		else if (command_line->str[end] == ')' && nb_parenthesis != 0)
-			nb_parenthesis--;
 		else if (command_line->str[end] == ')' && nb_parenthesis == 0)
 			break ;
+		else if (command_line->str[end] == ')')
+			nb_parenthesis--;
 		end++;
 	}
+	ft_printf("end: %d\n", end);
 	return (end);
 }
 
@@ -61,9 +62,9 @@ static size_t	operator_get_end(t_string_index *command_line, int operator_type)
 				parenthesis++;
 			else if (command_line->str[end] == ')')
 				break ;
-			else if (operator_type == 0 && !ft_strncmp(command_line->str + end, "||", 2))
+			else if (operator_type == 0 && ft_strncmp(command_line->str + end, "||", 2) == 0)
 				break ;
-			else if (operator_type == 1 && !ft_strncmp(command_line->str + end, "&&", 2))
+			else if (operator_type == 1 && ft_strncmp(command_line->str + end, "&&", 2) == 0)
 				break ;
 		}
 		else if (command_line->str[end] == ')' && parenthesis > 0)
@@ -112,17 +113,22 @@ t_command_group	*parse_command_grp(t_string_index *command_line, t_env_tree *env
 	// bug (cmd1 && cmd2) | res : cmd grp stop at end of parenthesis
 	// idea : maybe loop operators connectors and stop : at first closed parenthesis if grp not in parenthesis else stop at second parenthesis
 	// idea2: loop pipe and operators and stop at end but end must be calculated in consideration pipe and operators
-	if (command_line->str[command_line->i] == '|' && command_line->str[command_line->i + 1] != '|')
+	while (command_line->str[command_line->i])
 	{
+		str_i_skip_spaces(command_line);
+		if (command_line->str[command_line->i] == '|' && command_line->str[command_line->i + 1] != '|')
+		{
+			command_line->i++;
+			res->pipe_next = parse_command_grp(command_line, res->env);
+		}
+		str_i_skip_spaces(command_line);
+		if (ft_strncmp(command_line->str + command_line->i, "&&", 2) == 0)
+			parse_operator(command_line, res, 0);
+		str_i_skip_spaces(command_line);
+		if (ft_strncmp(command_line->str + command_line->i, "||", 2) == 0)
+			parse_operator(command_line, res, 1);
 		command_line->i++;
-		res->pipe_next = parse_command_grp(command_line, res->env);
 	}
-	str_i_skip_spaces(command_line);
-	if (ft_strncmp(command_line->str + command_line->i, "&&", 2) == 0)
-		parse_operator(command_line, res, 0);
-	str_i_skip_spaces(command_line);
-	if (ft_strncmp(command_line->str + command_line->i, "||", 2) == 0)
-		parse_operator(command_line, res, 1);
 	command_line->str[end] = end_char;
 	if (end_char == ')')
 		command_line->i++;
