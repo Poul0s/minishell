@@ -1,22 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_abs.c                                           :+:      :+:    :+:   */
+/*   skip_spaces.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/13 11:01:18 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/18 14:31:22 by psalame          ###   ########.fr       */
+/*   Created: 2024/01/18 14:20:05 by psalame           #+#    #+#             */
+/*   Updated: 2024/01/18 14:20:33 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-unsigned int	ft_abs(int value)
-{
-	unsigned int	res;
+#include "command_Int.h"
 
-	if (value >= 0)
-		res = value;
-	else
-		res = -value;
-	return (res);
+void	str_i_skip_spaces(t_string_index *command_line)
+{
+	while (command_line->str[command_line->i] == ' ')
+		command_line->i++;
 }

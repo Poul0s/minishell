@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 14:39:52 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/17 18:15:44 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/18 14:37:22 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_env_data	*convert_str_to_env_data(char *env_var)
 {
 	t_env_data	*res;
 	size_t		separator_index;
-	
+
 	if (!env_var)
 		return (NULL);
 	res = malloc(sizeof(t_env_data));

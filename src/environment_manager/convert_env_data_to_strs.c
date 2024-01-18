@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 16:28:50 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/17 17:13:35 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/18 14:37:34 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ size_t	get_env_data_size(t_env_data *env_data)
 	return (len);
 }
 
-static char *convert_env_data_to_str(t_env_data *env_data)
+static char	*convert_env_data_to_str(t_env_data *env_data)
 {
 	char	*res;
 	size_t	res_size;
@@ -41,7 +41,7 @@ static char *convert_env_data_to_str(t_env_data *env_data)
 	return (res);
 }
 
-char **convert_env_data_to_strs(t_env_data *env_data)
+char	**convert_env_data_to_strs(t_env_data *env_data)
 {
 	char	**res;
 	size_t	size;

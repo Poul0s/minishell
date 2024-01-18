@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:17:35 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/17 17:09:06 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/18 14:18:15 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ static bool	is_str_digits(const char *str)
 		return (false);
 }
 
-static void	parse_here_doc(t_string_index *command_line, t_command *cmd, int fd, t_env_tree *env)
+static void	parse_here_doc(t_string_index *command_line,
+						t_command *cmd,
+						int fd,
+						t_env_tree *env)
 {
 	char		*delimiter;
 	t_heredoc	*heredoc_data;
@@ -50,11 +53,13 @@ static void	parse_here_doc(t_string_index *command_line, t_command *cmd, int fd,
 	heredoc_data->fd = fd;
 	heredoc_data->delimiter = delimiter;
 	node->content = heredoc_data;
-	// todo remove (if exist) precedent infile/heredoc with same infile fd
 	ft_lstadd_back(&(cmd->here_documents), node);
 }
 
-static void	parse_outfile(t_string_index *command_line, t_command *cmd, int fd, t_env_tree *env)
+static void	parse_outfile(t_string_index *command_line,
+						t_command *cmd,
+						int fd,
+						t_env_tree *env)
 {
 	char		*filename;
 	t_outfile	*outfile_data;
@@ -80,7 +85,10 @@ static void	parse_outfile(t_string_index *command_line, t_command *cmd, int fd, 
 	ft_lstadd_back(&(cmd->outfiles), node);
 }
 
-static void parse_infile(t_string_index *command_line, t_command *cmd, int fd, t_env_tree *env)
+static void	parse_infile(t_string_index *command_line,
+						t_command *cmd,
+						int fd,
+						t_env_tree *env)
 {
 	char		*filename;
 	t_infile	*infile_data;
@@ -102,10 +110,13 @@ static void parse_infile(t_string_index *command_line, t_command *cmd, int fd, t
 	infile_data->fd = fd;
 	infile_data->filename = filename;
 	node->content = infile_data;
-	// todo remove (if exist) precedent infile/heredoc with same infile fd
 	ft_lstadd_back(&(cmd->infiles), node);
 }
-void	parse_file_redirection(t_string_index *command_line, char **argument, t_command *cmd, t_env_tree *env)
+
+void	parse_file_redirection(t_string_index *command_line,
+							char **argument,
+							t_command *cmd,
+							t_env_tree *env)
 {
 	int	fd;
 

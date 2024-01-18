@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 14:29:29 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/17 17:28:51 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/18 14:37:42 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	add_env_data_var(t_env_data **env_data, char *key, char *value)
 {
 	t_env_data	*last_node;
 	t_env_data	*new_node;
-	
+
 	if (!env_data)
 		return ;
 	new_node = malloc(sizeof(t_env_data));
@@ -43,7 +43,7 @@ void	edit_env_var(t_env_tree *env_tree, char *key, char *data)
 {
 	t_env_data	*env_res_object;
 	t_list		*children;
-	
+
 	env_res_object = get_env_data(env_tree->env, key);
 	if (!env_res_object)
 		add_env_data_var(&(env_tree->env), key, data);

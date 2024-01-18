@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_linkedList.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 22:05:26 by psalame           #+#    #+#             */
-/*   Updated: 2023/11/29 16:02:24 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/18 14:07:04 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ typedef struct s_list
 }					t_list;
 
 t_list	*ft_lstnew(void *content);
+t_list	*ft_lstnew_fallback(void *content, void (*fallback)(void *data));
 void	ft_lstadd_front(t_list **lst, t_list *new);
 int		ft_lstsize(t_list *lst);
 t_list	*ft_lstlast(t_list *lst);

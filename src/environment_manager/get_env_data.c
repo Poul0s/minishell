@@ -6,12 +6,11 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:00:56 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/17 17:29:09 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/18 14:38:04 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environment_manager.h"
-
 
 t_env_data	*get_env_data(t_env_data *env_data, char *key)
 {
@@ -28,10 +27,10 @@ t_env_data	*get_env_data(t_env_data *env_data, char *key)
 	return (NULL);
 }
 
-char		*get_env_value(t_env_data *env_data, char *key)
+char	*get_env_value(t_env_data *env_data, char *key)
 {
 	t_env_data	*env_res_object;
-	
+
 	env_res_object = get_env_data(env_data, key);
 	if (env_res_object)
 		return (env_res_object->value);

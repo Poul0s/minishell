@@ -19,8 +19,9 @@ SRC		=	src/get/get_path.c \
 			src/environment_manager/del_env_var.c \
 			src/environment_manager/edit_env_var.c \
 			src/environment_manager/get_env_data.c \
+			src/parsing/skip_spaces.c \
 			src/parsing/parse_command_line.c \
-			src/parsing/parse_commands.c \
+			src/parsing/parse_command_group.c \
 			src/parsing/parse_command.c \
 			src/parsing/parse_argument.c \
 			src/parsing/parse_file_redirection.c \

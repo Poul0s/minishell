@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:14:26 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/13 13:49:23 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/18 14:33:12 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,11 @@ static void	ft_formatf(t_printf_data *fdata, va_list ap)
 int	ft_printf(const char *str, ...)
 {
 	t_printf_data	fdata;
-	int		to_write;
-	va_list	ap;
+	int				to_write;
+	va_list			ap;
 
 	va_start(ap, str);
-	fdata.writted_char = 0;
-	fdata.i = 0;
+	ft_bzero(&fdata, sizeof(t_printf_data));
 	fdata.str = str;
 	fdata.fd = 1;
 	while (str[fdata.i])
@@ -76,7 +75,8 @@ int	ft_printf(const char *str, ...)
 		else
 		{
 			to_write = 0;
-			while (str[fdata.i + to_write] != '\0' && str[fdata.i + to_write] != '%')
+			while (str[fdata.i + to_write] != '\0'
+				&& str[fdata.i + to_write] != '%')
 				to_write++;
 			write(1, str + fdata.i, to_write);
 			fdata.writted_char += to_write;
@@ -94,8 +94,7 @@ int	ft_dprintf(int fd, const char *str, ...)
 	va_list			ap;
 
 	va_start(ap, str);
-	fdata.writted_char = 0;
-	fdata.i = 0;
+	ft_bzero(&fdata, sizeof(t_printf_data));
 	fdata.str = str;
 	fdata.fd = fd;
 	while (str[fdata.i])
@@ -105,7 +104,8 @@ int	ft_dprintf(int fd, const char *str, ...)
 		else
 		{
 			to_write = 0;
-			while (str[fdata.i + to_write] != '\0' && str[fdata.i + to_write] != '%')
+			while (str[fdata.i + to_write] != '\0'
+				&& str[fdata.i + to_write] != '%')
 				to_write++;
 			write(fd, str + fdata.i, to_write);
 			fdata.writted_char += to_write;
