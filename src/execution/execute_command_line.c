@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:02:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/19 17:32:02 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/19 17:42:01 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,47 @@
 //         fork()
 //          child2->waitpid(child)
 //                  execute_command_line(group_data->on_success || group_data->on_error)
+static int	execute_command(t_command *command, t_command_group *group_data)
+{
+	int	pid;
+	int	pid2;
+	int	res;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		pid2 = fork();
+		if (pid2 == 0)
+		{
+			command->executable = find_cmd(command->executable, convert_env_data_to_strs(group_data->env->env));
+			execve(command->executable, command->arguments, convert_env_data_to_strs(group_data->env->env)); // todo add premake of char **env in t_env_data for free at end
+			exit(errno);
+		}
+		waitpid(pid2, &res, 0);
+		if (group_data->on_success || group_data->on_error)
+		{
+			res = WEXITSTATUS(res);
+			if (res != 0)
+			{
+				if (group_data->on_error != NULL)
+					execute_command_line(group_data->on_error);
+				exit(errno); // must be res of execute_command_line
+			}
+			else
+			{
+				if (group_data->on_success != NULL)
+					execute_command_line(group_data->on_success);
+				exit(EXIT_SUCCESS); // must be res of execute_command_line
+			}
+		}
+		else
+			exit(EXIT_SUCCESS); // must be res of execute_command_line
+	}
+	else
+		return (pid);
+}
+
+/*
 static int	execute_command(t_command *command, t_command_group *group_data)
 {
 	int		child_pid;
@@ -60,6 +101,7 @@ static int	execute_command(t_command *command, t_command_group *group_data)
 	}
 	return (child_pid);
 }
+*/
 
 int	execute_command_line(t_command_group *command_line)
 {
