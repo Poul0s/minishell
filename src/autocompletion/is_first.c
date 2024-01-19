@@ -6,11 +6,11 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 00:33:17 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/18 01:04:05 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/18 18:46:28 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "autocompleion.h"
+#include "autocompletion.h"
 
 int	is_first(void)
 {
@@ -18,7 +18,7 @@ int	is_first(void)
 	int		pos;
 
 	line = rl_line_buffer;
-	pos = rl_point;
+	pos = rl_point - 1;
 	while (pos && ft_isalpha(line[pos]))
 		pos--;
 	while (pos && !ft_strchr("|&", line[pos]))

@@ -6,11 +6,11 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 03:32:08 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/17 16:38:23 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/18 19:30:18 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "autocompleion.h"
+#include "autocompletion.h"
 
 static char *create_string(const char *start, const char *end)
 {
@@ -32,7 +32,38 @@ static char *create_string(const char *start, const char *end)
 	return (str);
 }
 
-char	*wich_word(void)
+static t_word *create_word(const char *start, const char *end)
+{
+	t_word *word;
+	char *str;
+	char *mid;
+
+	word = malloc(sizeof(t_word));
+	if (!word)
+		return (NULL);
+	str = create_string(start, end);
+	if (!str)
+	{
+		free(word);
+		return (NULL);
+	}
+	mid = ft_strrchr(str, '/');
+	if (!mid)
+		mid = ft_strrchr(str, '.');
+	if (!mid)
+	{
+		word->word = str;
+		word->path = NULL;
+		return (word);
+	}
+	word->word = ft_strdup(mid + 1);
+	mid[1] = 0;
+	word->path = ft_strdup(str);
+	free(str);
+	return (word);
+}
+
+t_word	*wich_word(void)
 {
 	const char	*line;
 	const char	*start;
@@ -45,10 +76,10 @@ char	*wich_word(void)
 		cursor--;
 	start = &line[cursor];
 	end = &line[cursor];
-	while(start >= line && ft_isalpha(*start))
+	while(start >= line && (ft_isalpha(*start) || ft_strchr("./", *start)))
 		start--;
 	start++;
-	while(*end && ft_isalpha(*end))
+	while(*end && (ft_isalpha(*end) || ft_strchr("./", *start)))
 		end++;
-	return (create_string(start, end));
+	return (create_word(start, end));
 }
