@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:36 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/18 22:22:38 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/19 16:03:40 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "libft.h"
 # include "command.h"
 # include "environment_manager.h"
-# include "libft.h"
+# include "execution.h"
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>

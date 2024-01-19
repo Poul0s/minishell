@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   add_env_tree_children.c                            :+:      :+:    :+:   */
+/*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 14:25:41 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/19 13:02:14 by psalame          ###   ########.fr       */
+/*   Created: 2024/01/19 16:02:49 by psalame           #+#    #+#             */
+/*   Updated: 2024/01/19 16:09:06 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "environment_manager.h"
 
-void	add_env_tree_children(t_env_tree *parent, t_env_tree *children)
-{
-	t_list	*node;
 
-	node = ft_lstnew(children);
-	if (!node)
-		return ;
-	ft_lstadd_back(&(parent->childrens), node);
-}
+#ifndef EXECUTION_H
+# define EXECUTION_H
+
+# include <sys/types.h>
+# include <sys/wait.h>
+
+int		execute_command_line(t_command_group *command_line);
+char	*find_cmd(char *cmd, char **path);
+
+#endif

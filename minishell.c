@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/17 21:23:52 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/19 16:34:57 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
 #include "minishell.h"
-#include "autocompleion.h"
+#include "autocompletion.h"
 
 static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 {
@@ -21,8 +21,10 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 
 	command_line = parse_cmd_line(command_line_str, shell_data->env);
 	if (command_line)
-		print_command_line(command_line, 0);
-		// todo execute_command_line(command_line);
+	{
+		execute_command_line(command_line);
+		// print_command_line(command_line, 0);
+	}
 	// todo free command_line
 }
 
