@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:27:56 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/18 14:30:41 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/19 14:24:16 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,13 +100,20 @@ static void	parse_command_grp_operators(t_command_group *grp,
 		{
 			command_line->i++;
 			grp->pipe_next = parse_command_grp(command_line, grp->env);
+			continue ;
 		}
 		str_i_skip_spaces(command_line);
 		if (ft_strncmp(command_line->str + command_line->i, "&&", 2) == 0)
+		{
 			parse_operator(command_line, grp, 0);
+			continue ;
+		}
 		str_i_skip_spaces(command_line);
 		if (ft_strncmp(command_line->str + command_line->i, "||", 2) == 0)
+		{
 			parse_operator(command_line, grp, 1);
+			continue ;
+		}
 		command_line->i++;
 	}
 }
@@ -133,7 +140,5 @@ t_command_group	*parse_command_grp(t_string_index *command_line,
 	}
 	parse_command_grp_operators(res, command_line);
 	command_line->str[end] = end_char;
-	if (end_char == ')')
-		command_line->i++;
 	return (res);
 }
