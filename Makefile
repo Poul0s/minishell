@@ -28,6 +28,8 @@ SRC		=	src/get/get_path.c \
 			src/parsing/parse_file_redirection.c \
 			src/execution/execute_command_line.c \
 			src/execution/get_path.c \
+			src/execution/pipe.c \
+			src/execution/execute_cmd.c \
 			debug.c \
 			src/signal/handler.c \
 			minishell.c \
