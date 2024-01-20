@@ -1,19 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   skip_spaces.c                                      :+:      :+:    :+:   */
+/*   syntax.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/18 14:20:05 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/20 14:13:53 by psalame          ###   ########.fr       */
+/*   Created: 2024/01/20 14:07:43 by psalame           #+#    #+#             */
+/*   Updated: 2024/01/20 15:51:54 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "string_index.h"
+#ifndef SYNTAX_H
+# define SYNTAX_H
+# include "libft.h"
+# include "string_index.h"
+# define EOF -1
 
-void	str_i_skip_spaces(t_string_index *command_line)
+typedef struct s_syntax_parser
 {
-	while (command_line->str[command_line->i] == ' ')
-		command_line->i++;
-}
+	char	current_token;
+	int		nb_parenthesis;
+	bool	has_content;
+}	t_syntax_parser;
+
+typedef struct s_syntax
+{
+	bool	error;
+	char	error_char;
+	bool	double_char_error;
+}	t_syntax;
+
+t_syntax	check_syntax(char *command_line);
+
+#endif

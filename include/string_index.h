@@ -1,19 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   skip_spaces.c                                      :+:      :+:    :+:   */
+/*   string_index.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/18 14:20:05 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/20 14:13:53 by psalame          ###   ########.fr       */
+/*   Created: 2024/01/20 14:13:11 by psalame           #+#    #+#             */
+/*   Updated: 2024/01/20 15:47:30 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "string_index.h"
+#ifndef STRING_INDEX_H
+# define STRING_INDEX_H
 
-void	str_i_skip_spaces(t_string_index *command_line)
+# include <stddef.h>
+
+typedef struct s_string_index
 {
-	while (command_line->str[command_line->i] == ' ')
-		command_line->i++;
-}
+	char	*str;
+	size_t	i;
+}	t_string_index;
+
+void	str_i_skip_spaces(t_string_index *command_line);
+
+#endif

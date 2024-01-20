@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:36 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/19 16:03:40 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/20 15:29:46 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "command.h"
 # include "environment_manager.h"
 # include "execution.h"
+# include "syntax.h"
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -26,6 +27,7 @@
 
 typedef struct s_sh_data
 {
+	char		*exec_name;
 	char		*prompt;
 	char		*hostname;
 	t_env_tree	*env;
@@ -38,7 +40,7 @@ char		*get_path(void);
 
 void		print_command_line(t_command_group *command, int depth);
 
-void	init_signal_handler(void);
+void		init_signal_handler(void);
 
 int			ft_cd(const char *path);
 int			ft_env(const char **env);

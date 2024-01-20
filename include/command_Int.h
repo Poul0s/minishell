@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:41:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/18 14:22:34 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/20 15:52:30 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define COMMAND_INT_H
 # include "command.h"
 # include "libft.h"
+# include "string_index.h"
 
 typedef struct s_current_focus
 {
@@ -22,14 +23,6 @@ typedef struct s_current_focus
 	bool	dblquote;
 	bool	parenthesis;
 }	t_current_focus;
-
-typedef struct s_string_index
-{
-	char	*str;
-	size_t	i;
-}	t_string_index;
-
-void			str_i_skip_spaces(t_string_index *command_line);
 char			*parse_argument(t_string_index *command_line, t_command *cmd, t_list **prev_arguments, t_env_tree *env);
 t_command		*parse_command(t_string_index *command_line, t_env_tree *env);
 t_command_group	*parse_command_grp(t_string_index *command_line, t_env_tree *env);
