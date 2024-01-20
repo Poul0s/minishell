@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 14:07:20 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/20 17:42:57 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/20 17:54:32 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	check_parenthesis_syntax(t_string_index *stri,
 	else
 	{
 		syntax->nb_parenthesis--;
-		if (syntax->nb_parenthesis < 0)
+		if (syntax->nb_parenthesis < 0 || !syntax->has_content)
 		{
 			res->error = true;
 			res->error_char = ')';
