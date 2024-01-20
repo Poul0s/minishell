@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:41:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/20 15:52:30 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/20 16:10:51 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_current_focus
 	bool	dblquote;
 	bool	parenthesis;
 }	t_current_focus;
+
 char			*parse_argument(t_string_index *command_line, t_command *cmd, t_list **prev_arguments, t_env_tree *env);
 t_command		*parse_command(t_string_index *command_line, t_env_tree *env);
 t_command_group	*parse_command_grp(t_string_index *command_line, t_env_tree *env);
