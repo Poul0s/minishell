@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 14:07:20 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/20 16:20:32 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/20 17:42:57 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	check_parenthesis_syntax(t_string_index *stri,
 			res->error_char = ')';
 		}
 		else
-			syntax->has_content = false;
+			syntax->has_content = true;
 	}
 }
 
