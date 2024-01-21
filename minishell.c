@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/21 18:51:51 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/21 20:19:37 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 	t_syntax		syntax_res;
 	t_command_group	*command_line;
 
+	if (command_line_str[0] == 0)
+		return ;
 	syntax_res = check_syntax(command_line_str);
 	if (syntax_res.error)
 		print_syntax_error(&syntax_res, shell_data);

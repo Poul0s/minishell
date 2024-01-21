@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 14:07:20 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/21 17:28:25 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/21 20:09:18 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static void	check_syntax_quote(t_string_index *stri,
 		|| (c == '"' && syntax->current_token != '\''))
 	{
 		if (syntax->current_token == c)
-			syntax->current_token = 0;
+			syntax->current_token = 1;
 		else
 			syntax->current_token = c;
 	}
