@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:19:10 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/20 18:38:33 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/21 21:08:43 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ static void	manage_pipe(int fd[2][2], int i, int size)
 
 void pipe_cmd(t_command_group *command_line, int *pid, t_pipe *data_pipe)
 {
-	int child;
+	int	child;
+	int	child_res;
 
 	if (pipe(data_pipe->fd[data_pipe->index % 2]) == -1)
 		exit(errno);
@@ -63,8 +64,8 @@ void pipe_cmd(t_command_group *command_line, int *pid, t_pipe *data_pipe)
 		{
 			manage_pipe(data_pipe->fd, data_pipe->index, data_pipe->pipe_count);
 			child = execute_command(command_line->command, command_line, data_pipe->fd[data_pipe->index % 2]);
-			waitpid(child, NULL, 0);
-			exit(1);
+			waitpid(child, &child_res, 0);
+			exit(WEXITSTATUS(child_res));
 		}
 	}
 	if (data_pipe->index != 0)
@@ -75,5 +76,6 @@ void pipe_cmd(t_command_group *command_line, int *pid, t_pipe *data_pipe)
 		pipe_cmd(command_line->pipe_next, pid, data_pipe);
 	}
 	close_pipe(data_pipe->fd[data_pipe->index % 2]);
-	wait_multiple_pid(pid, data_pipe->pipe_count);
+	(void) wait_multiple_pid;
+	// wait_multiple_pid(pid, data_pipe->pipe_count);
 }

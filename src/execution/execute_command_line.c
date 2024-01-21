@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command_line.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:02:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/20 18:39:04 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/21 21:11:34 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,14 @@ int	execute_command_line(t_command_group *command_line)
 {
 	t_pipe data_pipe;
 	int *pid;
+	int	last_pid_res;
 
 	data_pipe.index = 0;
 	data_pipe.pipe_count = count_pipe(command_line);
 	pid = malloc(data_pipe.pipe_count * sizeof(int));
 	pipe_cmd(command_line, pid, &data_pipe);
-	return (0);
+	if (waitpid(pid[data_pipe.pipe_count - 1], &last_pid_res, 0) == -1)
+		return (-1);
+	else
+		return (WEXITSTATUS(last_pid_res));
 }

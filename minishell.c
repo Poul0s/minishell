@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/21 20:19:37 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/21 21:17:12 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 {
 	t_syntax		syntax_res;
 	t_command_group	*command_line;
+	int				last_cmd_code;
 
 	if (command_line_str[0] == 0)
 		return ;
@@ -40,7 +41,8 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 		command_line = parse_cmd_line(command_line_str, shell_data->env);
 		if (command_line)
 		{
-			execute_command_line(command_line);
+			last_cmd_code = execute_command_line(command_line);
+			ft_printf("DEBUG:\tlast execution code : %d\n", last_cmd_code);
 			// print_command_line(command_line, 0);
 		}
 		// todo free command_line

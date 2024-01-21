@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:36 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/20 15:29:46 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/21 21:18:57 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_sh_data
 	char		*prompt;
 	char		*hostname;
 	t_env_tree	*env;
+	
 }			t_sh_data;
 
 char		*get_hostname(void);
