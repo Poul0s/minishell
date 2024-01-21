@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:27:56 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/21 18:46:07 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/21 19:55:45 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,8 @@ t_command_group	*parse_command_grp(t_string_index *command_line,
 	end = get_cmd_grp_end(command_line, res);
 	end_char = command_line->str[end];
 	command_line->str[end] = 0;
+	while (command_line->str[command_line->i] == ' ' || command_line->str[command_line->i] == '(')
+		command_line->i++;
 	res->command = parse_command(command_line, res->env);
 	if (!res->command)
 	{
