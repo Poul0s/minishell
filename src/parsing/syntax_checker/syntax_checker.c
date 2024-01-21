@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 14:07:20 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/20 17:54:32 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/21 15:47:15 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	check_operator_syntax(t_string_index *stri,
 	char	c;
 
 	c = stri->str[stri->i];
-	if (syntax->current_token != 0 || !syntax->has_content)
+	if (syntax->current_token != 0 && !syntax->has_content)
 	{
 		if (stri->str[stri->i + 1] == c)
 			res->double_char_error = true;
