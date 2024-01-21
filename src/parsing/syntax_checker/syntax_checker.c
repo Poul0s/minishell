@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 14:07:20 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/21 15:47:15 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/21 17:28:25 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,11 @@ static void	check_operator_syntax(t_string_index *stri,
 	c = stri->str[stri->i];
 	if (syntax->current_token != 0 && !syntax->has_content)
 	{
-		if (stri->str[stri->i + 1] == c)
-			res->double_char_error = true;
 		res->error = true;
-		res->error_char = c;
+		if (stri->str[stri->i + 1] == c)
+			res->token = token_to_str(c, 2);
+		else
+			res->token = token_to_str(c, 1);
 	}
 	else
 	{
@@ -54,10 +55,13 @@ static void	check_parenthesis_syntax(t_string_index *stri,
 		if (syntax->nb_parenthesis < 0 || !syntax->has_content)
 		{
 			res->error = true;
-			res->error_char = ')';
+			res->token = token_to_str(')', 1);
 		}
 		else
+		{
 			syntax->has_content = true;
+			syntax->current_token = 0;
+		}
 	}
 }
 
@@ -94,7 +98,15 @@ static void	check_syntax_char(t_string_index *stri,
 		else if (c == '(' || c == ')')
 			check_parenthesis_syntax(stri, syntax, res);
 		else
-			syntax->has_content = true;
+		{
+			if (syntax->current_token)
+				syntax->has_content = true;
+			else
+			{
+				res->error = true;
+				res->token = get_unexpected_token(stri);
+			}
+		}
 	}
 }
 
@@ -107,8 +119,8 @@ t_syntax	check_syntax(char *command_line)
 	stri.str = command_line;
 	stri.i = 0;
 	ft_bzero(&syntax, sizeof(t_syntax_parser));
-	res.error = false;
-	res.double_char_error = false;
+	ft_bzero(&res, sizeof(t_syntax));
+	syntax.current_token = 1;
 	while (stri.str[stri.i])
 	{
 		str_i_skip_spaces(&stri);
@@ -122,7 +134,7 @@ t_syntax	check_syntax(char *command_line)
 		|| (syntax.current_token == '\'' || syntax.current_token == '"'))
 	{
 		res.error = true;
-		res.error_char = EOF;
+		res.no_end = true;
 	}
 	return (res);
 }

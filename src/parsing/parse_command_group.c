@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:27:56 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/21 15:58:21 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/21 18:46:07 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,24 +74,42 @@ static void	parse_operator(t_string_index *command_line,
 						t_command_group *cmd_grp,
 						int operator_type)
 {
-	size_t	end;
-	char	end_char;
+	size_t			end;
+	char			end_char;
+	t_command_group	*tmp;
+	t_command_group	*command_fallback;
 
 	command_line->i += 2;
 	end = operator_get_end(command_line, operator_type);
 	end_char = command_line->str[end];
 	command_line->str[end] = 0;
+	command_fallback = parse_command_grp(command_line, cmd_grp->env);
 	if (operator_type == 0)
 	{
-		while (cmd_grp->on_success != NULL)
-			cmd_grp = cmd_grp->on_success;
-		cmd_grp->on_success = parse_command_grp(command_line, cmd_grp->env);
+		// todo maybe add on each error
+		while (cmd_grp)
+		{
+			tmp = cmd_grp;
+			while (tmp->on_success && tmp->on_success != command_fallback)
+				tmp = tmp->on_success;
+			tmp->on_success = command_fallback;
+			cmd_grp = cmd_grp->on_error;
+		}
 	}
 	else
 	{
-		while (cmd_grp->on_error != NULL)
-			cmd_grp = cmd_grp->on_error;
-		cmd_grp->on_error = parse_command_grp(command_line, cmd_grp->env);
+		// todo maybe add on each success 
+		while (cmd_grp)
+		{
+			tmp = cmd_grp;
+			while (tmp->on_error && tmp->on_error != command_fallback)
+				tmp = tmp->on_error;
+			tmp->on_error = command_fallback;
+			cmd_grp = cmd_grp->on_success;
+		}
+		// while (cmd_grp->on_error != NULL)
+		// 	cmd_grp = cmd_grp->on_error;
+		// cmd_grp->on_error = command_fallback;
 	}
 	command_line->str[end] = end_char;
 }

@@ -20,6 +20,7 @@ SRC		=	src/get/get_path.c \
 			src/environment_manager/edit_env_var.c \
 			src/environment_manager/get_env_data.c \
 			src/parsing/skip_spaces.c \
+			src/parsing/syntax_checker/token_generator.c \
 			src/parsing/syntax_checker/syntax_checker.c \
 			src/parsing/parse_command_line.c \
 			src/parsing/parse_command_group.c \

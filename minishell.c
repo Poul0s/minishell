@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/21 16:00:26 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/21 18:51:51 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,10 @@ static void	print_syntax_error(t_syntax *syntax, t_sh_data *shell_data)
 {
 	// todo set last exec error at 2
 	ft_dprintf(2, "%s: ", shell_data->exec_name);
-	if (syntax->error_char == EOF)
+	if (syntax->no_end)
 		ft_dprintf(2, "syntax error: unexpected end of file\n");
 	else
-	{
-		ft_dprintf(2, "syntax error near unexpected token `");
-		ft_putchar_rep(syntax->error_char, 1 + syntax->double_char_error, 2);
-		ft_dprintf(2, "'\n");
-	}
+		ft_dprintf(2, "syntax error near unexpected token `%s'\n", syntax->token);
 }
 
 static void	execute_line(char *command_line_str, t_sh_data *shell_data)

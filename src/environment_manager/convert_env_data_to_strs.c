@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 16:28:50 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/18 14:37:34 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/21 17:15:00 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ static char	*convert_env_data_to_str(t_env_data *env_data)
 	char	*res;
 	size_t	res_size;
 
-	res_size = ft_strlen(env_data->key) + 1 + ft_strlen(env_data->value);
-	res = malloc((res_size + 1) * sizeof(char));
+	res_size = ft_strlen(env_data->key) + 1 + ft_strlen(env_data->value) + 1;
+	res = malloc(res_size * sizeof(char));
 	if (!res)
 		return (NULL);
 	res[0] = 0;

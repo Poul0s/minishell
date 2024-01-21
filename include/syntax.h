@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 14:07:43 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/20 15:51:54 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/21 17:28:10 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,12 @@ typedef struct s_syntax_parser
 typedef struct s_syntax
 {
 	bool	error;
-	char	error_char;
-	bool	double_char_error;
+	bool	no_end;
+	char	*token;
 }	t_syntax;
 
+char		*token_to_str(char c, int token_size);
+char		*get_unexpected_token(t_string_index *stri);
 t_syntax	check_syntax(char *command_line);
 
 #endif
