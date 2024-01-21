@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:19:10 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/21 21:08:43 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/21 22:45:59 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,6 @@ static void	close_pipe(int fd[2])
 		close(fd[0]);
 	if (fd[1] > 0)
 		close(fd[1]);
-}
-
-static void	wait_multiple_pid(int *pid, int size)
-{
-	int	i;
-
-	i = 0;
-	while (i < size)
-	{
-		waitpid(pid[i], NULL, 0);
-		i++;
-	}
 }
 
 static void	manage_pipe(int fd[2][2], int i, int size)
@@ -76,6 +64,4 @@ void pipe_cmd(t_command_group *command_line, int *pid, t_pipe *data_pipe)
 		pipe_cmd(command_line->pipe_next, pid, data_pipe);
 	}
 	close_pipe(data_pipe->fd[data_pipe->index % 2]);
-	(void) wait_multiple_pid;
-	// wait_multiple_pid(pid, data_pipe->pipe_count);
 }

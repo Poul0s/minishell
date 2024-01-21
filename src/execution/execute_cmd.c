@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:23:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/21 21:15:32 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/21 22:45:46 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 			child_pid_res = WEXITSTATUS(child_pid_res);
 			if (child_pid_res != 0 && group_data->on_error != NULL)
 					exit(execute_command_line(group_data->on_error));
-			else
-				if (child_pid_res == 0 && group_data->on_success != NULL)
+			else if (child_pid_res == 0 && group_data->on_success != NULL)
 					exit(execute_command_line(group_data->on_success));
 			exit(child_pid_res);
 		}
