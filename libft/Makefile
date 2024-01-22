@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: psalame <psalame@student.42.fr>            +#+  +:+       +#+         #
+#    By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/31 11:02:12 by psalame           #+#    #+#              #
-#    Updated: 2024/01/16 18:48:25 by psalame          ###   ########.fr        #
+#    Updated: 2024/01/22 16:56:07 by psalame          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ SRCS		=	ft_string/ft_strlen.c \
 				ft_string/ft_strtrim.c \
 				ft_string/ft_substr.c \
 				ft_string/ft_strs.c \
+				ft_string/ft_str_insert.c \
 				\
 				ft_is/ft_isalpha.c \
 				ft_is/ft_isdigit.c \

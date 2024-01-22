@@ -6,37 +6,87 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:23:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/22 16:23:47 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/22 17:56:07 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include <errno.h>
 
-static char	*ft_str_insert(char *src, char *str, size_t pos)
+static char	**ft_strs_insert_str(char **src, char *new_elem, size_t pos)
 {
-	char	*dest;
-	size_t	dest_len;
 	size_t	i;
+	size_t	j;
+	char	**res;
+	size_t	res_size;
 
-	dest_len = ft_strlen(src) + ft_strlen(str) + 1;
-	dest = malloc(dest_len * sizeof(char));
-	if (!dest)
-		return (dest);
-	dest[0] = 0;
+	res_size = ft_strs_len(src) + 1;
+	res = malloc((res_size + 1) * sizeof(char *));
+	if (!res)
+		return (NULL);
 	i = 0;
-	if (pos < ft_strlen(src))
+	j = 0;
+	while (i < res_size)
 	{
-		ft_strlcat(dest, src, pos + 1);
-		ft_strlcat(dest, str, dest_len);
-		ft_strlcat(dest, src + pos, dest_len);
+		if (i == pos)
+			res[i] = new_elem;
+		else
+			res[i] = src[j++];
+		i++;
 	}
-	else
+	res[i] = NULL;
+	return (res);
+}
+
+static void	insert_argument(t_list *variable_arguments, t_command *command, char *argument)
+{
+	t_variable_argument	*var_arg_data;
+	char				**new_argument_list;
+	size_t				insert_pos;
+
+	var_arg_data = variable_arguments->content;
+	insert_pos = var_arg_data->argument_number;
+	while (variable_arguments)
 	{
-		ft_strlcat(dest, src, dest_len);
-		ft_strlcat(dest, str, dest_len);
+		var_arg_data = variable_arguments->content;
+		if (var_arg_data->argument_number >= insert_pos)
+			var_arg_data->argument_number++;
+		variable_arguments = variable_arguments->next;
 	}
-	return (dest);
+	new_argument_list = ft_strs_insert_str(command->arguments, argument, insert_pos);
+	if (!new_argument_list)
+	{
+		free(argument);
+		return ;
+	}
+	// todo add new_argument_list (but not each str in it) in cache alloc
+	command->arguments = new_argument_list;
+}
+
+static char	*insert_variable_data(t_list *variable_argument, t_command *command, t_env_tree *env)
+{
+	t_variable_argument	*var_arg_data;
+	char				**var_arg_strs;
+	char				*res;
+	size_t				i;
+
+	var_arg_data = variable_argument->content;
+	var_arg_strs = ft_split(get_env_value(env->env, var_arg_data->data), ' ');
+	if (!var_arg_strs || var_arg_strs[0] == NULL)
+	{
+		free(var_arg_strs);
+		return (NULL);
+	}
+	i = 0;
+	while (var_arg_strs[i] && var_arg_strs[i + 1])
+	{
+		// todo add var_arg_strs[i] in cache alloc
+		insert_argument(variable_argument, command, var_arg_strs[i]);
+		i++;
+	}
+	res = var_arg_strs[i];
+	free(var_arg_strs);
+	return (res);
 }
 
 static void	convert_variable_arguments(t_command *command, t_env_tree *env, int exit_status)
@@ -55,7 +105,7 @@ static void	convert_variable_arguments(t_command *command, t_env_tree *env, int 
 			if (ft_strncmp(var_arg_data->data, "?", 2) == 0)
 				var_arg_str = ft_itoa(exit_status);
 			else if (env != NULL)
-				var_arg_str = ft_strdup(get_env_value(env->env, var_arg_data->data)); // todo reuse function insert_variable_data to insert multiple argument variable
+				var_arg_str = insert_variable_data(variable_argument, command, env); // todo reuse function insert_variable_data to insert multiple argument variable
 		}
 		else
 		{
@@ -65,7 +115,7 @@ static void	convert_variable_arguments(t_command *command, t_env_tree *env, int 
 								var_arg_str,
 								var_arg_data->argument_index);
 		free(var_arg_str);
-		// todo add way to free new_arg (maybe add a cache)
+		// todo add way to free new_arg (maybe add a alloc cache)
 		///		if another insert in same arg
 		///		 at the end of execution of function 'execute_command'
 		command->arguments[var_arg_data->argument_number] = new_arg;

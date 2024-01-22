@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/22 14:55:43 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/22 16:41:33 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,38 +51,6 @@ static bool	is_end_arg(t_string_index *command_line, bool stop_file_redirect)
 	}
 	return (false);
 }
-
-// static void	insert_variable_data(char **argument,
-// 								char *var_name,
-// 								t_list **prev_arguments,
-// 								t_env_tree *env)
-// {
-// 	char	*var_res;
-// 	char	**var_res_list;
-// 	size_t	i;
-
-// 	if (var_name)
-// 	{
-// 		var_res = get_env_value(env->env, var_name);
-// 		free(var_name);
-// 		if (!var_res)
-// 			return ;
-// 		var_res_list = ft_split(var_res, ' ');
-// 		if (!prev_arguments || !var_res_list)
-// 		{
-// 			*argument = ft_strfjoin(*argument, var_res);
-// 			ft_free_strs(var_res_list);
-// 			return ;
-// 		}
-// 		i = 0;
-// 		while (var_res_list[i] && var_res_list[i + 1])
-// 			ft_lstadd_back(prev_arguments,
-// 				ft_lstnew_fallback(var_res_list[i++], &free));
-// 		*argument = ft_strfjoin(*argument, var_res_list[i]);
-// 		free(var_res_list[i]);
-// 		free(var_res_list);
-// 	}
-// }
 
 static void	parse_variable(char **argument,
 							t_string_index *command_line,
