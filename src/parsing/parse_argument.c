@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/21 20:15:06 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/22 14:55:43 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,62 +52,65 @@ static bool	is_end_arg(t_string_index *command_line, bool stop_file_redirect)
 	return (false);
 }
 
-static void	insert_variable_data(char **argument,
-								char *var_name,
-								t_list **prev_arguments,
-								t_env_tree *env)
-{
-	char	*var_res;
-	char	**var_res_list;
-	size_t	i;
+// static void	insert_variable_data(char **argument,
+// 								char *var_name,
+// 								t_list **prev_arguments,
+// 								t_env_tree *env)
+// {
+// 	char	*var_res;
+// 	char	**var_res_list;
+// 	size_t	i;
 
-	if (var_name)
-	{
-		var_res = get_env_value(env->env, var_name);
-		free(var_name);
-		if (!var_res)
-			return ;
-		var_res_list = ft_split(var_res, ' ');
-		if (!prev_arguments || !var_res_list)
-		{
-			*argument = ft_strfjoin(*argument, var_res);
-			ft_free_strs(var_res_list);
-			return ;
-		}
-		i = 0;
-		while (var_res_list[i] && var_res_list[i + 1])
-			ft_lstadd_back(prev_arguments,
-				ft_lstnew_fallback(var_res_list[i++], &free));
-		*argument = ft_strfjoin(*argument, var_res_list[i]);
-		free(var_res_list[i]);
-		free(var_res_list);
-	}
-}
+// 	if (var_name)
+// 	{
+// 		var_res = get_env_value(env->env, var_name);
+// 		free(var_name);
+// 		if (!var_res)
+// 			return ;
+// 		var_res_list = ft_split(var_res, ' ');
+// 		if (!prev_arguments || !var_res_list)
+// 		{
+// 			*argument = ft_strfjoin(*argument, var_res);
+// 			ft_free_strs(var_res_list);
+// 			return ;
+// 		}
+// 		i = 0;
+// 		while (var_res_list[i] && var_res_list[i + 1])
+// 			ft_lstadd_back(prev_arguments,
+// 				ft_lstnew_fallback(var_res_list[i++], &free));
+// 		*argument = ft_strfjoin(*argument, var_res_list[i]);
+// 		free(var_res_list[i]);
+// 		free(var_res_list);
+// 	}
+// }
 
 static void	parse_variable(char **argument,
 							t_string_index *command_line,
 							t_list **prev_arguments,
-							t_env_tree *env)
+							t_command *command) // t_env_tree *env
 {
 	size_t	start;
 	size_t	end;
 	char	*var_name;
+	t_list	*var_arg_node;
 
 	start = command_line->i + 1;
 	end = command_line->i + 1;
 	while (command_line->str[end])
 	{
-		if (!ft_isalnum(command_line->str[end]))
+		if (!ft_isalnum(command_line->str[end]) && (command_line->str[end] != '?' || end != start))
 			break ;
 		end++;
 	}
 	command_line->i = end;
-	if (end == start && is_end_arg(command_line, true))
+	if (end == start && is_end_arg(command_line, true)) // why condition && is_end_arg ??
 		*argument = ft_strdup("$");
 	else
 	{
 		var_name = ft_substr(command_line->str, start, end - start);
-		insert_variable_data(argument, var_name, prev_arguments, env);
+		var_arg_node = insert_variable_argument(argument, prev_arguments, var_name, ENVIRONMENT_VARIABLE);
+		// insert_variable_data(argument, var_name, prev_arguments, env);
+		ft_lstadd_back(&(command->argument_variables), var_arg_node);
 	}
 	command_line->i = end - 1;
 }
@@ -133,7 +136,7 @@ char	*parse_argument(t_string_index *command_line,
 			argument = ft_strfjoin(argument, "");
 		}
 		else if (c == '$' && !foc.quote)
-			parse_variable(&argument, command_line, prev_arguments, env);
+			parse_variable(&argument, command_line, prev_arguments, cmd); // env
 		else if (c == '"' && !foc.quote)
 		{
 			foc.dblquote = !foc.dblquote;

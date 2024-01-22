@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 16:36:03 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/18 14:23:50 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/22 16:00:09 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static void	parse_command_data(t_string_index *command_line,
 	}
 	if (ft_lstsize(arguments) == 0)
 		return ;
-	command->executable = arguments->content;
 	convert_command_arguments(command, arguments);
 	ft_lstclear(&arguments, NULL);
 }
@@ -60,7 +59,7 @@ t_command	*parse_command(t_string_index *command_line, t_env_tree *env)
 	if (!cmd)
 		return (cmd);
 	parse_command_data(command_line, cmd, env);
-	if (cmd->executable == NULL)
+	if (cmd->arguments == NULL || cmd->arguments[0] == NULL)
 	{
 		free(cmd);
 		cmd = NULL;

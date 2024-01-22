@@ -22,6 +22,7 @@ SRC		=	src/get/get_path.c \
 			src/parsing/skip_spaces.c \
 			src/parsing/syntax_checker/token_generator.c \
 			src/parsing/syntax_checker/syntax_checker.c \
+			src/parsing/insert_variable_argument.c \
 			src/parsing/parse_command_line.c \
 			src/parsing/parse_command_group.c \
 			src/parsing/parse_command.c \

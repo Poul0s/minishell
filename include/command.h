@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:01:28 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/18 18:38:56 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/22 16:21:59 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,23 @@
 # include <stdbool.h>
 # include "libft.h"
 # include "environment_manager.h"
+
+// argument variables
+
+typedef enum e_variable_argument_types
+{
+	WILDCARD,
+	ENVIRONMENT_VARIABLE
+}	t_variable_argument_type;
+
+typedef struct s_variable_argument
+{
+	size_t						argument_number;
+	size_t						argument_index;
+
+	char						*data;
+	t_variable_argument_type	type;
+}	t_variable_argument;
 
 // files structures
 
@@ -43,9 +60,10 @@ typedef struct s_command
 {
 	char					*executable;
 	char					**arguments;
-	t_list					*infiles; // if multime infile has same fd -> write only on last file but create both files
-	t_list					*outfiles; // chained list of t_outfile
-	t_list					*here_documents; // chained list of t_heredoc
+	t_list					*infiles;
+	t_list					*outfiles; // if multime outfile has same fd -> write only on last file but create both files
+	t_list					*here_documents;
+	t_list					*argument_variables;
 }	t_command;
 
 typedef struct s_command_group

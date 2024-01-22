@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:02:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/22 13:14:44 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/22 16:21:00 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int count_pipe(t_command_group *command_line)
 	return (i);
 }
 
-int	execute_command_line(t_command_group *command_line)
+int	execute_command_line(t_command_group *command_line, int exit_status)
 {
 	t_pipe	data_pipe;
 	int		*pid;
@@ -39,7 +39,7 @@ int	execute_command_line(t_command_group *command_line)
 	data_pipe.index = 0;
 	data_pipe.pipe_count = count_pipe(command_line);
 	pid = malloc(data_pipe.pipe_count * sizeof(int));
-	pipe_cmd(command_line, pid, &data_pipe);
+	pipe_cmd(command_line, pid, &data_pipe, exit_status);
 	if (waitpid(pid[data_pipe.pipe_count - 1], &last_pid_res, 0) == -1)
 		return (-1);
 	else
