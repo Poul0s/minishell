@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:27:56 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/22 16:19:07 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/22 18:51:50 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ static void	parse_operator(t_string_index *command_line,
 static void	parse_command_grp_operators(t_command_group *grp,
 										t_string_index *command_line)
 {
-	str_i_skip_spaces(command_line);
 	while (command_line->str[command_line->i])
 	{
 		str_i_skip_spaces(command_line);
@@ -126,6 +125,7 @@ static void	parse_command_grp_operators(t_command_group *grp,
 		{
 			command_line->i++;
 			grp->pipe_next = parse_command_grp(command_line, grp->env);
+			grp->env = create_env_tree_children(grp->env);
 			continue ;
 		}
 		str_i_skip_spaces(command_line);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handler.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:38:09 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/17 13:51:54 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/22 21:34:20 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,42 @@
 #include <signal.h>
 #include <termios.h>
 
-static void	signal_handler(int signal, siginfo_t *info, void *old_info)
+static void	signal_handler(int signal)
 {
-
-	struct termios	term_data;
-
-	(void) info;
-	(void) old_info;
+	ft_dprintf(1, "\033[%dC", rl_point + ft_strlen(rl_prompt));
 	if (signal == 2)
 	{
-		ft_dprintf(1, "\n");
+		ft_dprintf(1, "%c^C\n", 0);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	else
-	{
-		(void) term_data;
-		// not working first time + remove ^C print...
-		// tcgetattr(0, &term_data);
-		// term_data.c_lflag = term_data.c_lflag & (~ECHOCTL);
-		// tcsetattr(0, 0, &term_data);
-	}
 }
 
-void	init_signal_handler(void)
+void	toggle_signal_handler(bool toggle)
 {
-	struct sigaction	action;
+	static struct sigaction	action;
 	sigset_t			mask;
+	struct termios		term_data;
 
-	sigemptyset(&mask);
-	sigaddset(&mask, SIGQUIT);
-	action.sa_mask = mask;
-	action.sa_flags = SA_SIGINFO;
-	action.sa_sigaction = &signal_handler;
-	sigaction(SIGINT, &action, NULL);
-	sigaction(SIGQUIT, &action, NULL);
+	tcgetattr(0, &term_data);
+	if (toggle)
+	{
+		term_data.c_lflag = term_data.c_lflag & (~ECHOCTL);
+		tcsetattr(0, 0, &term_data);
+
+		sigemptyset(&mask);
+		sigaddset(&mask, SIGQUIT);
+		action.sa_mask = mask;
+		action.sa_flags = 0;
+		action.sa_handler = &signal_handler;
+		sigaction(SIGINT, &action, NULL);
+		sigaction(SIGQUIT, &action, NULL);
+	}
+	else
+	{
+		action.sa_handler = SIG_IGN;
+		sigaction(SIGINT, &action, NULL);
+		sigaction(SIGQUIT, &action, NULL);
+	}
 }

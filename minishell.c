@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/22 16:29:00 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/22 21:42:51 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,14 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 	else
 	{
 		command_line = parse_cmd_line(command_line_str, shell_data->env);
+		toggle_signal_handler(false);
 		if (command_line)
 		{
 			last_cmd_code = execute_command_line(command_line, shell_data->exit_status);
 			shell_data->exit_status = last_cmd_code;
 			// print_command_line(command_line, 0);
 		}
+		toggle_signal_handler(true);
 		// todo free command_line
 	}
 }
@@ -55,7 +57,6 @@ int	main(int ac, char **av, char **envp)
 	t_sh_data	shell_data;
 
 	(void) ac;
-	(void) av;
 	rl_completion_entry_function = autocompletion;
 	shell_data.exec_name = av[0];
 	shell_data.env = create_env_tree(NULL, envp);
@@ -63,7 +64,7 @@ int	main(int ac, char **av, char **envp)
 	shell_data.exit_status = 0;
 	refresh_prompt(&shell_data);
 	line_readed = NULL;
-	init_signal_handler();
+	toggle_signal_handler(true);
 	while (1)
 	{
 		if (line_readed && *line_readed)
