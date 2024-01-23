@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:38:09 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/22 21:34:20 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/23 16:42:51 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	toggle_signal_handler(bool toggle)
 	}
 	else
 	{
+		term_data.c_lflag = term_data.c_lflag | ECHOCTL;
+		tcsetattr(0, 0, &term_data);
 		action.sa_handler = SIG_IGN;
 		sigaction(SIGINT, &action, NULL);
 		sigaction(SIGQUIT, &action, NULL);

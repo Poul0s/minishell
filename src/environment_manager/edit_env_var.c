@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 14:29:29 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/18 14:37:42 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/23 18:43:22 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ static void	add_env_data_var(t_env_data **env_data, char *key, char *value)
 		free(value);
 		return ;
 	}
-	new_node->key = key;
-	new_node->value = value;
+	new_node->key = ft_strdup(key);
+	new_node->value = ft_strdup(value);
 	new_node->next = NULL;
 	if (*env_data == NULL)
 		*env_data = new_node;
@@ -48,7 +48,10 @@ void	edit_env_var(t_env_tree *env_tree, char *key, char *data)
 	if (!env_res_object)
 		add_env_data_var(&(env_tree->env), key, data);
 	else
+	{
+		free(env_res_object->value);
 		env_res_object->value = data;
+	}
 	children = env_tree->childrens;
 	while (children)
 	{

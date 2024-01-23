@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/22 21:42:51 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/23 19:27:27 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,20 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 			last_cmd_code = execute_command_line(command_line, shell_data->exit_status);
 			shell_data->exit_status = last_cmd_code;
 			// print_command_line(command_line, 0);
+			free_command_line(command_line, false);
+			free_command_line(NULL, true);
+			delete_env_tree_childrens(shell_data->env);
 		}
 		toggle_signal_handler(true);
-		// todo free command_line
 	}
+}
+
+static void	free_shell_data(t_sh_data *shell_data)
+{
+	free(shell_data->prompt);
+	free(shell_data->hostname);
+	delete_env_tree(shell_data->env);
+	toggle_signal_handler(false);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -76,5 +86,6 @@ int	main(int ac, char **av, char **envp)
 			execute_line(line_readed, &shell_data);
 	}
 	ft_dprintf(1, "exit\n");
-	return (0);
+	free_shell_data(&shell_data);
+	return (shell_data.exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 14:10:11 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/18 14:35:26 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/23 18:25:29 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,7 @@ t_env_tree	*create_env_tree_children(t_env_tree *parent);
 void		add_env_tree_children(t_env_tree *parent, t_env_tree *children);
 void		edit_env_var(t_env_tree *env_tree, char *key, char *data);
 void		del_env_var(t_env_tree *env_tree, char *key);
+void		delete_env_tree_childrens(t_env_tree *env);
+void		delete_env_tree(t_env_tree *env);
 
 #endif

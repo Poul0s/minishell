@@ -16,6 +16,7 @@ SRC		=	src/get/get_path.c \
 			src/environment_manager/convert_strs_to_env_data.c \
 			src/environment_manager/create_env_tree_children.c \
 			src/environment_manager/create_env_tree.c \
+			src/environment_manager/delete_env_tree.c \
 			src/environment_manager/del_env_var.c \
 			src/environment_manager/edit_env_var.c \
 			src/environment_manager/get_env_data.c \
@@ -36,6 +37,7 @@ SRC		=	src/get/get_path.c \
 			src/execution/find_close_cmd.c \
 			debug.c \
 			src/signal/handler.c \
+			src/free_command_line.c \
 			minishell.c \
 
 OBJ		=	$(addprefix obj/, $(SRC:.c=.o))
