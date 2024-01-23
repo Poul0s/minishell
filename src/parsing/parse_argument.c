@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/22 16:41:33 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/23 20:47:54 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,17 @@ static void	parse_variable(char **argument,
 	{
 		var_name = ft_substr(command_line->str, start, end - start);
 		var_arg_node = insert_variable_argument(argument, prev_arguments, var_name, ENVIRONMENT_VARIABLE);
-		// insert_variable_data(argument, var_name, prev_arguments, env);
 		ft_lstadd_back(&(command->argument_variables), var_arg_node);
 	}
 	command_line->i = end - 1;
+}
+
+static void	parse_wildcard(char **argument, t_list **prev_arguments, t_command *command)
+{
+	t_list	*var_arg_node;
+
+	var_arg_node = insert_variable_argument(argument, prev_arguments, NULL, WILDCARD);
+	ft_lstadd_back(&(command->argument_variables), var_arg_node);
 }
 
 char	*parse_argument(t_string_index *command_line,
@@ -110,6 +117,8 @@ char	*parse_argument(t_string_index *command_line,
 			foc.dblquote = !foc.dblquote;
 			argument = ft_strfjoin(argument, "");
 		}
+		else if (c == '*' && !foc.quote && !foc.dblquote)
+			parse_wildcard(&argument, prev_arguments, cmd);
 		else if (!foc.quote && !foc.dblquote && is_end_arg(command_line, !cmd))
 			break ;
 		else if (c == '<' || c == '>')
