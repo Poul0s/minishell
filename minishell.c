@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/23 19:27:27 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/23 23:06:57 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	main(int ac, char **av, char **envp)
 	shell_data.env = create_env_tree(NULL, envp);
 	shell_data.hostname = get_hostname();
 	shell_data.exit_status = 0;
+	shell_data.prompt = NULL;
 	refresh_prompt(&shell_data);
 	line_readed = NULL;
 	toggle_signal_handler(true);
@@ -84,6 +85,7 @@ int	main(int ac, char **av, char **envp)
 			break ;
 		else
 			execute_line(line_readed, &shell_data);
+		refresh_prompt(&shell_data);
 	}
 	ft_dprintf(1, "exit\n");
 	free_shell_data(&shell_data);

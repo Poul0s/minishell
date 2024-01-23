@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:01:28 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/23 13:55:19 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/23 22:26:49 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,9 @@ typedef struct s_command
 	t_list					*outfiles; // if multime outfile has same fd -> write only on last file but create both files
 	t_list					*here_documents;
 	t_list					*argument_variables;
+
 	t_list					*execution_cache;
+	bool					last_pipe_cmd;
 }	t_command;
 
 typedef struct s_command_group

@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:36 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/23 18:26:39 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/23 22:50:44 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,10 @@ void		print_command_line(t_command_group *command, int depth);
 
 void		toggle_signal_handler(bool toggle);
 
-int			ft_cd(const char *path);
+int			ft_cd(const char **path);
 int			ft_env(const char **env);
-int			ft_echo(const char *strs);
+int			ft_echo(const char **strs);
+int			ft_pwd(void);
 
 void		free_command_line(t_command_group *command_line, bool reset);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:41:11 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/16 15:35:40 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/23 22:49:08 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 #include <string.h>
 #include <unistd.h>
 
-int	ft_cd(const char *path)
+int	ft_cd(const char **path)
 {
-	if (*path == 0)
+	if (path == NULL || path[1] == NULL)
 		return (1);
-	if (chdir(path) == -1)
+	if (chdir(path[1]) == -1)
 	{
-		ft_dprintf(2, "cd: %s: %s\n", strerror(errno), path);
+		ft_dprintf(2, "cd: %s: %s\n", strerror(errno), path[1]);
 		return (1);
 	}
 	return (0);

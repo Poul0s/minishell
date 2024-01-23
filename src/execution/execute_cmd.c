@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:23:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/23 14:07:19 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/23 23:25:33 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,29 +134,42 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2], 
 	int		baby_pid;
 	int		child_pid_res;
 
-	convert_variable_arguments(command, group_data->env, exit_status);
+	convert_variable_arguments(command, group_data->env, exit_status); // can maybe cause data lost if not in fork (due to launch if not in fork (like if called without pipe))
 	command->executable = command->arguments[0];
 	baby_pid = -1;
-	child_pid = fork();
-	if (child_pid == 0)
+	if (is_command_builtin(command->executable))
 	{
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[0]);
-		close(fd[1]);
+		child_pid = execute_builtin_command(command, group_data);
+	}
+	else
+	{
 		command->executable = find_cmd(command->executable, convert_env_data_to_strs(group_data->env->env));
-		if (command->executable == NULL)
+		child_pid = fork();
+		if (child_pid == 0)
 		{
-			ft_dprintf(2, "%s: command not found\n",command->arguments[0]);
-			find_close_cmd(command->arguments[0]);
-			exit(127);
+			if (fd != NULL)
+			{
+				dup2(fd[1], STDOUT_FILENO);
+				close(fd[0]);
+				close(fd[1]);
+			}
+			if (command->executable == NULL)
+			{
+				ft_dprintf(2, "%s: command not found\n",command->arguments[0]);
+				find_close_cmd(command->arguments[0]);
+				exit(127);
+			}
+			execve(command->executable, command->arguments, convert_env_data_to_strs(group_data->env->env)); // todo add premake of char **env in t_env_data for free at end
+			exit(errno);
 		}
-		execve(command->executable, command->arguments, convert_env_data_to_strs(group_data->env->env)); // todo add premake of char **env in t_env_data for free at end
-		exit(errno);
 	}
 	delete_exec_cache(command);
-	if (child_pid != 0 && (group_data->on_success || group_data->on_error))
+	if (!command->last_pipe_cmd && child_pid != 0 && (group_data->on_success || group_data->on_error))
 	{
-		waitpid(child_pid, &child_pid_res, 0);
+		if (child_pid < 0)
+			child_pid_res = (-child_pid - 1) >> 8;
+		else
+			waitpid(child_pid, &child_pid_res, 0);
 		baby_pid = fork();
 		if (baby_pid == 0)
 		{
