@@ -32,6 +32,7 @@ SRC		=	src/get/get_path.c \
 			src/execution/get_path.c \
 			src/execution/pipe.c \
 			src/execution/execute_cmd.c \
+			src/execution/find_close_cmd.c \
 			debug.c \
 			src/signal/handler.c \
 			minishell.c \

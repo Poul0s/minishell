@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:23:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/22 17:56:07 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/23 01:27:20 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+#include "ft_print.h"
 #include <errno.h>
 
 static char	**ft_strs_insert_str(char **src, char *new_elem, size_t pos)
@@ -140,7 +141,11 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2], 
 		close(fd[1]);
 		command->executable = find_cmd(command->executable, convert_env_data_to_strs(group_data->env->env));
 		if (command->executable == NULL)
+		{
+			ft_dprintf(2, "%s: command not found\n",command->arguments[0]);
+			find_close_cmd(command->arguments[0]);
 			exit(127);
+		}
 		execve(command->executable, command->arguments, convert_env_data_to_strs(group_data->env->env)); // todo add premake of char **env in t_env_data for free at end
 		exit(errno);
 	}
