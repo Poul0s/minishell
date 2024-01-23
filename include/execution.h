@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:02:49 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/23 01:30:17 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/23 14:00:40 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,8 @@ void	pipe_cmd(t_command_group *command_line, int *pid, t_pipe *data_pipe,
 int		execute_command_line(t_command_group *command_line, int exit_status);
 char	*find_cmd(char *cmd, char **path);
 void	*find_close_cmd(const char *cmd);
+
+bool    insert_exec_cache(t_command *command, void *data);
+void    delete_exec_cache(t_command *command);
 
 #endif

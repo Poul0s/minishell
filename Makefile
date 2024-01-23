@@ -28,6 +28,7 @@ SRC		=	src/get/get_path.c \
 			src/parsing/parse_command.c \
 			src/parsing/parse_argument.c \
 			src/parsing/parse_file_redirection.c \
+			src/execution/execute_cache.c \
 			src/execution/execute_command_line.c \
 			src/execution/get_path.c \
 			src/execution/pipe.c \

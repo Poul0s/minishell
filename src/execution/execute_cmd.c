@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:23:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/23 01:27:20 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/23 14:07:19 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ static void	insert_argument(t_list *variable_arguments, t_command *command, char
 		variable_arguments = variable_arguments->next;
 	}
 	new_argument_list = ft_strs_insert_str(command->arguments, argument, insert_pos);
-	if (!new_argument_list)
+	if (new_argument_list && insert_exec_cache(command, new_argument_list))
+		command->arguments = new_argument_list;
+	else
 	{
+		free(new_argument_list);
 		free(argument);
-		return ;
 	}
-	// todo add new_argument_list (but not each str in it) in cache alloc
-	command->arguments = new_argument_list;
 }
 
 static char	*insert_variable_data(t_list *variable_argument, t_command *command, t_env_tree *env)
@@ -81,8 +81,10 @@ static char	*insert_variable_data(t_list *variable_argument, t_command *command,
 	i = 0;
 	while (var_arg_strs[i] && var_arg_strs[i + 1])
 	{
-		// todo add var_arg_strs[i] in cache alloc
-		insert_argument(variable_argument, command, var_arg_strs[i]);
+		if (insert_exec_cache(command, var_arg_strs[i]))
+			insert_argument(variable_argument, command, var_arg_strs[i]);
+		else
+			free(var_arg_strs[i]);
 		i++;
 	}
 	res = var_arg_strs[i];
@@ -116,11 +118,13 @@ static void	convert_variable_arguments(t_command *command, t_env_tree *env, int 
 								var_arg_str,
 								var_arg_data->argument_index);
 		free(var_arg_str);
-		// todo add way to free new_arg (maybe add a alloc cache)
-		///		if another insert in same arg
-		///		 at the end of execution of function 'execute_command'
-		command->arguments[var_arg_data->argument_number] = new_arg;
-		variable_argument = variable_argument->next;
+		if (insert_exec_cache(command, new_arg))
+		{
+			command->arguments[var_arg_data->argument_number] = new_arg;
+			variable_argument = variable_argument->next;
+		}
+		else
+			free(new_arg);
 	}
 }
 
@@ -149,7 +153,8 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2], 
 		execve(command->executable, command->arguments, convert_env_data_to_strs(group_data->env->env)); // todo add premake of char **env in t_env_data for free at end
 		exit(errno);
 	}
-	else if (group_data->on_success || group_data->on_error)
+	delete_exec_cache(command);
+	if (child_pid != 0 && (group_data->on_success || group_data->on_error))
 	{
 		waitpid(child_pid, &child_pid_res, 0);
 		baby_pid = fork();
