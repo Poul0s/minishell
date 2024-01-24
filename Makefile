@@ -10,15 +10,10 @@ SRC		=	src/get/get_path.c \
 			src/autocompletion/autocompletion.c \
 			src/autocompletion/autocompletion_dir.c \
 			src/autocompletion/is_first.c \
-			src/environment_manager/add_env_tree_children.c \
-			src/environment_manager/convert_env_data_to_strs.c \
-			src/environment_manager/convert_strs_to_env_data.c \
-			src/environment_manager/create_env_tree_children.c \
-			src/environment_manager/create_env_tree.c \
-			src/environment_manager/delete_env_tree.c \
 			src/environment_manager/del_env_var.c \
 			src/environment_manager/edit_env_var.c \
-			src/environment_manager/get_env_data.c \
+			src/environment_manager/get_env_var.c \
+			src/environment_manager/has_env_var.c \
 			src/parsing/skip_spaces.c \
 			src/parsing/syntax_checker/token_generator.c \
 			src/parsing/syntax_checker/syntax_checker.c \
@@ -39,7 +34,6 @@ SRC		=	src/get/get_path.c \
 			src/execution/pipe.c \
 			src/execution/execute_cmd.c \
 			src/execution/find_close_cmd.c \
-			debug.c \
 			src/signal/handler.c \
 			src/free_command_line.c \
 			minishell.c \

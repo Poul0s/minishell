@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:02:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/23 23:19:54 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 17:22:13 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ int	execute_command_line(t_command_group *command_line, int exit_status)
 	else
 		pipe_cmd(command_line, pid, &data_pipe, exit_status);
 	if (pid[data_pipe.pipe_count - 1] > 0 && waitpid(pid[data_pipe.pipe_count - 1], &last_pid_res, 0) == -1)
+	{
+		free(pid);
 		return (-1);
+	}
 	else
 	{
 		i = 0;
@@ -58,6 +61,7 @@ int	execute_command_line(t_command_group *command_line, int exit_status)
 		}
 		if (pid[data_pipe.pipe_count - 1] <= 0)
 			last_pid_res = (-pid[data_pipe.pipe_count - 1] - 1) >> 8;
+		free(pid);
 		while (command_line->pipe_next)
 			command_line = command_line->pipe_next;
 		if (WEXITSTATUS(last_pid_res) == 0 && command_line->on_success)

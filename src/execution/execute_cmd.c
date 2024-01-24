@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:23:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/24 16:59:29 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:32:00 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
-#include "ft_print.h"
+#include "minishell.h"
 #include <errno.h>
 
 static char	**ft_strs_insert_str(char **src, char *new_elem, size_t pos)
@@ -64,7 +63,7 @@ static void	insert_argument(t_list *variable_arguments, t_command *command, char
 	}
 }
 
-static char	*insert_variable_data(t_list *variable_argument, t_command *command, t_env_tree *env)
+static char	*insert_variable_data(t_list *variable_argument, t_command *command)
 {
 	t_variable_argument	*var_arg_data;
 	char				**var_arg_strs;
@@ -72,7 +71,7 @@ static char	*insert_variable_data(t_list *variable_argument, t_command *command,
 	size_t				i;
 
 	var_arg_data = variable_argument->content;
-	var_arg_strs = ft_split(get_env_value(env->env, var_arg_data->data), ' ');
+	var_arg_strs = ft_split(get_env_var(command->env, var_arg_data->data), ' ');
 	if (!var_arg_strs || var_arg_strs[0] == NULL)
 	{
 		free(var_arg_strs);
@@ -92,7 +91,7 @@ static char	*insert_variable_data(t_list *variable_argument, t_command *command,
 	return (res);
 }
 
-static void	convert_variable_arguments(t_command *command, t_env_tree *env, int exit_status)
+static void	convert_variable_arguments(t_command *command, int exit_status)
 {
 	t_list				*variable_argument;
 	t_variable_argument	*var_arg_data;
@@ -107,8 +106,8 @@ static void	convert_variable_arguments(t_command *command, t_env_tree *env, int 
 		{
 			if (ft_strncmp(var_arg_data->data, "?", 2) == 0)
 				var_arg_str = ft_itoa(exit_status);
-			else if (env != NULL)
-				var_arg_str = insert_variable_data(variable_argument, command, env); // todo reuse function insert_variable_data to insert multiple argument variable
+			else
+				var_arg_str = insert_variable_data(variable_argument, command);
 		}
 		else
 		{
@@ -134,16 +133,14 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2], 
 	int		baby_pid;
 	int		child_pid_res;
 
-	convert_variable_arguments(command, group_data->env, exit_status); // can maybe cause data lost if not in fork (due to launch if not in fork (like if called without pipe))
+	convert_variable_arguments(command, exit_status); // can maybe cause data lost if not in fork (due to launch if not in fork (like if called without pipe))
 	command->executable = command->arguments[0];
 	baby_pid = -1;
 	if (is_command_builtin(command->executable))
-	{
-		child_pid = execute_builtin_command(command, group_data);
-	}
+		child_pid = execute_builtin_command(command);
 	else
 	{
-		command->executable = find_cmd(command->executable, convert_env_data_to_strs(group_data->env->env));
+		command->executable = find_cmd(command->executable, command->env);
 		child_pid = fork();
 		if (child_pid == 0)
 		{
@@ -159,7 +156,7 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2], 
 				find_close_cmd(command->arguments[0]);
 				exit(127);
 			}
-			execve(command->executable, command->arguments, convert_env_data_to_strs(group_data->env->env)); // todo add premake of char **env in t_env_data for free at end
+			execve(command->executable, command->arguments, command->env);
 			exit(errno);
 		}
 	}
@@ -181,7 +178,11 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2], 
 			exit(child_pid_res);
 		}
 		else
+		{
+			free_command(command);
 			return (baby_pid);
+		}
 	}
+	// free_command(command);
 	return (child_pid);
 }

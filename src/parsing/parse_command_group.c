@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:27:56 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/22 18:51:50 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 18:20:48 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static size_t	get_cmd_grp_end(t_string_index *command_line,
 	is_in_parenthesis = command_line->str[command_line->i] == '(';
 	if (!is_in_parenthesis)
 		return (ft_strlen(command_line->str));
-	command_group->env = create_env_tree_children(command_group->env);
+	command_group->is_in_parenthesis = true;
 	command_line->i++;
 	end = command_line->i;
 	nb_parenthesis = 1;
@@ -72,7 +72,8 @@ static size_t	operator_get_end(t_string_index *command_line,
 
 static void	parse_operator(t_string_index *command_line,
 						t_command_group *cmd_grp,
-						int operator_type)
+						int operator_type,
+						char **env)
 {
 	size_t			end;
 	char			end_char;
@@ -83,7 +84,7 @@ static void	parse_operator(t_string_index *command_line,
 	end = operator_get_end(command_line, operator_type);
 	end_char = command_line->str[end];
 	command_line->str[end] = 0;
-	command_fallback = parse_command_grp(command_line, cmd_grp->env);
+	command_fallback = parse_command_grp(command_line, env);
 	if (operator_type == 0)
 	{
 		// todo maybe add on each error
@@ -115,7 +116,8 @@ static void	parse_operator(t_string_index *command_line,
 }
 
 static void	parse_command_grp_operators(t_command_group *grp,
-										t_string_index *command_line)
+										t_string_index *command_line,
+										char **env)
 {
 	while (command_line->str[command_line->i])
 	{
@@ -124,28 +126,26 @@ static void	parse_command_grp_operators(t_command_group *grp,
 			&& command_line->str[command_line->i + 1] != '|')
 		{
 			command_line->i++;
-			grp->pipe_next = parse_command_grp(command_line, grp->env);
-			grp->env = create_env_tree_children(grp->env);
+			grp->pipe_next = parse_command_grp(command_line, env);
 			continue ;
 		}
 		str_i_skip_spaces(command_line);
 		if (ft_strncmp(command_line->str + command_line->i, "&&", 2) == 0)
 		{
-			parse_operator(command_line, grp, 0);
+			parse_operator(command_line, grp, 0, env);
 			continue ;
 		}
 		str_i_skip_spaces(command_line);
 		if (ft_strncmp(command_line->str + command_line->i, "||", 2) == 0)
 		{
-			parse_operator(command_line, grp, 1);
+			parse_operator(command_line, grp, 1, env);
 			continue ;
 		}
 		command_line->i++;
 	}
 }
 
-t_command_group	*parse_command_grp(t_string_index *command_line,
-								t_env_tree *env)
+t_command_group	*parse_command_grp(t_string_index *command_line, char **env)
 {
 	t_command_group	*res;
 	char			end_char;
@@ -154,19 +154,18 @@ t_command_group	*parse_command_grp(t_string_index *command_line,
 	res = ft_calloc(1, sizeof(t_command_group));
 	if (!res)
 		return (res);
-	res->env = env;
 	end = get_cmd_grp_end(command_line, res);
 	end_char = command_line->str[end];
 	command_line->str[end] = 0;
 	while (command_line->str[command_line->i] == ' ' || command_line->str[command_line->i] == '(')
 		command_line->i++;
-	res->command = parse_command(command_line, res->env);
+	res->command = parse_command(command_line, env);
 	if (!res->command)
 	{
 		free(res);
 		return (NULL);
 	}
-	parse_command_grp_operators(res, command_line);
+	parse_command_grp_operators(res, command_line, env);
 	command_line->str[end] = end_char;
 	return (res);
 }

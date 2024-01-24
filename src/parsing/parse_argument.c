@@ -6,13 +6,13 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/23 20:50:10 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 18:13:50 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command_Int.h"
 
-static char	*ft_strfjoin_chr(char *s1, char c)
+char	*ft_strfjoin_chr(char *s1, char c)
 {
 	char	*newstr;
 	size_t	newlen;
@@ -92,8 +92,7 @@ static void	parse_wildcard(char **argument, t_list **prev_arguments, t_command *
 
 char	*parse_argument(t_string_index *command_line,
 						t_command *cmd,
-						t_list **prev_arguments,
-						t_env_tree *env)
+						t_list **prev_arguments)
 {
 	char			*argument;
 	t_current_focus	foc;
@@ -111,7 +110,7 @@ char	*parse_argument(t_string_index *command_line,
 			argument = ft_strfjoin(argument, "");
 		}
 		else if (c == '$' && !foc.quote)
-			parse_variable(&argument, command_line, prev_arguments, cmd); // env
+			parse_variable(&argument, command_line, prev_arguments, cmd);
 		else if (c == '"' && !foc.quote)
 		{
 			foc.dblquote = !foc.dblquote;
@@ -122,7 +121,7 @@ char	*parse_argument(t_string_index *command_line,
 		else if (!foc.quote && !foc.dblquote && is_end_arg(command_line, !cmd))
 			break ;
 		else if (c == '<' || c == '>')
-			parse_file_redirection(command_line, &argument, cmd, env);
+			parse_file_redirection(command_line, &argument, cmd);
 		else
 			argument = ft_strfjoin_chr(argument, c);
 		command_line->i++;

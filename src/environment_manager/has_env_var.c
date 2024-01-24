@@ -1,23 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   add_env_tree_children.c                            :+:      :+:    :+:   */
+/*   has_env_var.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 14:25:41 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/19 13:02:14 by psalame          ###   ########.fr       */
+/*   Created: 2024/01/24 17:45:01 by psalame           #+#    #+#             */
+/*   Updated: 2024/01/24 18:14:29 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environment_manager.h"
 
-void	add_env_tree_children(t_env_tree *parent, t_env_tree *children)
+bool	has_env_var(char **env, char *key)
 {
-	t_list	*node;
+	int		i;
+	size_t	key_len;
 
-	node = ft_lstnew(children);
-	if (!node)
-		return ;
-	ft_lstadd_back(&(parent->childrens), node);
+	i = 0;
+	key_len = ft_strlen(key);
+	if (!env || key_len == 0)
+		return (false);
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], key, key_len) == 0 && env[i][key_len] == '=')
+			return (true);
+		i++;
+	}
+	return (false);
 }

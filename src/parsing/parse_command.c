@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 16:36:03 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/22 16:00:09 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 18:04:03 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ static void	convert_command_arguments(t_command *command, t_list *arguments)
 }
 
 static void	parse_command_data(t_string_index *command_line,
-						t_command *command,
-						t_env_tree *env)
+						t_command *command)
 {
 	t_list	*arguments;
 	char	*argument;
@@ -39,11 +38,11 @@ static void	parse_command_data(t_string_index *command_line,
 	while (command_line->str[command_line->i] == ' ')
 		command_line->i++;
 	arguments = NULL;
-	argument = parse_argument(command_line, command, &arguments, env);
+	argument = parse_argument(command_line, command, &arguments);
 	while (argument)
 	{
 		ft_lstadd_back(&arguments, ft_lstnew_fallback(argument, &free));
-		argument = parse_argument(command_line, command, &arguments, env);
+		argument = parse_argument(command_line, command, &arguments);
 	}
 	if (ft_lstsize(arguments) == 0)
 		return ;
@@ -51,14 +50,15 @@ static void	parse_command_data(t_string_index *command_line,
 	ft_lstclear(&arguments, NULL);
 }
 
-t_command	*parse_command(t_string_index *command_line, t_env_tree *env)
+t_command	*parse_command(t_string_index *command_line, char **env)
 {
 	t_command	*cmd;
 
 	cmd = ft_calloc(1, sizeof(t_command));
 	if (!cmd)
 		return (cmd);
-	parse_command_data(command_line, cmd, env);
+	cmd->env = env;
+	parse_command_data(command_line, cmd);
 	if (cmd->arguments == NULL || cmd->arguments[0] == NULL)
 	{
 		free(cmd);

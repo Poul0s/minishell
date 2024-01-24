@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 17:21:11 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/23 18:39:53 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 17:27:20 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,5 @@ void	free_command_line(t_command_group *command_line, bool reset)
 	free_command_line(command_line->on_error, false);
 	free_command_line(command_line->on_success, false);
 	free_command_line(command_line->pipe_next, false);
+	free(command_line);
 }

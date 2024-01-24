@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/23 23:06:57 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 18:02:31 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 			// print_command_line(command_line, 0);
 			free_command_line(command_line, false);
 			free_command_line(NULL, true);
-			delete_env_tree_childrens(shell_data->env);
 		}
 		toggle_signal_handler(true);
 	}
@@ -57,8 +56,9 @@ static void	free_shell_data(t_sh_data *shell_data)
 {
 	free(shell_data->prompt);
 	free(shell_data->hostname);
-	delete_env_tree(shell_data->env);
+	ft_free_strs(shell_data->env);
 	toggle_signal_handler(false);
+	clear_history();
 }
 
 int	main(int ac, char **av, char **envp)
@@ -69,7 +69,7 @@ int	main(int ac, char **av, char **envp)
 	(void) ac;
 	rl_completion_entry_function = autocompletion;
 	shell_data.exec_name = av[0];
-	shell_data.env = create_env_tree(NULL, envp);
+	shell_data.env = ft_strs_dup(envp);
 	shell_data.hostname = get_hostname();
 	shell_data.exit_status = 0;
 	shell_data.prompt = NULL;

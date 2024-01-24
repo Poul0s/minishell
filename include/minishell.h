@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:36 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/23 22:50:44 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 18:13:56 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_sh_data
 	char		*prompt;
 	char		*hostname;
 	int			exit_status;
-	t_env_tree	*env;
+	char		**env;
 }			t_sh_data;
 
 char		*get_hostname(void);
@@ -48,6 +48,9 @@ int			ft_env(const char **env);
 int			ft_echo(const char **strs);
 int			ft_pwd(void);
 
+void		free_command(t_command *command);
 void		free_command_line(t_command_group *command_line, bool reset);
+
+char		*ft_strfjoin_chr(char *s1, char c); // todo move in libft
 
 #endif

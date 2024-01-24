@@ -5,48 +5,38 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 15:32:24 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/17 17:27:37 by psalame          ###   ########.fr       */
+/*   Created: 2024/01/24 17:48:34 by psalame           #+#    #+#             */
+/*   Updated: 2024/01/24 18:13:12 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environment_manager.h"
 
-static void	del_env_var_childrens(t_env_tree *env_tree, char *key)
+char	**del_env_var(char **env, char *key)
 {
-	t_list	*children;
+	char	**new_env;
+	size_t	i;
+	size_t	j;
+	size_t	key_len;
 
-	children = env_tree->childrens;
-	while (children)
+	if (!has_env_var(env, key))
+		return (env);
+	key_len = ft_strlen(key);
+	new_env = malloc(ft_strs_len(env) * sizeof(char *));
+	i = 0;
+	j = 0;
+	while (env[i])
 	{
-		del_env_var(children->content, key);
-		children = children->next;
-	}
-}
-
-void	del_env_var(t_env_tree *env_tree, char *key)
-{
-	t_env_data	*prev;
-	t_env_data	*env;
-	t_env_data	*next;
-	size_t		len;
-
-	prev = NULL;
-	env = env_tree->env;
-	len = ft_strlen(key);
-	while (env)
-	{
-		next = env->next;
-		if (len == ft_strlen(env->key) && ft_strncmp(key, env->key, len))
+		if (ft_strncmp(env[i], key, key_len) != 0 || env[i][key_len] != '=')
 		{
-			if (prev)
-				prev->next = next;
-			else
-				env_tree->env = next;
+			new_env[j] = env[i];
+			j++;
 		}
 		else
-			prev = env;
-		env = next;
+			free(env[i]);
+		i++;
 	}
-	del_env_var_childrens(env_tree, key);
+	new_env[j] = NULL;
+	free(env);
+	return (new_env);
 }

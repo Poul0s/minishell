@@ -6,3 +6,20 @@
    fun:readline
    ...
 }
+{
+   readline
+   Memcheck:Leak
+   match-leak-kinds: definite
+   ...
+   fun:readline
+   ...
+}
+{
+   readlime-history
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xmalloc
+   fun:add_history
+   ...
+}

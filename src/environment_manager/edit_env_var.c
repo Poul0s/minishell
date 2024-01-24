@@ -5,57 +5,31 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 14:29:29 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/23 18:43:22 by psalame          ###   ########.fr       */
+/*   Created: 2024/01/24 17:45:33 by psalame           #+#    #+#             */
+/*   Updated: 2024/01/24 18:14:12 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "environment_manager.h"
+#include "minishell.h"
 
-static void	add_env_data_var(t_env_data **env_data, char *key, char *value)
+char	**edit_env_var(char **env, char *key, char *new_value)
 {
-	t_env_data	*last_node;
-	t_env_data	*new_node;
+	char	**new_env;
+	size_t	i;
 
-	if (!env_data)
-		return ;
-	new_node = malloc(sizeof(t_env_data));
-	if (!new_node)
+	env = del_env_var(env, key);
+	new_env = malloc((ft_strs_len(env) + 2) * sizeof(char *));
+	i = 0;
+	while (env[i])
 	{
-		free(value);
-		return ;
+		new_env[i] = env[i];
+		i++;
 	}
-	new_node->key = ft_strdup(key);
-	new_node->value = ft_strdup(value);
-	new_node->next = NULL;
-	if (*env_data == NULL)
-		*env_data = new_node;
-	else
-	{
-		last_node = *env_data;
-		while (last_node->next)
-			last_node = last_node->next;
-		last_node->next = new_node;
-	}
-}
-
-void	edit_env_var(t_env_tree *env_tree, char *key, char *data)
-{
-	t_env_data	*env_res_object;
-	t_list		*children;
-
-	env_res_object = get_env_data(env_tree->env, key);
-	if (!env_res_object)
-		add_env_data_var(&(env_tree->env), key, data);
-	else
-	{
-		free(env_res_object->value);
-		env_res_object->value = data;
-	}
-	children = env_tree->childrens;
-	while (children)
-	{
-		edit_env_var(children->content, key, data);
-		children = children->next;
-	}
+	new_env[i] = NULL;
+	new_env[i] = ft_strfjoin(new_env[i], key);
+	new_env[i] = ft_strfjoin_chr(new_env[i], '=');
+	new_env[i] = ft_strfjoin(new_env[i], new_value);
+	new_env[i + 1] = NULL;
+	free(env);
+	return (new_env);
 }
