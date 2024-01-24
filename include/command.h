@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:01:28 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 18:24:04 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 20:05:50 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,7 @@ typedef struct s_command_group
 }	t_command_group;
 
 t_command_group	*parse_cmd_line(char *command_line, char **env);
+char	**ft_strs_insert_str(char **src, char *new_elem, size_t pos);
+
 
 #endif

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:23:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/24 18:32:00 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 20:05:15 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <errno.h>
 
-static char	**ft_strs_insert_str(char **src, char *new_elem, size_t pos)
+char	**ft_strs_insert_str(char **src, char *new_elem, size_t pos)
 {
 	size_t	i;
 	size_t	j;
