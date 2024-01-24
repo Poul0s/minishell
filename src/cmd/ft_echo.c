@@ -3,15 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 19:39:16 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/23 23:25:50 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 17:51:08 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <fcntl.h>
+
+bool is_valid_flag(const char *flag)
+{
+	if (!flag)
+		return (false);
+	if (!ft_strncmp(flag, "-n", 3))
+		return (true);
+	return (false);
+}
 
 int	ft_echo(const char **strs)
 {
@@ -19,16 +27,11 @@ int	ft_echo(const char **strs)
 
 	if (!strs)
 		return (1);
-	n_flag = true;
-	if (*strs && *strs[0] == '-')
+	n_flag = false;
+	while (*strs && is_valid_flag(*strs))
 	{
-		if (!ft_strncmp(*strs, "-n", ft_strlen(*strs) + 1))
-		{
-			n_flag = false;
-			strs++;
-		}
-		else if ((*strs)[1] == 0)
-			strs++;
+		n_flag = true;
+		strs++;
 	}
 	while (*strs)
 	{
@@ -37,7 +40,7 @@ int	ft_echo(const char **strs)
 		if (*strs)
 			ft_putstr_fd(" ", 1);
 	}
-	if (n_flag)
+	if (!n_flag)
 		ft_putstr_fd("\n", 1);
 	return (0);
 }
