@@ -29,6 +29,7 @@ SRC		=	src/get/get_path.c \
 			src/cmd/ft_pwd.c \
 			src/cmd/ft_export.c \
 			src/cmd/ft_unset.c \
+			src/cmd/ft_exit.c \
 			src/execution/execute_builtin.c \
 			src/execution/execute_cache.c \
 			src/execution/execute_command_line.c \

@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:36 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 23:51:48 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/25 00:22:38 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int			ft_echo(const char **strs);
 int			ft_pwd(void);
 int			ft_export(char **arguments, char ***env);
 int			ft_unset(char **arguments, char ***env);
+int			ft_exit(t_command *command, int last_exit_status);
 
 void		free_command(t_command *command);
 void		free_command_line(t_command_group *command_line, bool reset);

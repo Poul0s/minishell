@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:02:49 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 20:47:08 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/25 00:19:01 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_pipe
 }		t_pipe;
 
 bool	is_command_builtin(char *command);
-int		execute_builtin_command(t_command *command);
+int		execute_builtin_command(t_command *command, int exit_status);
 
 int		execute_command(t_command *command, t_command_group *group_data,
 			int fd[2], int exit_status);

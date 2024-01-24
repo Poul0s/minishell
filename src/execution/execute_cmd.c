@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:23:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/24 21:52:09 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/25 00:18:25 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2], 
 	command->executable = command->arguments[0];
 	baby_pid = -1;
 	if (is_command_builtin(command->executable))
-		child_pid = execute_builtin_command(command);
+		child_pid = execute_builtin_command(command, exit_status);
 	else
 	{
 		command->executable = find_cmd(command->executable, *(command->env));
@@ -190,7 +190,6 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2], 
 		free_shell_data(command->exec_data.shell_data);
 		free_command_line(command->exec_data.base_command_line, false);
 		free_command_line(NULL, true);
-		// free_command(command);
 	}
 	return (child_pid);
 }
