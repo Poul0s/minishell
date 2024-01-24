@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:01:28 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 21:08:18 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 21:54:39 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ typedef struct s_command
 	t_list					*outfiles; // if multime outfile has same fd -> write only on last file but create both files
 	t_list					*here_documents;
 	t_list					*argument_variables;
-	char					**env;
+	char					***env;
 
 	t_list					*execution_cache;
 	bool					last_pipe_cmd;
@@ -92,7 +92,7 @@ typedef struct s_command_group
 	bool					is_in_parenthesis; // todo check how to implement
 }	t_command_group;
 
-t_command_group	*parse_cmd_line(char *command_line, char **env);
+t_command_group	*parse_cmd_line(char *command_line, char ***env);
 char	**ft_strs_insert_str(char **src, char *new_elem, size_t pos);
 
 

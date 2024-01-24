@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:27:56 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 18:20:48 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 21:54:06 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static size_t	operator_get_end(t_string_index *command_line,
 static void	parse_operator(t_string_index *command_line,
 						t_command_group *cmd_grp,
 						int operator_type,
-						char **env)
+						char ***env)
 {
 	size_t			end;
 	char			end_char;
@@ -117,7 +117,7 @@ static void	parse_operator(t_string_index *command_line,
 
 static void	parse_command_grp_operators(t_command_group *grp,
 										t_string_index *command_line,
-										char **env)
+										char ***env)
 {
 	while (command_line->str[command_line->i])
 	{
@@ -145,7 +145,7 @@ static void	parse_command_grp_operators(t_command_group *grp,
 	}
 }
 
-t_command_group	*parse_command_grp(t_string_index *command_line, char **env)
+t_command_group	*parse_command_grp(t_string_index *command_line, char ***env)
 {
 	t_command_group	*res;
 	char			end_char;

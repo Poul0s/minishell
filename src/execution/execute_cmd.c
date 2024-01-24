@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:23:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/24 21:08:44 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 21:52:09 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static char	*insert_variable_data(t_list *variable_argument, t_command *command)
 	size_t				i;
 
 	var_arg_data = variable_argument->content;
-	var_arg_strs = ft_split(get_env_var(command->env, var_arg_data->data), ' ');
+	var_arg_strs = ft_split(get_env_var(*(command->env), var_arg_data->data), ' ');
 	if (!var_arg_strs || var_arg_strs[0] == NULL)
 	{
 		free(var_arg_strs);
@@ -140,7 +140,7 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2], 
 		child_pid = execute_builtin_command(command);
 	else
 	{
-		command->executable = find_cmd(command->executable, command->env);
+		command->executable = find_cmd(command->executable, *(command->env));
 		child_pid = fork();
 		if (child_pid == 0)
 		{
@@ -156,7 +156,7 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2], 
 				find_close_cmd(command->arguments[0]);
 				exit(127);
 			}
-			execve(command->executable, command->arguments, command->env);
+			execve(command->executable, command->arguments, *(command->env));
 			exit(errno);
 		}
 		free(command->executable);

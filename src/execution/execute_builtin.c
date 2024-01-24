@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 22:36:42 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 21:05:40 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 21:53:09 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	execute_builtin_command(t_command *command)
 	else if (ft_strncmp(command->executable, "echo", 5) == 0)
 		command_res = ft_echo((const char **) (command->arguments + 1));
 	else if (ft_strncmp(command->executable, "env", 4) == 0)
-		command_res = ft_env((const char **) command->env);
+		command_res = ft_env(*((char ***) command->env));
 	else if (ft_strncmp(command->executable, "pwd", 4) == 0)
 		command_res = ft_pwd();
 	else if (ft_strncmp(command->executable, "export", 7) == 0)

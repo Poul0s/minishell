@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:41:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 18:08:54 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 21:53:40 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ char			*parse_argument(t_string_index *command_line,
 								t_command *cmd,
 								t_list **prev_arguments);
 
-t_command		*parse_command(t_string_index *command_line, char **env);
+t_command		*parse_command(t_string_index *command_line, char ***env);
 
-t_command_group	*parse_command_grp(t_string_index *command_line, char **env);
+t_command_group	*parse_command_grp(t_string_index *command_line, char ***env);
 
 void			parse_file_redirection(t_string_index *command_line,
 									char **argument,

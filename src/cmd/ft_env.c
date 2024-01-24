@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:31:04 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/24 17:09:57 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/24 21:39:50 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int ft_env(const char **env)
+int ft_env(char **env)
 {
 	if (!env)
 		return (1);
