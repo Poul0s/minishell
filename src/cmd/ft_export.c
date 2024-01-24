@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 21:03:09 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 22:18:34 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 23:57:11 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static void	insert_multiple_env_var(char **arguments, char ***env)
 			*sep_pos = '\0';
 			*env = edit_env_var(*env, arguments[i], sep_pos + 1);
 		}
+		i++;
 	}
 }
 

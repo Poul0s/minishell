@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 21:47:50 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 23:56:37 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 			exec_data.shell_data = shell_data;
 			last_cmd_code = execute_command_line(command_line, shell_data->exit_status, exec_data);
 			shell_data->exit_status = last_cmd_code;
-			// print_command_line(command_line, 0);
 			free_command_line(command_line, false);
 			free_command_line(NULL, true);
 		}
