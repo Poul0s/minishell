@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:19:10 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/23 23:20:49 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 20:48:00 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,21 @@ static void	manage_pipe(int fd[2][2], int i, int size)
 		close_pipe(fd[1]);
 }
 
-void pipe_cmd(t_command_group *command_line, int *pid, t_pipe *data_pipe, int exit_status)
+void pipe_cmd(t_command_group *command_line, t_execution_data exec_data, t_pipe *data_pipe, int exit_status)
 {
 	int	child;
 	int	child_res;
 
+	exec_data.forked = true;
 	if (pipe(data_pipe->fd[data_pipe->index % 2]) == -1)
 		exit(errno);
 	if (command_line->command)
 	{
-		pid[data_pipe->index] = fork();
-		if (pid[data_pipe->index] == 0)
+		exec_data.pid[data_pipe->index] = fork();
+		if (exec_data.pid[data_pipe->index] == 0)
 		{
 			manage_pipe(data_pipe->fd, data_pipe->index, data_pipe->pipe_count);
+			command_line->command->exec_data = exec_data;
 			child = execute_command(command_line->command, command_line, data_pipe->fd[data_pipe->index % 2], exit_status);
 			if (child < 0)
 				exit((-child - 1));
@@ -63,7 +65,7 @@ void pipe_cmd(t_command_group *command_line, int *pid, t_pipe *data_pipe, int ex
 	if (command_line->pipe_next)
 	{
 		data_pipe->index++;
-		pipe_cmd(command_line->pipe_next, pid, data_pipe, exit_status);
+		pipe_cmd(command_line->pipe_next, exec_data, data_pipe, exit_status);
 	}
 	close_pipe(data_pipe->fd[data_pipe->index % 2]);
 }

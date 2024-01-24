@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 18:02:31 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 19:32:52 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@ static void	print_syntax_error(t_syntax *syntax, t_sh_data *shell_data)
 
 static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 {
-	t_syntax		syntax_res;
-	t_command_group	*command_line;
-	int				last_cmd_code;
+	t_syntax			syntax_res;
+	t_command_group		*command_line;
+	int					last_cmd_code;
+	t_execution_data	exec_data;
 
 	if (command_line_str[0] == 0)
 		return ;
@@ -42,7 +43,10 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 		toggle_signal_handler(false);
 		if (command_line)
 		{
-			last_cmd_code = execute_command_line(command_line, shell_data->exit_status);
+			exec_data.forked = false;
+			exec_data.base_command_line = command_line;
+			exec_data.shell_data = shell_data;
+			last_cmd_code = execute_command_line(command_line, shell_data->exit_status, exec_data);
 			shell_data->exit_status = last_cmd_code;
 			// print_command_line(command_line, 0);
 			free_command_line(command_line, false);
@@ -52,7 +56,7 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 	}
 }
 
-static void	free_shell_data(t_sh_data *shell_data)
+void	free_shell_data(t_sh_data *shell_data)
 {
 	free(shell_data->prompt);
 	free(shell_data->hostname);

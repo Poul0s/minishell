@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 19:13:09 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/19 16:26:08 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/24 21:00:38 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,13 @@ char	*find_cmd(char *cmd, char **env)
 	{
 		tmp = ft_strjoin(path[i], cmd);
 		if (access(tmp, X_OK) != -1)
+		{
+			ft_free_strs(path);
 			return (tmp);
+		}
 		free(tmp);
 		i++;
 	}
+	ft_free_strs(path);
 	return (NULL);
 }

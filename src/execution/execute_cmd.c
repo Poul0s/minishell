@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:23:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/24 20:05:15 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/24 21:08:44 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2], 
 			execve(command->executable, command->arguments, command->env);
 			exit(errno);
 		}
+		free(command->executable);
 	}
 	delete_exec_cache(command);
 	if (!command->last_pipe_cmd && child_pid != 0 && (group_data->on_success || group_data->on_error))
@@ -172,9 +173,9 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2], 
 		{
 			child_pid_res = WEXITSTATUS(child_pid_res);
 			if (child_pid_res != 0 && group_data->on_error != NULL)
-					exit(execute_command_line(group_data->on_error, child_pid_res));
+					exit(execute_command_line(group_data->on_error, child_pid_res, command->exec_data));
 			else if (child_pid_res == 0 && group_data->on_success != NULL)
-					exit(execute_command_line(group_data->on_success, child_pid_res));
+					exit(execute_command_line(group_data->on_success, child_pid_res, command->exec_data));
 			exit(child_pid_res);
 		}
 		else
@@ -183,6 +184,13 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2], 
 			return (baby_pid);
 		}
 	}
-	// free_command(command);
+	if (command->exec_data.forked)
+	{
+		free(command->exec_data.pid);
+		free_shell_data(command->exec_data.shell_data);
+		free_command_line(command->exec_data.base_command_line, false);
+		free_command_line(NULL, true);
+		// free_command(command);
+	}
 	return (child_pid);
 }

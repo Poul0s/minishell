@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:01:28 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 20:05:50 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/24 21:08:18 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,16 @@
 # include <stdbool.h>
 # include "libft.h"
 # include "environment_manager.h"
+
+struct s_command_group;
+struct s_sh_data;
+typedef struct s_execution_data
+{
+	struct s_command_group	*base_command_line;
+	struct s_sh_data		*shell_data;
+	int						*pid;
+	bool					forked;
+}	t_execution_data;
 
 // argument variables
 
@@ -69,7 +79,7 @@ typedef struct s_command
 	t_list					*execution_cache;
 	bool					last_pipe_cmd;
 
-	bool					in_fork;
+	t_execution_data		exec_data;
 }	t_command;
 
 typedef struct s_command_group
@@ -79,7 +89,7 @@ typedef struct s_command_group
 	struct s_command_group	*on_error;
 	struct s_command_group	*pipe_next;
 
-	bool					is_in_parenthesis;
+	bool					is_in_parenthesis; // todo check how to implement
 }	t_command_group;
 
 t_command_group	*parse_cmd_line(char *command_line, char **env);
