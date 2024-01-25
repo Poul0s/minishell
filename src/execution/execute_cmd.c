@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:23:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/25 00:18:25 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/25 13:08:14 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,11 @@ static void	insert_argument(t_list *variable_arguments, t_command *command, char
 		variable_arguments = variable_arguments->next;
 	}
 	new_argument_list = ft_strs_insert_str(command->arguments, argument, insert_pos);
-	if (new_argument_list && insert_exec_cache(command, new_argument_list))
+	if (new_argument_list)
+	{
+		free(command->arguments);
 		command->arguments = new_argument_list;
+	}
 	else
 	{
 		free(new_argument_list);
@@ -80,10 +83,7 @@ static char	*insert_variable_data(t_list *variable_argument, t_command *command)
 	i = 0;
 	while (var_arg_strs[i] && var_arg_strs[i + 1])
 	{
-		if (insert_exec_cache(command, var_arg_strs[i]))
-			insert_argument(variable_argument, command, var_arg_strs[i]);
-		else
-			free(var_arg_strs[i]);
+		insert_argument(variable_argument, command, var_arg_strs[i]);
 		i++;
 	}
 	res = var_arg_strs[i];
@@ -117,13 +117,9 @@ static void	convert_variable_arguments(t_command *command, int exit_status)
 								var_arg_str,
 								var_arg_data->argument_index);
 		free(var_arg_str);
-		if (insert_exec_cache(command, new_arg))
-		{
-			command->arguments[var_arg_data->argument_number] = new_arg;
-			variable_argument = variable_argument->next;
-		}
-		else
-			free(new_arg);
+		free(command->arguments[var_arg_data->argument_number]);
+		command->arguments[var_arg_data->argument_number] = new_arg;
+		variable_argument = variable_argument->next;
 	}
 }
 
@@ -133,7 +129,7 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2], 
 	int		baby_pid;
 	int		child_pid_res;
 
-	convert_variable_arguments(command, exit_status); // can maybe cause data lost if not in fork (due to launch if not in fork (like if called without pipe))
+	convert_variable_arguments(command, exit_status);
 	command->executable = command->arguments[0];
 	baby_pid = -1;
 	if (is_command_builtin(command->executable))
@@ -161,7 +157,6 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2], 
 		}
 		free(command->executable);
 	}
-	delete_exec_cache(command);
 	if (!command->last_pipe_cmd && child_pid != 0 && (group_data->on_success || group_data->on_error))
 	{
 		if (child_pid < 0)
@@ -187,7 +182,7 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2], 
 	if (command->exec_data.forked)
 	{
 		free(command->exec_data.pid);
-		free_shell_data(command->exec_data.shell_data);
+		free_shell_data(command->exec_data.shell_data, false);
 		free_command_line(command->exec_data.base_command_line, false);
 		free_command_line(NULL, true);
 	}

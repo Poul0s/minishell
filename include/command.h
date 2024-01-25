@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:01:28 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 21:54:39 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/25 13:08:45 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ typedef struct s_command
 	t_list					*argument_variables;
 	char					***env;
 
-	t_list					*execution_cache;
 	bool					last_pipe_cmd;
 
 	t_execution_data		exec_data;

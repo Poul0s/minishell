@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/25 00:44:38 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/25 13:06:08 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,13 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 	}
 }
 
-void	free_shell_data(t_sh_data *shell_data)
+void	free_shell_data(t_sh_data *shell_data, bool disable_signal)
 {
 	free(shell_data->prompt);
 	free(shell_data->hostname);
 	ft_free_strs(shell_data->env);
-	toggle_signal_handler(false);
+	if (disable_signal)
+		toggle_signal_handler(false);
 	clear_history();
 }
 
@@ -91,6 +92,6 @@ int	main(int ac, char **av, char **envp)
 		refresh_prompt(&shell_data);
 	}
 	ft_dprintf(1, "exit\n");
-	free_shell_data(&shell_data);
+	free_shell_data(&shell_data, true);
 	return (shell_data.exit_status);
 }

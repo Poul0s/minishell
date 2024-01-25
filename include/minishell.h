@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:36 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/25 00:22:38 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/25 13:05:37 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,6 @@ void		free_command(t_command *command);
 void		free_command_line(t_command_group *command_line, bool reset);
 
 char		*ft_strfjoin_chr(char *s1, char c); // todo move in libft
-void		free_shell_data(t_sh_data *shell_data);
+void		free_shell_data(t_sh_data *shell_data, bool disable_Signal);
 
 #endif

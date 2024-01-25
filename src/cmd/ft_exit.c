@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 23:58:47 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/25 00:23:56 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/25 13:09:23 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,8 @@ int	ft_exit(t_command *command, int last_exit_status)
 	}
 	else
 		exit_code = ft_atouc(command->arguments[1]);
-	delete_exec_cache(command);
 	free(command->exec_data.pid);
-	free_shell_data(command->exec_data.shell_data);
+	free_shell_data(command->exec_data.shell_data, command->exec_data.forked);
 	free_command_line(command->exec_data.base_command_line, false);
 	free_command_line(NULL, true);
 	exit(exit_code);

@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:02:49 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/25 00:19:01 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/25 13:08:27 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,5 @@ void	pipe_cmd(t_command_group *command_line, t_execution_data exec_data, t_pipe 
 int		execute_command_line(t_command_group *command_line, int exit_status, t_execution_data exec_data);
 char	*find_cmd(char *cmd, char **path);
 void	*find_close_cmd(const char *cmd);
-
-bool	insert_exec_cache(t_command *command, void *data);
-void	delete_exec_cache(t_command *command);
 
 #endif
