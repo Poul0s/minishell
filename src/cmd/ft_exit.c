@@ -6,16 +6,13 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 23:58:47 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/25 13:09:23 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/26 00:53:01 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// exit with no argument : exit with last exit code
-// exit with non-numeric : exit, 2, write "bash: exit: {arg}: numeric argument required" 
-// exit with multiple argument : no exit, return 1, write "bash: exit: too many arguments" 
-// exit normal: AtoUNSIGNEDCHAR argument and exit with it
+extern int	exit_status; 
 
 bool	is_str_num(char *str)
 {
@@ -53,12 +50,12 @@ static unsigned char	ft_atouc(char *str)
 	return (number * sign);
 }
 
-int	ft_exit(t_command *command, int last_exit_status)
+int	ft_exit(t_command *command)
 {
 	unsigned char	exit_code;
 
 	if (command->arguments[1] == NULL)
-		exit_code = last_exit_status;
+		exit_code = exit_status;
 	else if (!is_str_num(command->arguments[1]))
 	{
 		ft_dprintf(2, "minishell: exit: %s: numeric argument required\n", command->arguments[1]);

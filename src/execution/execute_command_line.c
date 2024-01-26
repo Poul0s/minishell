@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:02:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 19:35:07 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/26 00:52:31 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int count_pipe(t_command_group *command_line)
 	return (i);
 }
 
-int	execute_command_line(t_command_group *command_line, int exit_status, t_execution_data exec_data)
+int	execute_command_line(t_command_group *command_line, t_execution_data exec_data)
 {
 	t_pipe	data_pipe;
 	int		*pid;
@@ -45,10 +45,10 @@ int	execute_command_line(t_command_group *command_line, int exit_status, t_execu
 	if (data_pipe.pipe_count == 1 && !command_line->is_in_parenthesis)
 	{
 		command_line->command->exec_data = exec_data;
-		pid[0] = execute_command(command_line->command, command_line, NULL, exit_status);
+		pid[0] = execute_command(command_line->command, command_line, NULL);
 	}
 	else
-		pipe_cmd(command_line, exec_data, &data_pipe, exit_status);
+		pipe_cmd(command_line, exec_data, &data_pipe);
 	if (pid[data_pipe.pipe_count - 1] > 0 && waitpid(pid[data_pipe.pipe_count - 1], &last_pid_res, 0) == -1)
 	{
 		free(pid);
@@ -69,9 +69,9 @@ int	execute_command_line(t_command_group *command_line, int exit_status, t_execu
 		while (command_line->pipe_next)
 			command_line = command_line->pipe_next;
 		if (WEXITSTATUS(last_pid_res) == 0 && command_line->on_success)
-			return (execute_command_line(command_line->on_success, exit_status, exec_data));
+			return (execute_command_line(command_line->on_success, exec_data));
 		else if (WEXITSTATUS(last_pid_res) != 0 && command_line->on_error)
-			return (execute_command_line(command_line->on_success, exit_status, exec_data));
+			return (execute_command_line(command_line->on_success, exec_data));
 		else
 			return (WEXITSTATUS(last_pid_res));
 	}

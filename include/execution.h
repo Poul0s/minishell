@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:02:49 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/25 13:08:27 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/26 00:50:16 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,14 @@ typedef struct s_pipe
 }		t_pipe;
 
 bool	is_command_builtin(char *command);
-int		execute_builtin_command(t_command *command, int exit_status);
+int		execute_builtin_command(t_command *command);
 
 int		execute_command(t_command *command, t_command_group *group_data,
-			int fd[2], int exit_status);
+			int fd[2]);
 
-void	pipe_cmd(t_command_group *command_line, t_execution_data exec_data, t_pipe *data_pipe,
-			int exit_status);
+void	pipe_cmd(t_command_group *command_line, t_execution_data exec_data, t_pipe *data_pipe);
 
-int		execute_command_line(t_command_group *command_line, int exit_status, t_execution_data exec_data);
+int		execute_command_line(t_command_group *command_line, t_execution_data exec_data);
 char	*find_cmd(char *cmd, char **path);
 void	*find_close_cmd(const char *cmd);
 

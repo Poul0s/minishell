@@ -6,12 +6,14 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:23:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/25 13:08:14 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/26 00:54:39 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <errno.h>
+
+extern int	exit_status;
 
 char	**ft_strs_insert_str(char **src, char *new_elem, size_t pos)
 {
@@ -91,7 +93,7 @@ static char	*insert_variable_data(t_list *variable_argument, t_command *command)
 	return (res);
 }
 
-static void	convert_variable_arguments(t_command *command, int exit_status)
+static void	convert_variable_arguments(t_command *command)
 {
 	t_list				*variable_argument;
 	t_variable_argument	*var_arg_data;
@@ -123,17 +125,17 @@ static void	convert_variable_arguments(t_command *command, int exit_status)
 	}
 }
 
-int	execute_command(t_command *command, t_command_group *group_data, int fd[2], int exit_status)
+int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 {
 	int		child_pid;
 	int		baby_pid;
 	int		child_pid_res;
 
-	convert_variable_arguments(command, exit_status);
+	convert_variable_arguments(command);
 	command->executable = command->arguments[0];
 	baby_pid = -1;
 	if (is_command_builtin(command->executable))
-		child_pid = execute_builtin_command(command, exit_status);
+		child_pid = execute_builtin_command(command);
 	else
 	{
 		command->executable = find_cmd(command->executable, *(command->env));
@@ -166,12 +168,12 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2], 
 		baby_pid = fork();
 		if (baby_pid == 0)
 		{
-			child_pid_res = WEXITSTATUS(child_pid_res);
-			if (child_pid_res != 0 && group_data->on_error != NULL)
-					exit(execute_command_line(group_data->on_error, child_pid_res, command->exec_data));
-			else if (child_pid_res == 0 && group_data->on_success != NULL)
-					exit(execute_command_line(group_data->on_success, child_pid_res, command->exec_data));
-			exit(child_pid_res);
+			exit_status = WEXITSTATUS(child_pid_res);
+			if (exit_status != 0 && group_data->on_error != NULL)
+					exit(execute_command_line(group_data->on_error, command->exec_data));
+			else if (exit_status == 0 && group_data->on_success != NULL)
+					exit(execute_command_line(group_data->on_success, command->exec_data));
+			exit(exit_status);
 		}
 		else
 		{

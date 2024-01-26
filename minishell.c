@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/25 13:06:08 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/26 01:18:11 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 #include "minishell.h"
 #include "autocompletion.h"
+
+int	exit_status;
 
 static void	print_syntax_error(t_syntax *syntax, t_sh_data *shell_data)
 {
@@ -29,7 +31,7 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 {
 	t_syntax			syntax_res;
 	t_command_group		*command_line;
-	int					last_cmd_code;
+	int					res_command_line;
 	t_execution_data	exec_data;
 
 	if (command_line_str[0] == 0)
@@ -46,8 +48,9 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 			exec_data.forked = false;
 			exec_data.base_command_line = command_line;
 			exec_data.shell_data = shell_data;
-			last_cmd_code = execute_command_line(command_line, shell_data->exit_status, exec_data);
-			shell_data->exit_status = last_cmd_code;
+			res_command_line = execute_command_line(command_line, exec_data);
+			if (res_command_line != -1)
+				exit_status = res_command_line;
 			free_command_line(command_line, false);
 			free_command_line(NULL, true);
 		}
@@ -75,7 +78,7 @@ int	main(int ac, char **av, char **envp)
 	shell_data.exec_name = av[0];
 	shell_data.env = ft_strs_dup(envp);
 	shell_data.hostname = get_hostname();
-	shell_data.exit_status = 0;
+	exit_status = 0;
 	shell_data.prompt = NULL;
 	refresh_prompt(&shell_data);
 	line_readed = NULL;
@@ -93,5 +96,5 @@ int	main(int ac, char **av, char **envp)
 	}
 	ft_dprintf(1, "exit\n");
 	free_shell_data(&shell_data, true);
-	return (shell_data.exit_status);
+	return (exit_status);
 }

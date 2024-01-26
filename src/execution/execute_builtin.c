@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 22:36:42 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/25 00:18:39 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/26 00:51:21 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ bool	is_command_builtin(char *str)
 		return (false);
 }
 
-int	execute_builtin_command(t_command *command, int exit_status)
+int	execute_builtin_command(t_command *command)
 {
 	int	command_res;
 
@@ -49,7 +49,7 @@ int	execute_builtin_command(t_command *command, int exit_status)
 	else if (ft_strncmp(command->executable, "unset", 6) == 0)
 		command_res = ft_unset(command->arguments, command->env);
 	else if (ft_strncmp(command->executable, "exit", 5) == 0)
-		command_res = ft_exit(command, exit_status);
+		command_res = ft_exit(command);
 	else
 		command_res = 127;
 	command_res = -command_res - 1;
