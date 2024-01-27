@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command_line.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:02:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/26 17:07:40 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/27 09:16:22 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,43 +49,35 @@ int	execute_command_line(t_command_group *command_line, t_execution_data exec_da
 	}
 	else
 		pipe_cmd(command_line, exec_data, &data_pipe);
-	// if (pid[data_pipe.pipe_count - 1] > 0 && waitpid(pid[data_pipe.pipe_count - 1], &last_pid_res, 0) == -1)
-	// {
-	// 	free(pid);
-	// 	return (-1);
-	// }
-	// else
+	i = 0;
+	while (i < data_pipe.pipe_count)
 	{
-		i = 0;
-		while (i < data_pipe.pipe_count)
-		{
-			if (pid[i] > 0)
-				waitpid(pid[i], &last_pid_res, 0);
-			i++;
-		}
-		if (pid[data_pipe.pipe_count - 1] <= 0)
-			last_pid_res = (-pid[data_pipe.pipe_count - 1] - 1) >> 8;
-		else if (!WIFEXITED(last_pid_res))
-		{
-			if ((WCOREDUMP(last_pid_res)))
-			{
-				ft_dprintf(2, "Quit (core dumped)\n");
-				last_pid_res = 131 << 8;
-			}
-			else
-			{
-				ft_dprintf(2, "\n");
-				last_pid_res = 130 << 8;
-			}
-		}
-		free(pid);
-		while (command_line->pipe_next)
-			command_line = command_line->pipe_next;
-		if (WEXITSTATUS(last_pid_res) == 0 && command_line->on_success)
-			return (execute_command_line(command_line->on_success, exec_data));
-		else if (WEXITSTATUS(last_pid_res) != 0 && command_line->on_error)
-			return (execute_command_line(command_line->on_success, exec_data));
-		else
-			return (WEXITSTATUS(last_pid_res));
+		if (pid[i] > 0)
+			waitpid(pid[i], &last_pid_res, 0);
+		i++;
 	}
+	if (pid[data_pipe.pipe_count - 1] <= 0)
+		last_pid_res = (-pid[data_pipe.pipe_count - 1] - 1) << 8;
+	else if (!WIFEXITED(last_pid_res))
+	{
+		if ((WCOREDUMP(last_pid_res)))
+		{
+			ft_dprintf(2, "Quit (core dumped)\n");
+			last_pid_res = 131 << 8;
+		}
+		else
+		{
+			ft_dprintf(2, "\n");
+			last_pid_res = 130 << 8;
+		}
+	}
+	free(pid);
+	while (command_line->pipe_next)
+		command_line = command_line->pipe_next;
+	if (WEXITSTATUS(last_pid_res) == 0 && command_line->on_success)
+		return (execute_command_line(command_line->on_success, exec_data));
+	else if (WEXITSTATUS(last_pid_res) != 0 && command_line->on_error)
+		return (execute_command_line(command_line->on_success, exec_data));
+	else
+		return (WEXITSTATUS(last_pid_res));
 }
