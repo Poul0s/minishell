@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:23:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/26 00:54:39 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/27 09:23:34 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ static void	convert_variable_arguments(t_command *command)
 		{
 			// todo add wildcard
 		}
+		if (!var_arg_str)
+			return ;
 		new_arg = ft_str_insert(command->arguments[var_arg_data->argument_number],
 								var_arg_str,
 								var_arg_data->argument_index);

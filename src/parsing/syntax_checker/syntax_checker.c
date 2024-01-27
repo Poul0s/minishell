@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_checker.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 14:07:20 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/21 20:09:18 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/27 09:41:37 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,31 @@ static void	check_operator_syntax(t_string_index *stri,
 	else
 	{
 		syntax->current_token = c;
+		if (stri->str[stri->i + 1] == c)
+			stri->i++;
+		syntax->has_content = false;
+		syntax->current_token = c;
+	}
+}
+
+static void	check_fileredirection_syntax(t_string_index *stri,
+							t_syntax_parser *syntax,
+							t_syntax *res)
+{
+	char	c;
+	short	token_size;
+
+	c = stri->str[stri->i];
+	if (syntax->current_token == '>' || syntax->current_token == '<')
+	{
+		res->error = true;
+		token_size = 1;
+		while (stri->str[stri->i + token_size] == c && token_size < 3)
+			token_size++;
+		res->token = token_to_str(c, token_size);
+	}
+	else
+	{
 		if (stri->str[stri->i + 1] == c)
 			stri->i++;
 		syntax->has_content = false;
@@ -97,6 +122,8 @@ static void	check_syntax_char(t_string_index *stri,
 			check_operator_syntax(stri, syntax, res);
 		else if (c == '(' || c == ')')
 			check_parenthesis_syntax(stri, syntax, res);
+		else if (c == '>' || c == '<')
+			check_fileredirection_syntax(stri, syntax, res);
 		else
 		{
 			if (syntax->current_token)
@@ -131,10 +158,14 @@ t_syntax	check_syntax(char *command_line)
 	}
 	if (syntax.nb_parenthesis > 0
 		|| (syntax.current_token != 0 && !syntax.has_content)
-		|| (syntax.current_token == '\'' || syntax.current_token == '"'))
+		|| (syntax.current_token == '\'' || syntax.current_token == '"')
+		|| ((syntax.current_token == '>' || syntax.current_token == '<') && !syntax.has_content))
 	{
 		res.error = true;
-		res.no_end = true;
+		if (syntax.current_token == '>' || syntax.current_token == '<')
+			res.token = ft_strdup("newline");
+		else
+			res.no_end = true;
 	}
 	return (res);
 }
