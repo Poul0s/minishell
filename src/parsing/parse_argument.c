@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_argument.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 18:13:50 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/27 09:45:35 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ static void	parse_variable(char **argument,
 	end = command_line->i + 1;
 	while (command_line->str[end])
 	{
-		if (!ft_isalnum(command_line->str[end]) && (command_line->str[end] != '?' || end != start))
+		if (!ft_isalnum(command_line->str[end] || command_line->str[start] == '?') 
+			&& (command_line->str[end] != '?' || end != start))
 			break ;
 		end++;
 	}
