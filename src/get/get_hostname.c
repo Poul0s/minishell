@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_hostname.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:15:14 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/15 19:29:14 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/27 09:09:52 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@ char	*get_hostname(void)
 	hostname = get_next_line(fd);
 	close_next_line(fd);
 	hostname_end = ft_strchr(hostname, '.');
+	if (hostname_end != 0)
+		*hostname_end = 0;
+	hostname_end = ft_strchr(hostname, '\n');
 	if (hostname_end != 0)
 		*hostname_end = 0;
 	return (hostname);
