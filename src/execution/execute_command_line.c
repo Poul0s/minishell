@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:02:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/27 09:16:22 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/29 14:01:23 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,25 @@ int	execute_command_line(t_command_group *command_line, t_execution_data exec_da
 	int		*pid;
 	int		last_pid_res;
 	int		i;
+	bool	forked;
 
+	forked = exec_data.forked;
+	exec_data.forked = false;
 	data_pipe.index = 0;
 	data_pipe.pipe_count = count_pipe(command_line);
 	pid = malloc(data_pipe.pipe_count * sizeof(int));
-	exec_data.pid = pid;
+	exec_data.pid = NULL;
 	if (data_pipe.pipe_count == 1 && !command_line->is_in_parenthesis)
 	{
 		command_line->command->exec_data = exec_data;
 		pid[0] = execute_command(command_line->command, command_line, NULL);
+		exec_data.pid = pid;
 	}
 	else
+	{
+		exec_data.pid = pid;
 		pipe_cmd(command_line, exec_data, &data_pipe);
+	}
 	i = 0;
 	while (i < data_pipe.pipe_count)
 	{
@@ -74,10 +81,19 @@ int	execute_command_line(t_command_group *command_line, t_execution_data exec_da
 	free(pid);
 	while (command_line->pipe_next)
 		command_line = command_line->pipe_next;
+	exec_data.forked = forked;
 	if (WEXITSTATUS(last_pid_res) == 0 && command_line->on_success)
 		return (execute_command_line(command_line->on_success, exec_data));
 	else if (WEXITSTATUS(last_pid_res) != 0 && command_line->on_error)
 		return (execute_command_line(command_line->on_success, exec_data));
 	else
+	{
+		if (forked)
+		{
+			free_shell_data(exec_data.shell_data, false);
+			free_command_line(exec_data.base_command_line, false);
+			free_command_line(NULL, true);
+		}
 		return (WEXITSTATUS(last_pid_res));
+	}
 }

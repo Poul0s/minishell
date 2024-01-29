@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:23:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/27 09:23:34 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/29 13:59:06 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,20 +167,26 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 			child_pid_res = (-child_pid - 1) >> 8;
 		else
 			waitpid(child_pid, &child_pid_res, 0);
-		baby_pid = fork();
-		if (baby_pid == 0)
+		if ((exit_status != 0 && group_data->on_error != NULL) || (exit_status == 0 && group_data->on_success != NULL))
 		{
-			exit_status = WEXITSTATUS(child_pid_res);
-			if (exit_status != 0 && group_data->on_error != NULL)
-					exit(execute_command_line(group_data->on_error, command->exec_data));
-			else if (exit_status == 0 && group_data->on_success != NULL)
-					exit(execute_command_line(group_data->on_success, command->exec_data));
-			exit(exit_status);
-		}
-		else
-		{
-			free_command(command);
-			return (baby_pid);
+			baby_pid = fork();
+			if (baby_pid == 0)
+			{
+				// command->exec_data.forked = false;
+				free(command->exec_data.pid);
+				exit_status = WEXITSTATUS(child_pid_res);
+				if (exit_status != 0 && group_data->on_error != NULL)
+						exit(execute_command_line(group_data->on_error, command->exec_data));
+				else if (exit_status == 0 && group_data->on_success != NULL)
+						exit(execute_command_line(group_data->on_success, command->exec_data));
+				exit(exit_status);
+			}
+			else
+			{
+				// free_command(command);
+				// return (baby_pid);
+				child_pid = baby_pid;
+			}
 		}
 	}
 	if (command->exec_data.forked)
