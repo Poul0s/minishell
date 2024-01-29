@@ -6,13 +6,15 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 23:58:47 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/29 16:04:10 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/29 16:48:36 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#define ERR_NUM_ARG_REQ "%s: exit: %s: numeric argument required\n"
+#define ERR_TOO_MANY_ARG "%s: exit: too many arguments\n"
 
-extern int	g_exit_status; 
+extern int	g_exit_status;
 
 bool	is_str_num(char *str)
 {
@@ -53,17 +55,19 @@ static unsigned char	ft_atouc(char *str)
 int	ft_exit(t_command *command)
 {
 	unsigned char	exit_code;
+	char			*exec_name;
 
+	exec_name = command->exec_data.shell_data->exec_name;
 	if (command->arguments[1] == NULL)
 		exit_code = g_exit_status;
 	else if (!is_str_num(command->arguments[1]))
 	{
-		ft_dprintf(2, "minishell: exit: %s: numeric argument required\n", command->arguments[1]);
+		ft_dprintf(2, ERR_NUM_ARG_REQ, exec_name, command->arguments[1]);
 		exit_code = 2;
 	}
 	else if (command->arguments[2] != NULL)
 	{
-		ft_dprintf(2, "minishell: exit: too many arguments\n");
+		ft_dprintf(2, ERR_TOO_MANY_ARG, exec_name);
 		return (1);
 	}
 	else
