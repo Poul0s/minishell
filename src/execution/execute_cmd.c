@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:23:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/29 13:59:06 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/29 15:28:15 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,27 @@ static char	*insert_variable_data(t_list *variable_argument, t_command *command)
 	return (res);
 }
 
+static void	move_variable_arguments_index(t_list *variable_arguments, char *var_arg_str)
+{
+	size_t				var_arg_len;
+	t_variable_argument	*var_arg;
+	t_variable_argument	*current_var_arg;
+
+	var_arg_len = ft_strlen(var_arg_str);
+	var_arg = variable_arguments->content;
+	variable_arguments = variable_arguments->next;
+	while (variable_arguments)
+	{
+		current_var_arg = variable_arguments->content;
+		if (current_var_arg->argument_number == var_arg->argument_number)
+		{
+			if (current_var_arg->argument_index >= var_arg->argument_index)
+				current_var_arg->argument_index += var_arg_len;
+		}
+		variable_arguments = variable_arguments->next;
+	}
+}
+
 static void	convert_variable_arguments(t_command *command)
 {
 	t_list				*variable_argument;
@@ -115,14 +136,16 @@ static void	convert_variable_arguments(t_command *command)
 		{
 			// todo add wildcard
 		}
-		if (!var_arg_str)
-			return ;
-		new_arg = ft_str_insert(command->arguments[var_arg_data->argument_number],
-								var_arg_str,
-								var_arg_data->argument_index);
-		free(var_arg_str);
-		free(command->arguments[var_arg_data->argument_number]);
-		command->arguments[var_arg_data->argument_number] = new_arg;
+		if (var_arg_str)
+		{
+			move_variable_arguments_index(variable_argument, var_arg_str);
+			new_arg = ft_str_insert(command->arguments[var_arg_data->argument_number],
+									var_arg_str,
+									var_arg_data->argument_index);
+			free(var_arg_str);
+			free(command->arguments[var_arg_data->argument_number]);
+			command->arguments[var_arg_data->argument_number] = new_arg;
+		}
 		variable_argument = variable_argument->next;
 	}
 }
