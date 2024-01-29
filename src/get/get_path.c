@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:39:42 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/15 19:35:26 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/01/29 16:40:51 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ char	*get_path(void)
 	home_len = ft_strlen(home);
 	if (ft_strncmp(pass, home, home_len))
 		return (pass);
-	if (home[home_len - 1] == '/' || !(pass[home_len] == '/' || pass[home_len] == 0))
+	if (home[home_len - 1] == '/'
+		|| !(pass[home_len] == '/' || pass[home_len] == 0))
 		return (pass);
 	path = ft_strdup(pass + home_len - 1);
 	path[0] = '~';
