@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:01:28 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/25 13:08:45 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/27 10:08:14 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_variable_argument
 {
 	size_t						argument_number;
 	size_t						argument_index;
+	bool						disable_multiple_args;
 
 	char						*data;
 	t_variable_argument_type	type;
@@ -68,7 +69,6 @@ typedef struct s_heredoc
 
 typedef struct s_command
 {
-	char					*executable;
 	char					**arguments;
 	t_list					*infiles;
 	t_list					*outfiles; // if multime outfile has same fd -> write only on last file but create both files
@@ -76,8 +76,8 @@ typedef struct s_command
 	t_list					*argument_variables;
 	char					***env;
 
+	char					*executable;
 	bool					last_pipe_cmd;
-
 	t_execution_data		exec_data;
 }	t_command;
 

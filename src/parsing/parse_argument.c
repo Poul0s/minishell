@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/27 09:45:35 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/29 11:34:33 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static bool	is_end_arg(t_string_index *command_line, bool stop_file_redirect)
 	if (command_line->str[command_line->i] == '|'
 		|| command_line->str[command_line->i] == '&'
 		|| command_line->str[command_line->i] == ')'
-		|| command_line->str[command_line->i] == ' ')
+		|| command_line->str[command_line->i] == ' '
+		|| command_line->str[command_line->i] == 0)
 		return (true);
 	if (stop_file_redirect)
 	{
@@ -55,7 +56,7 @@ static bool	is_end_arg(t_string_index *command_line, bool stop_file_redirect)
 static void	parse_variable(char **argument,
 							t_string_index *command_line,
 							t_list **prev_arguments,
-							t_command *command) // t_env_tree *env
+							t_command *command)
 {
 	size_t	start;
 	size_t	end;
@@ -66,14 +67,15 @@ static void	parse_variable(char **argument,
 	end = command_line->i + 1;
 	while (command_line->str[end])
 	{
-		if (!ft_isalnum(command_line->str[end] || command_line->str[start] == '?') 
-			&& (command_line->str[end] != '?' || end != start))
+		if (end != start && command_line->str[start] == '?')
+			break ;
+		if (!ft_isalnum(command_line->str[end]) && (command_line->str[end] != '?' || end != start))
 			break ;
 		end++;
 	}
 	command_line->i = end;
-	if (end == start && is_end_arg(command_line, true)) // why condition && is_end_arg ??
-		*argument = ft_strdup("$");
+	if (end == start && is_end_arg(command_line, true))
+		*argument = ft_strfjoin_chr(*argument, '$');
 	else
 	{
 		var_name = ft_substr(command_line->str, start, end - start);
