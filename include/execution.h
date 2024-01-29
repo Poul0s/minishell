@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:02:49 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/26 00:50:16 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/29 15:33:38 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,12 @@ int		execute_builtin_command(t_command *command);
 int		execute_command(t_command *command, t_command_group *group_data,
 			int fd[2]);
 
-void	pipe_cmd(t_command_group *command_line, t_execution_data exec_data, t_pipe *data_pipe);
+void	pipe_cmd(t_command_group *command_line,
+			t_execution_data exec_data,
+			t_pipe *data_pipe);
 
-int		execute_command_line(t_command_group *command_line, t_execution_data exec_data);
+int		execute_command_line(t_command_group *command_line,
+			t_execution_data exec_data);
 char	*find_cmd(char *cmd, char **path);
 void	*find_close_cmd(const char *cmd);
 

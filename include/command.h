@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:01:28 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/29 13:32:05 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/29 15:32:51 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include "libft.h"
 # include "environment_manager.h"
 
-struct s_command_group;
-struct s_sh_data;
+struct	s_command_group;
+struct	s_sh_data;
 typedef struct s_execution_data
 {
 	struct s_command_group	*base_command_line;
@@ -88,11 +88,10 @@ typedef struct s_command_group
 	struct s_command_group	*on_error;
 	struct s_command_group	*pipe_next;
 
-	bool					is_in_parenthesis; // todo check how to implement
+	bool					is_in_parenthesis; // todo check if and how to implement
 }	t_command_group;
 
 t_command_group	*parse_cmd_line(char *command_line, char ***env);
-char	**ft_strs_insert_str(char **src, char *new_elem, size_t pos);
-
+char			**ft_strs_insert_str(char **src, char *new_elem, size_t pos);
 
 #endif
