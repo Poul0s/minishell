@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:36 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/26 00:50:23 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/29 14:48:22 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ char		*get_hostname(void);
 void		refresh_prompt(t_sh_data *shell_data);
 char		*return_pwd(void);
 char		*get_path(void);
+char		*get_exec_name(char *bin_path);
+
 
 void		print_command_line(t_command_group *command, int depth);
 

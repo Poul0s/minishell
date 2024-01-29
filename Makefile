@@ -4,6 +4,7 @@ CFLAGS	=	-Wall -Wextra -Werror -g
 
 SRC		=	src/get/get_path.c \
 			src/get/get_hostname.c \
+			src/get/get_exec_name.c \
 			src/get/refresh_prompt_prefix.c \
 			src/autocompletion/find_match.c \
 			src/autocompletion/wich_word.c \

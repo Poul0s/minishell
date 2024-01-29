@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/26 01:18:11 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/29 14:50:56 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ int	exit_status;
 
 static void	print_syntax_error(t_syntax *syntax, t_sh_data *shell_data)
 {
-	// todo set last exec error at 2
 	ft_dprintf(2, "%s: ", shell_data->exec_name);
 	if (syntax->no_end)
 		ft_dprintf(2, "syntax error: unexpected end of file\n");
 	else
 		ft_dprintf(2, "syntax error near unexpected token `%s'\n", syntax->token);
+	exit_status = 2;
 }
 
 static void	execute_line(char *command_line_str, t_sh_data *shell_data)
@@ -62,6 +62,7 @@ void	free_shell_data(t_sh_data *shell_data, bool disable_signal)
 {
 	free(shell_data->prompt);
 	free(shell_data->hostname);
+	free(shell_data->exec_name);
 	ft_free_strs(shell_data->env);
 	if (disable_signal)
 		toggle_signal_handler(false);
@@ -75,7 +76,7 @@ int	main(int ac, char **av, char **envp)
 
 	(void) ac;
 	rl_completion_entry_function = autocompletion;
-	shell_data.exec_name = av[0];
+	shell_data.exec_name = get_exec_name(av[0]);
 	shell_data.env = ft_strs_dup(envp);
 	shell_data.hostname = get_hostname();
 	exit_status = 0;
