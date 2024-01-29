@@ -17,10 +17,12 @@ SRC		=	src/get/get_path.c \
 			src/environment_manager/has_env_var.c \
 			src/parsing/skip_spaces.c \
 			src/parsing/syntax_checker/token_generator.c \
+			src/parsing/syntax_checker/syntax_char_checker.c \
 			src/parsing/syntax_checker/syntax_checker.c \
-			src/parsing/insert_variable_argument.c \
+			src/parsing/insert_var_arg.c \
 			src/parsing/parse_command_line.c \
 			src/parsing/parse_command_group.c \
+			src/parsing/parse_operator.c \
 			src/parsing/parse_command.c \
 			src/parsing/parse_argument.c \
 			src/parsing/parse_file_redirection.c \

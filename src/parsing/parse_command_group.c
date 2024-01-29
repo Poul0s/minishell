@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_command_group.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:27:56 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 21:54:06 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/29 16:27:49 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,111 +40,6 @@ static size_t	get_cmd_grp_end(t_string_index *command_line,
 	return (end);
 }
 
-static size_t	operator_get_end(t_string_index *command_line,
-								int operator_type)
-{
-	int		parenthesis;
-	size_t	end;
-
-	parenthesis = 0;
-	end = command_line->i;
-	while (command_line->str[end])
-	{
-		if (parenthesis == 0)
-		{
-			if (command_line->str[end] == '(')
-				parenthesis++;
-			else if (command_line->str[end] == ')')
-				break ;
-			else if (operator_type == 0
-				&& ft_strncmp(command_line->str + end, "||", 2) == 0)
-				break ;
-			else if (operator_type == 1
-				&& ft_strncmp(command_line->str + end, "&&", 2) == 0)
-				break ;
-		}
-		else if (command_line->str[end] == ')' && parenthesis > 0)
-			parenthesis--;
-		end++;
-	}
-	return (end);
-}
-
-static void	parse_operator(t_string_index *command_line,
-						t_command_group *cmd_grp,
-						int operator_type,
-						char ***env)
-{
-	size_t			end;
-	char			end_char;
-	t_command_group	*tmp;
-	t_command_group	*command_fallback;
-
-	command_line->i += 2;
-	end = operator_get_end(command_line, operator_type);
-	end_char = command_line->str[end];
-	command_line->str[end] = 0;
-	command_fallback = parse_command_grp(command_line, env);
-	if (operator_type == 0)
-	{
-		// todo maybe add on each error
-		while (cmd_grp)
-		{
-			tmp = cmd_grp;
-			while (tmp->on_success && tmp->on_success != command_fallback)
-				tmp = tmp->on_success;
-			tmp->on_success = command_fallback;
-			cmd_grp = cmd_grp->on_error;
-		}
-	}
-	else
-	{
-		// todo maybe add on each success 
-		while (cmd_grp)
-		{
-			tmp = cmd_grp;
-			while (tmp->on_error && tmp->on_error != command_fallback)
-				tmp = tmp->on_error;
-			tmp->on_error = command_fallback;
-			cmd_grp = cmd_grp->on_success;
-		}
-		// while (cmd_grp->on_error != NULL)
-		// 	cmd_grp = cmd_grp->on_error;
-		// cmd_grp->on_error = command_fallback;
-	}
-	command_line->str[end] = end_char;
-}
-
-static void	parse_command_grp_operators(t_command_group *grp,
-										t_string_index *command_line,
-										char ***env)
-{
-	while (command_line->str[command_line->i])
-	{
-		str_i_skip_spaces(command_line);
-		if (command_line->str[command_line->i] == '|'
-			&& command_line->str[command_line->i + 1] != '|')
-		{
-			command_line->i++;
-			grp->pipe_next = parse_command_grp(command_line, env);
-			continue ;
-		}
-		str_i_skip_spaces(command_line);
-		if (ft_strncmp(command_line->str + command_line->i, "&&", 2) == 0)
-		{
-			parse_operator(command_line, grp, 0, env);
-			continue ;
-		}
-		str_i_skip_spaces(command_line);
-		if (ft_strncmp(command_line->str + command_line->i, "||", 2) == 0)
-		{
-			parse_operator(command_line, grp, 1, env);
-			continue ;
-		}
-		command_line->i++;
-	}
-}
-
 t_command_group	*parse_command_grp(t_string_index *command_line, char ***env)
 {
 	t_command_group	*res;
@@ -157,7 +52,8 @@ t_command_group	*parse_command_grp(t_string_index *command_line, char ***env)
 	end = get_cmd_grp_end(command_line, res);
 	end_char = command_line->str[end];
 	command_line->str[end] = 0;
-	while (command_line->str[command_line->i] == ' ' || command_line->str[command_line->i] == '(')
+	while (command_line->str[command_line->i] == ' '
+		|| command_line->str[command_line->i] == '(')
 		command_line->i++;
 	res->command = parse_command(command_line, env);
 	if (!res->command)

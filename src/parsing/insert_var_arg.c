@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   insert_variable_argument.c                         :+:      :+:    :+:   */
+/*   insert_var_arg.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 13:31:48 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/22 14:56:36 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/29 16:08:59 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ static void	calculate_var_arg_pos(t_variable_argument *var_arg,
 	var_arg->argument_number = ft_lstsize(*prev_arguments);
 }
 
-t_list	*insert_variable_argument(char **current_arg,
-								t_list **prev_arguments,
-								char *argument_data,
-								t_variable_argument_type type)
+t_list	*insert_var_arg(char **current_arg,
+						t_list **prev_arguments,
+						char *argument_data,
+						t_variable_argument_type type)
 {
 	t_variable_argument	*var_arg;
 	t_list				*node;

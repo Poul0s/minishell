@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:23:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/29 16:04:30 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/29 16:10:24 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ static void	convert_variable_arguments(t_command *command)
 	while (variable_argument != NULL)
 	{
 		var_arg_data = variable_argument->content;
-		if (var_arg_data->type == ENVIRONMENT_VARIABLE)
+		if (var_arg_data->type == ENV_VAR)
 		{
 			if (ft_strncmp(var_arg_data->data, "?", 2) == 0)
 				var_arg_str = ft_itoa(g_exit_status);

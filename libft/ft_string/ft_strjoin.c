@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 16:03:47 by psalame           #+#    #+#             */
-/*   Updated: 2023/11/07 22:17:07 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/29 16:16:06 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,29 @@ char	*ft_strfjoin(char *s1, char *s2)
 	if (s2)
 		while (s2[i])
 			newstr[j++] = s2[i++];
+	return (newstr);
+}
+
+char	*ft_strfjoin_chr(char *s1, char c)
+{
+	char	*newstr;
+	size_t	newlen;
+	size_t	i;
+	size_t	j;
+
+	newlen = ft_strlen(s1) + 1;
+	newstr = malloc((newlen + 1) * sizeof(char));
+	if (newstr == NULL)
+		return (NULL);
+	newstr[newlen] = 0;
+	i = 0;
+	j = 0;
+	if (s1)
+	{
+		while (s1[i])
+			newstr[j++] = s1[i++];
+		free(s1);
+	}
+	newstr[j] = c;
 	return (newstr);
 }

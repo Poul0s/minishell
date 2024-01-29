@@ -6,35 +6,11 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/29 11:34:33 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/29 16:22:03 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command_Int.h"
-
-char	*ft_strfjoin_chr(char *s1, char c)
-{
-	char	*newstr;
-	size_t	newlen;
-	size_t	i;
-	size_t	j;
-
-	newlen = ft_strlen(s1) + 1;
-	newstr = malloc((newlen + 1) * sizeof(char));
-	if (newstr == NULL)
-		return (NULL);
-	newstr[newlen] = 0;
-	i = 0;
-	j = 0;
-	if (s1)
-	{
-		while (s1[i])
-			newstr[j++] = s1[i++];
-		free(s1);
-	}
-	newstr[j] = c;
-	return (newstr);
-}
 
 static bool	is_end_arg(t_string_index *command_line, bool stop_file_redirect)
 {
@@ -54,8 +30,8 @@ static bool	is_end_arg(t_string_index *command_line, bool stop_file_redirect)
 }
 
 static void	parse_variable(char **argument,
-							t_string_index *command_line,
-							t_list **prev_arguments,
+							t_string_index *cmd_line,
+							t_list **prev_args,
 							t_command *command)
 {
 	size_t	start;
@@ -63,71 +39,82 @@ static void	parse_variable(char **argument,
 	char	*var_name;
 	t_list	*var_arg_node;
 
-	start = command_line->i + 1;
-	end = command_line->i + 1;
-	while (command_line->str[end])
+	start = cmd_line->i + 1;
+	end = cmd_line->i + 1;
+	while (cmd_line->str[end])
 	{
-		if (end != start && command_line->str[start] == '?')
-			break ;
-		if (!ft_isalnum(command_line->str[end]) && (command_line->str[end] != '?' || end != start))
+		if ((end != start && cmd_line->str[start] == '?')
+			|| (!ft_isalnum(cmd_line->str[end])
+				&& (cmd_line->str[end] != '?' || end != start)))
 			break ;
 		end++;
 	}
-	command_line->i = end;
-	if (end == start && is_end_arg(command_line, true))
+	cmd_line->i = end;
+	if (end == start && is_end_arg(cmd_line, true))
 		*argument = ft_strfjoin_chr(*argument, '$');
 	else
 	{
-		var_name = ft_substr(command_line->str, start, end - start);
-		var_arg_node = insert_variable_argument(argument, prev_arguments, var_name, ENVIRONMENT_VARIABLE);
+		var_name = ft_substr(cmd_line->str, start, end - start);
+		var_arg_node = insert_var_arg(argument, prev_args, var_name, ENV_VAR);
 		ft_lstadd_back(&(command->argument_variables), var_arg_node);
 	}
-	command_line->i = end - 1;
+	cmd_line->i = end - 1;
 }
 
-static void	parse_wildcard(char **argument, t_list **prev_arguments, t_command *command)
+static void	parse_wildcard(char **argument,
+							t_list **prev_arguments,
+							t_command *command)
 {
 	t_list	*var_arg_node;
 
-	var_arg_node = insert_variable_argument(argument, prev_arguments, NULL, WILDCARD);
+	var_arg_node = insert_var_arg(argument, prev_arguments, NULL, WILDCARD);
 	ft_lstadd_back(&(command->argument_variables), var_arg_node);
+}
+
+static bool	parse_argument_char(t_string_index *command_line,
+								t_command *cmd,
+								t_list **prev_arguments,
+								t_current_focus *foc)
+{
+	char	c;
+
+	c = command_line->str[command_line->i];
+	if (c == '\'' && !foc->dblquote)
+	{
+		foc->quote = !foc->quote;
+		foc->data = ft_strfjoin(foc->data, "");
+	}
+	else if (c == '$' && !foc->quote)
+		parse_variable(&(foc->data), command_line, prev_arguments, cmd);
+	else if (c == '"' && !foc->quote)
+	{
+		foc->dblquote = !foc->dblquote;
+		foc->data = ft_strfjoin(foc->data, "");
+	}
+	else if (c == '*' && !foc->quote && !foc->dblquote)
+		parse_wildcard(&(foc->data), prev_arguments, cmd);
+	else if (!foc->quote && !foc->dblquote && is_end_arg(command_line, !cmd))
+		return (true);
+	else if (c == '<' || c == '>')
+		parse_file_redirection(command_line, &(foc->data), cmd);
+	else
+		foc->data = ft_strfjoin_chr(foc->data, c);
+	command_line->i++;
+	return (false);
 }
 
 char	*parse_argument(t_string_index *command_line,
 						t_command *cmd,
 						t_list **prev_arguments)
 {
-	char			*argument;
 	t_current_focus	foc;
-	char			c;
 
 	ft_bzero(&foc, sizeof(t_current_focus));
 	str_i_skip_spaces(command_line);
-	argument = NULL;
 	while (command_line->str[command_line->i])
 	{
-		c = command_line->str[command_line->i];
-		if (c == '\'' && !foc.dblquote)
-		{
-			foc.quote = !foc.quote;
-			argument = ft_strfjoin(argument, "");
-		}
-		else if (c == '$' && !foc.quote)
-			parse_variable(&argument, command_line, prev_arguments, cmd);
-		else if (c == '"' && !foc.quote)
-		{
-			foc.dblquote = !foc.dblquote;
-			argument = ft_strfjoin(argument, "");
-		}
-		else if (c == '*' && !foc.quote && !foc.dblquote)
-			parse_wildcard(&argument, prev_arguments, cmd);
-		else if (!foc.quote && !foc.dblquote && is_end_arg(command_line, !cmd))
+		if (parse_argument_char(command_line, cmd, prev_arguments, &foc))
 			break ;
-		else if (c == '<' || c == '>')
-			parse_file_redirection(command_line, &argument, cmd);
-		else
-			argument = ft_strfjoin_chr(argument, c);
-		command_line->i++;
 	}
-	return (argument);
+	return (foc.data);
 }

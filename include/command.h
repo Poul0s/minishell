@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:01:28 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/29 15:32:51 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/29 16:10:23 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_execution_data
 typedef enum e_variable_argument_types
 {
 	WILDCARD,
-	ENVIRONMENT_VARIABLE
+	ENV_VAR
 }	t_variable_argument_type;
 
 typedef struct s_variable_argument
