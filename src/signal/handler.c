@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handler.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:38:09 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/26 17:05:10 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/29 16:04:33 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 #include <signal.h>
 #include <termios.h>
 
-extern int	exit_status;
+extern int	g_exit_status;
 
 static void	signal_handler(int signal)
 {
 	ft_dprintf(1, "\033[%dC", rl_point + ft_strlen(rl_prompt));
 	if (signal == 2)
 	{
-		exit_status = 130;
+		g_exit_status = 130;
 		ft_dprintf(1, "%c^C\n", 0);
 		rl_on_new_line();
 		rl_replace_line("", 0);

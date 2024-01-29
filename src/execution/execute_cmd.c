@@ -6,14 +6,14 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:23:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/29 15:30:32 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/29 16:04:30 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <errno.h>
 
-extern int	exit_status;
+extern int	g_exit_status;
 
 char	**ft_strs_insert_str(char **src, char *new_elem, size_t pos)
 {
@@ -128,7 +128,7 @@ static void	convert_variable_arguments(t_command *command)
 		if (var_arg_data->type == ENVIRONMENT_VARIABLE)
 		{
 			if (ft_strncmp(var_arg_data->data, "?", 2) == 0)
-				var_arg_str = ft_itoa(exit_status);
+				var_arg_str = ft_itoa(g_exit_status);
 			else
 				var_arg_str = insert_variable_data(variable_argument, command);
 		}
@@ -190,19 +190,19 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 			child_pid_res = (-child_pid - 1) >> 8;
 		else
 			waitpid(child_pid, &child_pid_res, 0);
-		if ((exit_status != 0 && group_data->on_error != NULL) || (exit_status == 0 && group_data->on_success != NULL))
+		if ((g_exit_status != 0 && group_data->on_error != NULL) || (g_exit_status == 0 && group_data->on_success != NULL))
 		{
 			baby_pid = fork();
 			if (baby_pid == 0)
 			{
 				// command->exec_data.forked = false;
 				free(command->exec_data.pid);
-				exit_status = WEXITSTATUS(child_pid_res);
-				if (exit_status != 0 && group_data->on_error != NULL)
+				g_exit_status = WEXITSTATUS(child_pid_res);
+				if (g_exit_status != 0 && group_data->on_error != NULL)
 						exit(execute_command_line(group_data->on_error, command->exec_data));
-				else if (exit_status == 0 && group_data->on_success != NULL)
+				else if (g_exit_status == 0 && group_data->on_success != NULL)
 						exit(execute_command_line(group_data->on_success, command->exec_data));
-				exit(exit_status);
+				exit(g_exit_status);
 			}
 			else
 			{

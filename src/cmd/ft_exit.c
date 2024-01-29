@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 23:58:47 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/26 00:53:01 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/29 16:04:10 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int	exit_status; 
+extern int	g_exit_status; 
 
 bool	is_str_num(char *str)
 {
@@ -55,7 +55,7 @@ int	ft_exit(t_command *command)
 	unsigned char	exit_code;
 
 	if (command->arguments[1] == NULL)
-		exit_code = exit_status;
+		exit_code = g_exit_status;
 	else if (!is_str_num(command->arguments[1]))
 	{
 		ft_dprintf(2, "minishell: exit: %s: numeric argument required\n", command->arguments[1]);
