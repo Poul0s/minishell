@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:23:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/29 16:10:24 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/30 11:40:29 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,20 +76,25 @@ static char	*insert_variable_data(t_list *variable_argument, t_command *command)
 	size_t				i;
 
 	var_arg_data = variable_argument->content;
-	var_arg_strs = ft_split(get_env_var(*(command->env), var_arg_data->data), ' ');
-	if (!var_arg_strs || var_arg_strs[0] == NULL)
+	if (var_arg_data->disable_multiple_args)
+		res = ft_strdup(get_env_var(*(command->env), var_arg_data->data));
+	else
 	{
+		var_arg_strs = ft_split(get_env_var(*(command->env), var_arg_data->data), ' ');
+		if (!var_arg_strs || var_arg_strs[0] == NULL)
+		{
+			free(var_arg_strs);
+			return (NULL);
+		}
+		i = 0;
+		while (var_arg_strs[i] && var_arg_strs[i + 1])
+		{
+			insert_argument(variable_argument, command, var_arg_strs[i]);
+			i++;
+		}
+		res = var_arg_strs[i];
 		free(var_arg_strs);
-		return (NULL);
 	}
-	i = 0;
-	while (var_arg_strs[i] && var_arg_strs[i + 1])
-	{
-		insert_argument(variable_argument, command, var_arg_strs[i]);
-		i++;
-	}
-	res = var_arg_strs[i];
-	free(var_arg_strs);
 	return (res);
 }
 

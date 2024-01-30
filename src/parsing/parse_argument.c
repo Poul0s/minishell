@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/29 16:22:03 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/30 11:27:49 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static bool	is_end_arg(t_string_index *command_line, bool stop_file_redirect)
 	return (false);
 }
 
-static void	parse_variable(char **argument,
+static void	parse_variable(t_current_focus *foc,
 							t_string_index *cmd_line,
 							t_list **prev_args,
 							t_command *command)
@@ -51,23 +51,23 @@ static void	parse_variable(char **argument,
 	}
 	cmd_line->i = end;
 	if (end == start && is_end_arg(cmd_line, true))
-		*argument = ft_strfjoin_chr(*argument, '$');
+		foc->data = ft_strfjoin_chr(foc->data, '$');
 	else
 	{
 		var_name = ft_substr(cmd_line->str, start, end - start);
-		var_arg_node = insert_var_arg(argument, prev_args, var_name, ENV_VAR);
+		var_arg_node = insert_var_arg(foc, prev_args, var_name, ENV_VAR);
 		ft_lstadd_back(&(command->argument_variables), var_arg_node);
 	}
 	cmd_line->i = end - 1;
 }
 
-static void	parse_wildcard(char **argument,
+static void	parse_wildcard(t_current_focus *foc,
 							t_list **prev_arguments,
 							t_command *command)
 {
 	t_list	*var_arg_node;
 
-	var_arg_node = insert_var_arg(argument, prev_arguments, NULL, WILDCARD);
+	var_arg_node = insert_var_arg(foc, prev_arguments, NULL, WILDCARD);
 	ft_lstadd_back(&(command->argument_variables), var_arg_node);
 }
 
@@ -85,14 +85,14 @@ static bool	parse_argument_char(t_string_index *command_line,
 		foc->data = ft_strfjoin(foc->data, "");
 	}
 	else if (c == '$' && !foc->quote)
-		parse_variable(&(foc->data), command_line, prev_arguments, cmd);
+		parse_variable(foc, command_line, prev_arguments, cmd);
 	else if (c == '"' && !foc->quote)
 	{
 		foc->dblquote = !foc->dblquote;
 		foc->data = ft_strfjoin(foc->data, "");
 	}
 	else if (c == '*' && !foc->quote && !foc->dblquote)
-		parse_wildcard(&(foc->data), prev_arguments, cmd);
+		parse_wildcard(foc, prev_arguments, cmd);
 	else if (!foc->quote && !foc->dblquote && is_end_arg(command_line, !cmd))
 		return (true);
 	else if (c == '<' || c == '>')

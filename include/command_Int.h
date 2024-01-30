@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:41:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/29 16:28:45 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/30 11:29:16 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct s_current_focus
 	char	*data;
 }	t_current_focus;
 
-t_list			*insert_var_arg(char **current_arg,
+t_list			*insert_var_arg(t_current_focus *foc,
 					t_list **prev_arguments,
 					char *argument_data,
 					t_variable_argument_type type);
