@@ -6,11 +6,9 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/29 16:04:03 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/30 19:55:34 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "minishell.h"
 #include "autocompletion.h"
@@ -19,11 +17,16 @@ int	g_exit_status;
 
 static void	print_syntax_error(t_syntax *syntax, t_sh_data *shell_data)
 {
+	char	*token;
+
 	ft_dprintf(2, "%s: ", shell_data->exec_name);
 	if (syntax->no_end)
 		ft_dprintf(2, "syntax error: unexpected end of file\n");
 	else
-		ft_dprintf(2, "syntax error near unexpected token `%s'\n", syntax->token);
+	{
+		token = syntax->token;
+		ft_dprintf(2, "syntax error near unexpected token `%s'\n", token);
+	}
 	g_exit_status = 2;
 }
 
@@ -69,6 +72,31 @@ void	free_shell_data(t_sh_data *shell_data, bool disable_signal)
 	clear_history();
 }
 
+static void	init_shell_data(t_sh_data *shell_data, char **av, char **envp)
+{
+	int		shell_lvl;
+	char	*shell_lvl_str;
+
+	shell_data->exec_name = get_exec_name(av[0]);
+	shell_data->env = ft_strs_dup(envp);
+	shell_lvl_str = get_env_var(shell_data->env, "SHLVL");
+	if (shell_lvl_str)
+		shell_lvl = ft_atoi(get_env_var(shell_data->env, "SHLVL"));
+	else
+		shell_lvl = 0;
+	shell_lvl++;
+	if (shell_lvl < 0)
+		shell_lvl = 0;
+	shell_lvl_str = ft_itoa(shell_lvl);
+	shell_data->env = edit_env_var(shell_data->env, "SHLVL", shell_lvl_str);
+	free(shell_lvl_str);
+	shell_data->hostname = get_hostname();
+	g_exit_status = 0;
+	shell_data->prompt = NULL;
+	refresh_prompt(shell_data);
+	toggle_signal_handler(true);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char		*line_readed;
@@ -76,14 +104,8 @@ int	main(int ac, char **av, char **envp)
 
 	(void) ac;
 	rl_completion_entry_function = autocompletion;
-	shell_data.exec_name = get_exec_name(av[0]);
-	shell_data.env = ft_strs_dup(envp);
-	shell_data.hostname = get_hostname();
-	g_exit_status = 0;
-	shell_data.prompt = NULL;
-	refresh_prompt(&shell_data);
+	init_shell_data(&shell_data, av, envp);
 	line_readed = NULL;
-	toggle_signal_handler(true);
 	while (1)
 	{
 		if (line_readed && *line_readed)
