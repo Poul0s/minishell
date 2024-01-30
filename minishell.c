@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/30 19:55:34 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/30 20:27:15 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 	int					res_command_line;
 	t_execution_data	exec_data;
 
-	if (command_line_str[0] == 0)
-		return ;
 	syntax_res = check_syntax(command_line_str);
 	if (syntax_res.error)
 		print_syntax_error(&syntax_res, shell_data);
@@ -113,7 +111,7 @@ int	main(int ac, char **av, char **envp)
 		line_readed = readline(shell_data.prompt);
 		if (!line_readed)
 			break ;
-		else
+		else if (line_readed[0])
 			execute_line(line_readed, &shell_data);
 		refresh_prompt(&shell_data);
 	}
