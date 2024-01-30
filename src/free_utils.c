@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_command_line.c                                :+:      :+:    :+:   */
+/*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 17:21:11 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 17:27:20 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/30 20:32:42 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,15 @@ void	free_command_line(t_command_group *command_line, bool reset)
 	free_command_line(command_line->on_success, false);
 	free_command_line(command_line->pipe_next, false);
 	free(command_line);
+}
+
+void	free_shell_data(t_sh_data *shell_data, bool disable_signal)
+{
+	free(shell_data->prompt);
+	free(shell_data->hostname);
+	free(shell_data->exec_name);
+	ft_free_strs(shell_data->env);
+	if (disable_signal)
+		toggle_signal_handler(false);
+	clear_history();
 }

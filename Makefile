@@ -40,7 +40,7 @@ SRC		=	src/get/get_path.c \
 			src/execution/execute_cmd.c \
 			src/execution/find_close_cmd.c \
 			src/signal/handler.c \
-			src/free_command_line.c \
+			src/free_utils.c \
 			minishell.c \
 
 OBJ		=	$(addprefix obj/, $(SRC:.c=.o))

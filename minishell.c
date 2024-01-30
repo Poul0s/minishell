@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/30 20:27:15 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/30 20:32:39 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,6 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 	}
 }
 
-void	free_shell_data(t_sh_data *shell_data, bool disable_signal)
-{
-	free(shell_data->prompt);
-	free(shell_data->hostname);
-	free(shell_data->exec_name);
-	ft_free_strs(shell_data->env);
-	if (disable_signal)
-		toggle_signal_handler(false);
-	clear_history();
-}
-
 static void	init_shell_data(t_sh_data *shell_data, char **av, char **envp)
 {
 	int		shell_lvl;
@@ -95,6 +84,17 @@ static void	init_shell_data(t_sh_data *shell_data, char **av, char **envp)
 	toggle_signal_handler(true);
 }
 
+static bool	is_str_empty(char *str)
+{
+	while (*str)
+	{
+		if (*str != ' ')
+			return (false);
+		str++;
+	}
+	return (true);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char		*line_readed;
@@ -111,7 +111,7 @@ int	main(int ac, char **av, char **envp)
 		line_readed = readline(shell_data.prompt);
 		if (!line_readed)
 			break ;
-		else if (line_readed[0])
+		else if (!is_str_empty(line_readed))
 			execute_line(line_readed, &shell_data);
 		refresh_prompt(&shell_data);
 	}
