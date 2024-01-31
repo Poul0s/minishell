@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 19:13:09 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/24 21:00:38 by psalame          ###   ########.fr       */
+/*   Updated: 2024/01/31 13:22:21 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	**create_path(char **env)
 	char	**path;
 
 	i = 0;
-	while (ft_strncmp(env[i], "PATH=", 5) && env[i] != NULL)
+	while (env[i] != NULL && ft_strncmp(env[i], "PATH=", 5))
 		i++;
 	if (env[i] == NULL)
 		return (NULL);
