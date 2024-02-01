@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:01:28 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/30 11:26:23 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/01 17:30:05 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,9 @@ typedef struct s_infile
 {
 	int		fd;
 	char	*filename;
+
+	bool	here_doc;
+	char	*delimiter;
 }	t_infile;
 
 typedef struct s_outfile
@@ -59,12 +62,6 @@ typedef struct s_outfile
 	bool	append;
 }	t_outfile;
 
-typedef struct s_heredoc
-{
-	int		fd;
-	char	*delimiter;
-}	t_heredoc;
-
 // commands structures
 
 typedef struct s_command
@@ -72,7 +69,6 @@ typedef struct s_command
 	char					**arguments;
 	t_list					*infiles;
 	t_list					*outfiles; // if multime outfile has same fd -> write only on last file but create both files
-	t_list					*here_documents;
 	t_list					*argument_variables;
 	char					***env;
 

@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:17:35 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 18:06:32 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/01 17:31:01 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ static void	parse_here_doc(t_string_index *command_line,
 						int fd)
 {
 	char		*delimiter;
-	t_heredoc	*heredoc_data;
+	t_infile	*heredoc_data;
 	t_list		*node;
 
 	command_line->i += 2;
 	delimiter = parse_argument(command_line, NULL, NULL);
-	heredoc_data = malloc(sizeof(t_heredoc));
+	heredoc_data = malloc(sizeof(t_infile));
 	node = ft_lstnew(NULL);
 	if (!delimiter || !heredoc_data || !node)
 	{
@@ -50,9 +50,10 @@ static void	parse_here_doc(t_string_index *command_line,
 	if (fd == -1)
 		fd = 0;
 	heredoc_data->fd = fd;
+	heredoc_data->here_doc = true;
 	heredoc_data->delimiter = delimiter;
 	node->content = heredoc_data;
-	ft_lstadd_back(&(cmd->here_documents), node);
+	ft_lstadd_back(&(cmd->infiles), node);
 }
 
 static void	parse_outfile(t_string_index *command_line,
@@ -106,6 +107,7 @@ static void	parse_infile(t_string_index *command_line,
 		fd = 0;
 	infile_data->fd = fd;
 	infile_data->filename = filename;
+	infile_data->here_doc = false;
 	node->content = infile_data;
 	ft_lstadd_back(&(cmd->infiles), node);
 }
