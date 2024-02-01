@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/20 18:23:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/30 11:40:29 by psalame          ###   ########.fr       */
+/*   Created: 2024/02/01 14:47:25 by babonnet          #+#    #+#             */
+/*   Updated: 2024/02/01 14:47:51 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 			}
 			if (command->executable == NULL)
 			{
-				ft_dprintf(2, "%s: command not found tes\n",command->arguments[0]);
+				ft_dprintf(2, "%s: command not found\n",command->arguments[0]);
 				find_close_cmd(command->arguments[0]);
 				exit(127);
 			}

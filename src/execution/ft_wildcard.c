@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 20:04:06 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/24 20:05:56 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:19:58 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "execution.h"
 #include <dirent.h>
 
-int ft_wildcard(t_command *cmd, t_variable_argument *wc_data)
+int ft_wildcard(t_command *cmd, t_variable_argument *wc_data) // need to add offset for multiple wildcard
 {
 	DIR *dir;
 	int index;
