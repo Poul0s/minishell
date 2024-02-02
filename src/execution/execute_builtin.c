@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 22:36:42 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/26 00:51:21 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/01 17:46:16 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,10 @@ bool	is_command_builtin(char *str)
 
 int	execute_builtin_command(t_command *command)
 {
-	int	command_res;
+	int		command_res;
+	char	*exec_name;
 
+	exec_name = command->exec_data.shell_data->exec_name;
 	if (ft_strncmp(command->executable, "cd", 3) == 0)
 		command_res = ft_cd((const char **) command->arguments);
 	else if (ft_strncmp(command->executable, "echo", 5) == 0)
@@ -45,7 +47,7 @@ int	execute_builtin_command(t_command *command)
 	else if (ft_strncmp(command->executable, "pwd", 4) == 0)
 		command_res = ft_pwd();
 	else if (ft_strncmp(command->executable, "export", 7) == 0)
-		command_res = ft_export(command->arguments, command->env);
+		command_res = ft_export(command->arguments, command->env, exec_name);
 	else if (ft_strncmp(command->executable, "unset", 6) == 0)
 		command_res = ft_unset(command->arguments, command->env);
 	else if (ft_strncmp(command->executable, "exit", 5) == 0)

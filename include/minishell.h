@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:36 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/30 11:25:42 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/01 17:45:22 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int			ft_cd(const char **path);
 int			ft_env(char **env);
 int			ft_echo(const char **strs);
 int			ft_pwd(void);
-int			ft_export(char **arguments, char ***env);
+int			ft_export(char **arguments, char ***env, char *shell_name);
 int			ft_unset(char **arguments, char ***env);
 int			ft_exit(t_command *command);
 

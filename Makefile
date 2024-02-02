@@ -30,7 +30,9 @@ SRC		=	src/get/get_path.c \
 			src/cmd/ft_echo.c \
 			src/cmd/ft_env.c \
 			src/cmd/ft_pwd.c \
-			src/cmd/ft_export.c \
+			src/cmd/export/print_env_sorted.c \
+			src/cmd/export/export_multiple_env.c \
+			src/cmd/export/ft_export.c \
 			src/cmd/ft_unset.c \
 			src/cmd/ft_exit.c \
 			src/execution/execute_builtin.c \
