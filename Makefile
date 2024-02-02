@@ -37,6 +37,7 @@ SRC		=	src/get/get_path.c \
 			src/execution/execute_command_line.c \
 			src/execution/get_path.c \
 			src/execution/pipe.c \
+			src/execution/manage_file.c \
 			src/execution/execute_cmd.c \
 			src/execution/find_close_cmd.c \
 			src/signal/handler.c \

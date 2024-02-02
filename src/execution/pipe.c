@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:19:10 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/26 16:23:31 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/03 00:21:43 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,17 @@ static void	close_pipe(int fd[2])
 		close(fd[1]);
 }
 
-static void	manage_pipe(int fd[2][2], int i, int size)
+
+static void	manage_pipe(t_command *cmd, int fd[2][2], int i, int size)
 {
 	if (i == size - 1)
-		dup2(fd[(i + 1) % 2][0], STDIN_FILENO);
+		manage_infile(cmd->infiles, fd[(i + 1) % 2][0]);
 	else if (i == 0)
-		dup2(fd[0][1], STDOUT_FILENO);
+		manage_outfile(cmd->outfiles, fd[0][1]);
 	else
 	{
-		dup2(fd[(i + 1) % 2][0], STDIN_FILENO);
-		dup2(fd[i % 2][1], STDOUT_FILENO);
+		manage_infile(cmd->infiles, fd[(i + 1) % 2][0]);
+		manage_outfile(cmd->outfiles, fd[i % 2][1]);
 	}
 	close_pipe(fd[0]);
 	if (i > 0)
@@ -51,7 +52,7 @@ void pipe_cmd(t_command_group *command_line, t_execution_data exec_data, t_pipe 
 		exec_data.pid[data_pipe->index] = fork();
 		if (exec_data.pid[data_pipe->index] == 0)
 		{
-			manage_pipe(data_pipe->fd, data_pipe->index, data_pipe->pipe_count);
+			manage_pipe(command_line->command, data_pipe->fd, data_pipe->index, data_pipe->pipe_count);
 			command_line->command->exec_data = exec_data;
 			child = execute_command(command_line->command, command_line, data_pipe->fd[data_pipe->index % 2]);
 			if (child < 0)

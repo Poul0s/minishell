@@ -6,12 +6,13 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:47:25 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/01 14:47:51 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/03 00:25:52 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <errno.h>
+#include <unistd.h>
 
 extern int	g_exit_status;
 
@@ -184,6 +185,8 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 				find_close_cmd(command->arguments[0]);
 				exit(127);
 			}
+			manage_infile(command->infiles, STDIN_FILENO);
+			manage_outfile(command->outfiles, STDOUT_FILENO);
 			execve(command->executable, command->arguments, *(command->env));
 			exit(errno);
 		}

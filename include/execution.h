@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:02:49 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/29 15:33:38 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/02 23:39:43 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ int		execute_builtin_command(t_command *command);
 int		execute_command(t_command *command, t_command_group *group_data,
 			int fd[2]);
 
-void	pipe_cmd(t_command_group *command_line,
-			t_execution_data exec_data,
+void	pipe_cmd(t_command_group *command_line, t_execution_data exec_data,
 			t_pipe *data_pipe);
+void	manage_infile(t_list *infile, int fd);
+void	manage_outfile(t_list *outfiles, int fd);
 
 int		execute_command_line(t_command_group *command_line,
 			t_execution_data exec_data);

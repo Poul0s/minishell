@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:50:08 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/01 14:50:10 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/02 23:53:49 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 	t_execution_data	exec_data;
 
 	syntax_res = check_syntax(command_line_str);
-	if (syntax_res.error)
+	if (syntax_res.error && 0)
 		print_syntax_error(&syntax_res, shell_data);
 	else
 	{
