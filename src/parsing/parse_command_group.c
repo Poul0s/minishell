@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_command_group.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:27:56 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/29 16:27:49 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/02 20:17:06 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command_Int.h"
 
-static size_t	get_cmd_grp_end(t_string_index *command_line,
-								t_command_group *command_group)
+static size_t	get_cmd_grp_end(t_string_index *command_line)
 {
 	int		nb_parenthesis;
 	bool	is_in_parenthesis;
@@ -23,7 +22,6 @@ static size_t	get_cmd_grp_end(t_string_index *command_line,
 	is_in_parenthesis = command_line->str[command_line->i] == '(';
 	if (!is_in_parenthesis)
 		return (ft_strlen(command_line->str));
-	command_group->is_in_parenthesis = true;
 	command_line->i++;
 	end = command_line->i;
 	nb_parenthesis = 1;
@@ -49,7 +47,7 @@ t_command_group	*parse_command_grp(t_string_index *command_line, char ***env)
 	res = ft_calloc(1, sizeof(t_command_group));
 	if (!res)
 		return (res);
-	end = get_cmd_grp_end(command_line, res);
+	end = get_cmd_grp_end(command_line);
 	end_char = command_line->str[end];
 	command_line->str[end] = 0;
 	while (command_line->str[command_line->i] == ' '
