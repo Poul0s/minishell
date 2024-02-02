@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_argument.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/30 11:27:49 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/02 20:35:27 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,17 @@ static bool	is_end_arg(t_string_index *command_line, bool stop_file_redirect)
 	return (false);
 }
 
+static bool	is_var_arg_char_correct(t_string_index *cmd_line, int start, int current)
+{
+	if (cmd_line->str[current] == '_')
+		return (true);
+	else if (start != current && ft_isalnum(cmd_line->str[current]))
+		return (true);
+	else if (ft_isalpha(cmd_line->str[current]))
+		return (true);
+	return (false);
+}
+
 static void	parse_variable(t_current_focus *foc,
 							t_string_index *cmd_line,
 							t_list **prev_args,
@@ -44,7 +55,7 @@ static void	parse_variable(t_current_focus *foc,
 	while (cmd_line->str[end])
 	{
 		if ((end != start && cmd_line->str[start] == '?')
-			|| (!ft_isalnum(cmd_line->str[end])
+			|| (!is_var_arg_char_correct(cmd_line, start, end)
 				&& (cmd_line->str[end] != '?' || end != start)))
 			break ;
 		end++;
