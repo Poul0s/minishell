@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/01 14:47:25 by babonnet          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/02/03 00:25:52 by babonnet         ###   ########.fr       */
-=======
-/*   Updated: 2024/02/02 20:46:32 by psalame          ###   ########.fr       */
->>>>>>> refs/remotes/origin/main
+/*   Created: 2024/02/03 21:00:20 by babonnet          #+#    #+#             */
+/*   Updated: 2024/02/03 22:24:38 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 18:05:32 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/03 00:28:09 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/03 22:11:01 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,6 @@ void manage_outfile(t_list *outfiles, int fd)
 {
 	t_outfile *out;
 
-	if (fd == STDOUT_FILENO)
-		return ;
 	while(outfiles)
 	{
 		close(fd);
@@ -129,6 +127,8 @@ void manage_outfile(t_list *outfiles, int fd)
 		fd = open(out->filename, O_WRONLY | O_CREAT , 0644);
 		outfiles = outfiles->next;
 	}
+	if (fd == STDOUT_FILENO)
+		return ;
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
 }

@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execute_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 22:36:42 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/01 17:46:16 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/03 22:26:18 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "execution.h"
 #include "minishell.h"
+#include <unistd.h>
 
 bool	is_command_builtin(char *str)
 {
@@ -36,7 +38,13 @@ int	execute_builtin_command(t_command *command)
 {
 	int		command_res;
 	char	*exec_name;
-
+	int		in;
+	int		out;
+	
+	in = dup(STDIN_FILENO);
+	out = dup(STDOUT_FILENO);
+	manage_infile(command->infiles, STDIN_FILENO);
+	manage_outfile(command->outfiles, STDOUT_FILENO);
 	exec_name = command->exec_data.shell_data->exec_name;
 	if (ft_strncmp(command->executable, "cd", 3) == 0)
 		command_res = ft_cd((const char **) command->arguments);
@@ -55,6 +63,8 @@ int	execute_builtin_command(t_command *command)
 	else
 		command_res = 127;
 	command_res = -command_res - 1;
+	dup2(in, STDIN_FILENO);
+	dup2(out, STDOUT_FILENO);
 	return (command_res);
 }
 
