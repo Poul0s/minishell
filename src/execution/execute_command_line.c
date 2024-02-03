@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command_line.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:02:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/29 14:01:23 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/02 20:16:40 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	execute_command_line(t_command_group *command_line, t_execution_data exec_da
 	data_pipe.pipe_count = count_pipe(command_line);
 	pid = malloc(data_pipe.pipe_count * sizeof(int));
 	exec_data.pid = NULL;
-	if (data_pipe.pipe_count == 1 && !command_line->is_in_parenthesis)
+	if (data_pipe.pipe_count == 1)
 	{
 		command_line->command->exec_data = exec_data;
 		pid[0] = execute_command(command_line->command, command_line, NULL);

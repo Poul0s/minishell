@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_export.c                                        :+:      :+:    :+:   */
+/*   print_env_sorted.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/24 21:03:09 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/25 00:14:34 by psalame          ###   ########.fr       */
+/*   Created: 2024/02/01 17:58:05 by psalame           #+#    #+#             */
+/*   Updated: 2024/02/02 15:25:58 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "environment_manager.h"
-#include <string.h>
-#include <errno.h>
+#include "export_Int.h"
 
-void	ft_strs_sort(char **strs)
+static void	ft_strs_sort(char **strs)
 {
 	int		i;
 	int		j;
@@ -38,7 +36,7 @@ void	ft_strs_sort(char **strs)
 	}
 }
 
-int	print_env_sorted(char **env)
+int	print_env_sorted(char **env, char *shell_name)
 {
 	char	**tmp_env;
 	size_t	i;
@@ -46,7 +44,7 @@ int	print_env_sorted(char **env)
 	tmp_env = ft_strs_dup(env);
 	if (tmp_env == NULL)
 	{
-		ft_dprintf(2, "minishell: export: %s\n", strerror(ENOMEM));
+		ft_dprintf(2, "%s: export: %s\n", shell_name, strerror(ENOMEM));
 		return (ENOMEM);
 	}
 	ft_strs_sort(tmp_env);
@@ -58,38 +56,4 @@ int	print_env_sorted(char **env)
 	}
 	ft_free_strs(tmp_env);
 	return (0);
-}
-
-static void	insert_multiple_env_var(char **arguments, char ***env)
-{
-	char	*sep_pos;
-	size_t	i;
-
-	i = 0;
-	while (arguments[i])
-	{
-		sep_pos = ft_strchr(arguments[i], '=');
-		if (sep_pos)
-		{
-			*sep_pos = '\0';
-			*env = edit_env_var(*env, arguments[i], sep_pos + 1);
-		}
-		i++;
-	}
-}
-
-int	ft_export(char **arguments, char ***env)
-{
-	if (arguments[1] == NULL)
-		return (print_env_sorted(*env));
-	else
-	{
-		if (ft_strs_len(arguments) == 3
-			&& ft_strchr(arguments[1], '=') == NULL
-			&& ft_strchr(arguments[1], '=') == NULL)
-			*env = edit_env_var(*env, arguments[1], arguments[2]);
-		else
-			insert_multiple_env_var(arguments + 1, env);
-		return (0);
-	}
 }

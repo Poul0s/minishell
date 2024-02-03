@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:47:25 by babonnet          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/02/03 00:25:52 by babonnet         ###   ########.fr       */
+=======
+/*   Updated: 2024/02/02 20:46:32 by psalame          ###   ########.fr       */
+>>>>>>> refs/remotes/origin/main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +192,8 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 			manage_infile(command->infiles, STDIN_FILENO);
 			manage_outfile(command->outfiles, STDOUT_FILENO);
 			execve(command->executable, command->arguments, *(command->env));
-			exit(errno);
+			ft_dprintf(2, "%s: %s: %s\n", command->exec_data.shell_data->exec_name, command->arguments[0], strerror(errno)); // todo check if leak
+			exit(127);
 		}
 		free(command->executable);
 	}
@@ -203,7 +208,6 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 			baby_pid = fork();
 			if (baby_pid == 0)
 			{
-				// command->exec_data.forked = false;
 				free(command->exec_data.pid);
 				g_exit_status = WEXITSTATUS(child_pid_res);
 				if (g_exit_status != 0 && group_data->on_error != NULL)
@@ -213,11 +217,7 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 				exit(g_exit_status);
 			}
 			else
-			{
-				// free_command(command);
-				// return (baby_pid);
 				child_pid = baby_pid;
-			}
 		}
 	}
 	if (command->exec_data.forked)

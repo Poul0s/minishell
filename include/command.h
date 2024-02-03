@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:01:28 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/01 17:30:05 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/02 20:18:01 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,6 @@ typedef struct s_command_group
 	struct s_command_group	*on_success;
 	struct s_command_group	*on_error;
 	struct s_command_group	*pipe_next;
-
-	bool					is_in_parenthesis; // todo check if and how to implement
 }	t_command_group;
 
 t_command_group	*parse_cmd_line(char *command_line, char ***env);

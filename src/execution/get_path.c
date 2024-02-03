@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 19:13:09 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/31 13:22:21 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/02 20:45:10 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*find_cmd(char *cmd, char **env)
 	char	**path;
 
 	path = create_path(env);
-	if (access(cmd, X_OK) != -1)
+	if (access(cmd, F_OK) != -1)
 		return (ft_strdup(cmd));
 	if (!path)
 		return (NULL);
@@ -56,7 +56,7 @@ char	*find_cmd(char *cmd, char **env)
 	while (path[i])
 	{
 		tmp = ft_strjoin(path[i], cmd);
-		if (access(tmp, X_OK) != -1)
+		if (access(tmp, F_OK) != -1)
 		{
 			ft_free_strs(path);
 			return (tmp);
