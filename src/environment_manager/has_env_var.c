@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:45:01 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 18:14:29 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/05 18:26:28 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ bool	has_env_var(char **env, char *key)
 		return (false);
 	while (env[i])
 	{
-		if (ft_strncmp(env[i], key, key_len) == 0 && env[i][key_len] == '=')
+		if (ft_strncmp(env[i], key, key_len) == 0
+			&& (env[i][key_len] == '=' || env[i][key_len] == 0))
 			return (true);
 		i++;
 	}

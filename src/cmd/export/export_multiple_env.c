@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:52:06 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/02 15:20:12 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/05 18:21:53 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,21 @@ static int	set_env_var_data(char *key, char *value, char ***env, bool append)
 
 	if (append)
 		prev_env_var = get_env_var(*env, key);
+	if (value)
+		value += 1;
 	if (append && prev_env_var)
 	{
-		value = ft_strjoin(prev_env_var, value);
 		if (value)
 		{
-			*env = edit_env_var(*env, key, value);
-			free(value);
+			value = ft_strjoin(prev_env_var, value);
+			if (value)
+			{
+				*env = edit_env_var(*env, key, value);
+				free(value);
+			}
+			else
+				return (ENOMEM);
 		}
-		else
-			return (ENOMEM);
 	}
 	else
 		*env = edit_env_var(*env, key, value);
@@ -73,9 +78,7 @@ int	parse_env_var_data(char *argument, char ***env, char *shell_name)
 		print_invalid_identifier(argument, shell_name);
 		return (1);
 	}
-	if (!sep)
-		return (0);
-	res = set_env_var_data(argument, sep + 1, env, append);
+	res = set_env_var_data(argument, sep, env, append);
 	if (res)
 		ft_dprintf(2, "%s: export: `%s': %s\n", shell_name, argument, strerror(res));
 	return (res);

@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:45:33 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 21:40:53 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/05 18:22:50 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,11 @@ char	**edit_env_var(char **env, char *key, char *new_value)
 	}
 	new_env[i] = NULL;
 	new_env[i] = ft_strfjoin(new_env[i], key);
-	new_env[i] = ft_strfjoin_chr(new_env[i], '=');
-	new_env[i] = ft_strfjoin(new_env[i], new_value);
+	if (new_value)
+	{
+		new_env[i] = ft_strfjoin_chr(new_env[i], '=');
+		new_env[i] = ft_strfjoin(new_env[i], new_value);
+	}
 	new_env[i + 1] = NULL;
 	free(env);
 	return (new_env);
