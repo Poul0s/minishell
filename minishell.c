@@ -6,11 +6,12 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:50:08 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/02 23:53:49 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/06 20:20:50 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "here_doc.h"
 #include "autocompletion.h"
 
 int	g_exit_status;
@@ -43,19 +44,21 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 	else
 	{
 		command_line = parse_cmd_line(command_line_str, &(shell_data->env));
-		toggle_signal_handler(false);
 		if (command_line)
 		{
+			manage_here_doc(command_line);
+			toggle_signal_handler(false);
 			exec_data.forked = false;
 			exec_data.base_command_line = command_line;
 			exec_data.shell_data = shell_data;
 			res_command_line = execute_command_line(command_line, exec_data);
 			if (res_command_line != -1)
 				g_exit_status = res_command_line;
+			free_here_doc(command_line);
 			free_command_line(command_line, false);
 			free_command_line(NULL, true);
+			toggle_signal_handler(true);
 		}
-		toggle_signal_handler(true);
 	}
 }
 
