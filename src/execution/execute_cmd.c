@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:00:20 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/06 10:49:37 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/06 13:08:48 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,12 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 			manage_outfile(command->outfiles, STDOUT_FILENO);
 			execve(command->executable, command->arguments, *(command->env));
 			ft_dprintf(2, "%s: %s: %s\n", command->exec_data.shell_data->exec_name, command->arguments[0], strerror(errno));
-			exit(127);// todo check if leak at this point
+			free(command->executable);
+			free(command->exec_data.pid);
+			free_shell_data(command->exec_data.shell_data, false);
+			free_command_line(command->exec_data.base_command_line, false);
+			free_command_line(NULL, true);
+			exit(127);
 		}
 		free(command->executable);
 	}
