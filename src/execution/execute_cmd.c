@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:00:20 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/03 22:24:38 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/06 10:49:37 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,8 +188,8 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 			manage_infile(command->infiles, STDIN_FILENO);
 			manage_outfile(command->outfiles, STDOUT_FILENO);
 			execve(command->executable, command->arguments, *(command->env));
-			ft_dprintf(2, "%s: %s: %s\n", command->exec_data.shell_data->exec_name, command->arguments[0], strerror(errno)); // todo check if leak
-			exit(127);
+			ft_dprintf(2, "%s: %s: %s\n", command->exec_data.shell_data->exec_name, command->arguments[0], strerror(errno));
+			exit(127);// todo check if leak at this point
 		}
 		free(command->executable);
 	}
