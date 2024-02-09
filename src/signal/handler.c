@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:38:09 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/02 17:20:10 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/09 15:53:27 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ extern int	g_exit_status;
 
 static void	signal_handler(int signal)
 {
-	ft_dprintf(1, "\033[1E\033[1F\033[%dC", rl_point + ft_strlen(rl_prompt));
+	ft_dprintf(1, "\r\033[%dC", rl_point + ft_strlen(rl_prompt));
 	if (signal == 2)
 	{
 		g_exit_status = 130;
