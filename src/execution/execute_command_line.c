@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:02:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/09 18:27:53 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/09 18:43:07 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ int count_pipe(t_command_group *command_line)
 	i = 0;
 	while(command_line)
 	{
-		if (command_line->pipe_next == NULL) // todo move mayeb bad pos
-			command_line->command->last_pipe_cmd = true;
 		command_line = command_line->pipe_next;
 		i++;
 	}
@@ -41,16 +39,16 @@ int	execute_command_line(t_command_group *command_line, t_execution_data exec_da
 
 	forked = exec_data.forked;
 	exec_data.forked = false;
-	data_pipe.index = 0;
-	data_pipe.pipe_count = count_pipe(command_line);
 	exec_data.pid = NULL;
-	if (data_pipe.pipe_count == 1)
+	if (command_line->pipe_next == NULL)
 	{
 		command_line->command->exec_data = exec_data;
 		last_pid_res = execute_command(command_line->command, command_line, NULL);
 	}
 	else
 	{
+		data_pipe.index = 0;
+		data_pipe.pipe_count = count_pipe(command_line);
 		pid = malloc(data_pipe.pipe_count * sizeof(int));
 		exec_data.pid = pid;
 		pipe_cmd(command_line, exec_data, &data_pipe);
