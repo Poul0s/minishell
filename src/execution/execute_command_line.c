@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command_line.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:02:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/05 20:05:13 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/09 17:56:06 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	execute_command_line(t_command_group *command_line, t_execution_data exec_da
 	if (WEXITSTATUS(last_pid_res) == 0 && command_line->on_success)
 		return (execute_command_line(command_line->on_success, exec_data));
 	else if (WEXITSTATUS(last_pid_res) != 0 && command_line->on_error)
-		return (execute_command_line(command_line->on_success, exec_data));
+		return (execute_command_line(command_line->on_error, exec_data));
 	else
 	{
 		if (forked)
