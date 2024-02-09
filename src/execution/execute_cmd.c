@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:00:20 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/09 18:24:22 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/09 18:37:40 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,27 @@ static void	convert_variable_arguments(t_command *command)
 	}
 }
 
+static int	get_pid_res(int pid)
+{
+	int	pid_res;
+
+	waitpid(pid, &pid_res, 0);
+	if (!WIFEXITED(pid_res))
+	{
+		if ((WCOREDUMP(pid_res)))
+		{
+			ft_dprintf(2, "Quit (core dumped)\n");
+			return (131);
+		}
+		else
+		{
+			ft_dprintf(2, "\n");
+			return (130);
+		}
+	}
+	return (WEXITSTATUS(pid_res));
+}
+
 int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 {
 	int		child_pid;
@@ -194,25 +215,9 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 		free(command->executable);
 	}
 	if (child_pid < 0)
-		child_pid_res = (-child_pid - 1) >> 8;
+		child_pid_res = -child_pid - 1;
 	else
-	{
-		waitpid(child_pid, &child_pid_res, 0);
-		if (!WIFEXITED(child_pid_res))
-		{
-			if ((WCOREDUMP(child_pid_res)))
-			{
-				ft_dprintf(2, "Quit (core dumped)\n");
-				child_pid_res = 131 << 8;
-			}
-			else
-			{
-				ft_dprintf(2, "\n");
-				child_pid_res = 130 << 8;
-			}
-		}
-	}
-	child_pid_res = WEXITSTATUS(child_pid_res);
+		child_pid_res = get_pid_res(child_pid);
 	if ((child_pid_res != 0 && group_data->on_error != NULL) || (child_pid_res == 0 && group_data->on_success != NULL))
 	{
 		baby_pid = fork();
@@ -226,23 +231,7 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 			exit(child_pid_res);
 		}
 		else
-		{
-			waitpid(baby_pid, &child_pid_res, 0);
-			if (!WIFEXITED(child_pid_res))
-			{
-				if ((WCOREDUMP(child_pid_res)))
-				{
-					ft_dprintf(2, "Quit (core dumped)\n");
-					child_pid_res = 131 << 8;
-				}
-				else
-				{
-					ft_dprintf(2, "\n");
-					child_pid_res = 130 << 8;
-				}
-			}
-			child_pid_res = WEXITSTATUS(child_pid_res);
-		}
+			child_pid_res = get_pid_res(baby_pid);
 	}
 	if (command->exec_data.forked)
 	{
