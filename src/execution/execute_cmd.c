@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:00:20 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/09 18:39:47 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/10 16:32:32 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,18 +225,13 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 		child_pid_res = get_pid_res(child_pid);
 	if ((child_pid_res != 0 && group_data->on_error != NULL) || (child_pid_res == 0 && group_data->on_success != NULL))
 	{
-		baby_pid = fork();
-		if (baby_pid == 0)
-		{
-			free(command->exec_data.pid);
-			if (child_pid_res != 0 && group_data->on_error != NULL)
-					exit(execute_command_line(group_data->on_error, command->exec_data));
-			else if (child_pid_res == 0 && group_data->on_success != NULL)
-					exit(execute_command_line(group_data->on_success, command->exec_data));
-			exit(child_pid_res);
-		}
-		else
-			child_pid_res = get_pid_res(baby_pid);
+		int	forked = command->exec_data.forked;
+		command->exec_data.forked = false;
+		if (child_pid_res != 0 && group_data->on_error != NULL)
+			child_pid_res = execute_command_line(group_data->on_error, command->exec_data);
+		else if (child_pid_res == 0 && group_data->on_success != NULL)
+			child_pid_res = execute_command_line(group_data->on_success, command->exec_data);
+		command->exec_data.forked = forked;
 	}
 	if (command->exec_data.forked)
 	{
