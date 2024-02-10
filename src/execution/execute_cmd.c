@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:00:20 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/10 16:32:32 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/10 17:11:38 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,16 +200,18 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 				close(fd[0]);
 				close(fd[1]);
 			}
+			manage_infile(command->infiles, STDIN_FILENO);
+			manage_outfile(command->outfiles, STDOUT_FILENO);
 			if (command->executable == NULL)
 			{
 				ft_dprintf(2, "%s: command not found\n",command->arguments[0]);
 				find_close_cmd(command->arguments[0]);
-				exit(127);
 			}
-			manage_infile(command->infiles, STDIN_FILENO);
-			manage_outfile(command->outfiles, STDOUT_FILENO);
-			execve(command->executable, command->arguments, *(command->env));
-			ft_dprintf(2, "%s: %s: %s\n", command->exec_data.shell_data->exec_name, command->arguments[0], strerror(errno));
+			else
+			{
+				execve(command->executable, command->arguments, *(command->env));
+				ft_dprintf(2, "%s: %s: %s\n", command->exec_data.shell_data->exec_name, command->arguments[0], strerror(errno));
+			}
 			free(command->executable);
 			free(command->exec_data.pid);
 			free_shell_data(command->exec_data.shell_data, false);
