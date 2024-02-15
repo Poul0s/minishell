@@ -6,11 +6,12 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:00:20 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/10 17:11:38 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/15 13:31:20 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "command_Int.h"
 #include <errno.h>
 #include <unistd.h>
 
@@ -128,7 +129,7 @@ static void	convert_variable_arguments(t_command *command)
 	char				*new_arg;
 
 	variable_argument = command->argument_variables;
-	while (variable_argument != NULL)
+	while (variable_argument != NULL) // todo parse env var before wildcard for case such as 'export z="*"; echo a*e$ze (echo a*e*e)'
 	{
 		var_arg_data = variable_argument->content;
 		if (var_arg_data->type == ENV_VAR)
@@ -139,9 +140,7 @@ static void	convert_variable_arguments(t_command *command)
 				var_arg_str = insert_variable_data(variable_argument, command);
 		}
 		else
-		{
-			// todo add wildcard
-		}
+			var_arg_str = manage_wildcard(variable_argument, command);
 		if (var_arg_str)
 		{
 			move_variable_arguments_index(variable_argument, var_arg_str);
@@ -205,7 +204,7 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 			if (command->executable == NULL)
 			{
 				ft_dprintf(2, "%s: command not found\n",command->arguments[0]);
-				find_close_cmd(command->arguments[0]);
+				find_close_cmd(command->arguments[0]); // todo fix leak
 			}
 			else
 			{

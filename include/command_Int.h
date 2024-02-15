@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_Int.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:41:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/30 11:29:16 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/15 16:03:39 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 # include "command.h"
 # include "libft.h"
 # include "string_index.h"
+# include <sys/types.h>
+# include <dirent.h>
+# define SORT_TABLE "!\"#%&'()*+,-:;<=>?@[\\]^_`{|}~$0123456789aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ"
 
 typedef struct s_current_focus
 {
@@ -44,5 +47,10 @@ void			parse_command_grp_operators(t_command_group *grp,
 void			parse_file_redirection(t_string_index *command_line,
 					char **argument,
 					t_command *cmd);
+
+char			*manage_wildcard(t_list *variable_arguments,
+					t_command *command);
+void			sort_files(t_list *files);
+
 
 #endif
