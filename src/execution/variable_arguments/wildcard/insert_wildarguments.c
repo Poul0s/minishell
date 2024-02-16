@@ -6,13 +6,23 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 13:59:47 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/16 14:06:42 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/16 14:41:35 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "command_Int.h"
 #include "../variable_arguments_Int.h"
+
+static bool	is_folder_only(t_command *cmd, t_list *var_args)
+{
+	t_variable_argument	*var_arg_data;
+	char				*argument;
+
+	var_arg_data = var_args->content;
+	argument = cmd->arguments[var_arg_data->arg_nb];
+	return (argument[ft_strlen(argument) - 1] == '/');
+}
 
 static void	insert_arg(struct dirent *file,
 						t_command *cmd,
@@ -21,8 +31,12 @@ static void	insert_arg(struct dirent *file,
 {
 	char				**new_args;
 	char				*new_arg;
+	bool				folder_only;
 
+	folder_only = is_folder_only(cmd, var_args);
 	new_arg = ft_strdup(file->d_name);
+	if (new_arg && folder_only)
+		new_arg = ft_strfjoin_chr(new_arg, '/');
 	if (new_arg)
 	{
 		new_args = ft_strs_insert_str(cmd->arguments, new_arg, *i);
@@ -44,16 +58,20 @@ void	insert_wildarguments(t_list *var_args, t_list *files, t_command *cmd)
 	struct dirent		*file;
 	size_t				i;
 	t_variable_argument	*var_arg_data;
+	bool				folder_only;
 
+	var_arg_data = var_args->content;
+	folder_only = is_folder_only(cmd, var_args);
 	file = files->content;
 	new_arg = ft_strdup(file->d_name);
-	var_arg_data = var_args->content;
-	i = var_arg_data->arg_nb + 1;
+	if (new_arg && folder_only)
+		new_arg = ft_strfjoin_chr(new_arg, '/');
 	if (new_arg)
 	{
 		free(cmd->arguments[var_arg_data->arg_nb]);
 		cmd->arguments[var_arg_data->arg_nb] = new_arg;
 	}
+	i = var_arg_data->arg_nb + 1;
 	while (files->next)
 	{
 		file = files->next->content;
