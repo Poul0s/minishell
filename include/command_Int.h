@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:41:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/15 16:03:39 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/16 01:14:13 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_current_focus
 t_list			*insert_var_arg(t_current_focus *foc,
 					t_list **prev_arguments,
 					char *argument_data,
-					t_variable_argument_type type);
+					t_var_arg_type type);
 
 char			*parse_argument(t_string_index *command_line,
 					t_command *cmd,
@@ -48,9 +48,10 @@ void			parse_file_redirection(t_string_index *command_line,
 					char **argument,
 					t_command *cmd);
 
-char			*manage_wildcard(t_list *variable_arguments,
+void			convert_variable_arguments(t_command *command);
+void			manage_wildcard(t_list *variable_arguments,
 					t_command *command);
 void			sort_files(t_list *files);
-
+t_list			*ls_dir(DIR **dir);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:01:28 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/02 20:18:01 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/16 01:25:20 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef enum e_variable_argument_types
 {
 	WILDCARD,
 	ENV_VAR
-}	t_variable_argument_type;
+}	t_var_arg_type;
 
 typedef struct s_variable_argument
 {
@@ -41,7 +41,7 @@ typedef struct s_variable_argument
 	bool						disable_multiple_args;
 
 	char						*data;
-	t_variable_argument_type	type;
+	t_var_arg_type	type;
 }	t_variable_argument; // todo add support for infile outfile && heredoc
 
 // files structures

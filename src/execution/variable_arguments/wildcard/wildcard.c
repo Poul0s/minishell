@@ -6,53 +6,12 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 19:03:47 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/15 16:33:29 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/16 01:23:44 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "command_Int.h"
-
-static DIR	*open_current_dir(void)
-{
-	char	*cwd;
-	DIR		*res;
-
-	cwd = return_pwd();
-	if (!cwd)
-		return (NULL);
-	res = opendir(cwd);
-	free(cwd);
-	return (res);
-}
-
-static t_list	*ls_dir(DIR **dir)
-{
-	t_list			*files;
-	t_list			*node;
-	struct dirent	*current_file;
-
-	files = NULL;
-	*dir = open_current_dir();
-	if (!(*dir))
-		return (NULL);
-	current_file = readdir(*dir);
-	while (current_file)
-	{
-		if (ft_strncmp(current_file->d_name, ".", 2) 
-			&& ft_strncmp(current_file->d_name, "..", 3))
-		{
-			node = ft_lstnew(current_file);
-			if (!node)
-				ft_lstclear(&files, NULL);
-			if (!node)
-				break ;
-			ft_lstadd_back(&files, node);
-		}
-		current_file = readdir(*dir);
-	}
-	return (files);
-}
 
 static ssize_t	get_next_wildcard(t_list **var_args, size_t index)
 {
@@ -73,7 +32,7 @@ static ssize_t	get_next_wildcard(t_list **var_args, size_t index)
 					res = var_arg_data->argument_index;
 				*var_args = (*var_args)->next;
 			}
-			else if (var_arg_data->argument_number != arg_number) // set var args to the next for keep arg number value
+			else if (var_arg_data->argument_number != arg_number)
 				*var_args = (*var_args)->next;
 			else
 				break ;
@@ -133,15 +92,78 @@ static int	is_file_corresponding(struct dirent *file, t_list *match_reg)
 		match_reg = match_reg->next;
 	}
 	folder = (((char *) match_reg->content)[ft_strlen(match_reg->content) - 1] == '/');
-	if (folder)
-		((char *)match_reg->content)[ft_strlen(match_reg->content) - 1] = 0;
-	if (ft_strlen(filename) < ft_strlen(match_reg->content) || (folder && file->d_type != DT_DIR))
+	if (ft_strlen(filename) < ft_strlen(match_reg->content) - folder || (folder && file->d_type != DT_DIR))
 		return (false);
 	filename = filename + ft_strlen(filename) - ft_strlen(match_reg->content);
-	return (!ft_strncmp(filename, match_reg->content, ft_strlen(filename)));
+	return (!ft_strncmp(filename, match_reg->content, ft_strlen(filename) - folder));
 }
 
-char	*manage_wildcard(t_list *var_args, t_command *command)
+void	restore_wildargument(t_list *var_args, t_command *command)
+{
+	t_variable_argument	*var_arg_data;
+	char				*new_arg;
+	ssize_t				next_wildcard;
+	
+	var_arg_data = var_args->content;
+	next_wildcard = get_next_wildcard(&var_args, 0);
+	while (next_wildcard != -1)
+	{
+		new_arg = ft_str_insert(command->arguments[var_arg_data->argument_number], "*", next_wildcard);
+		if (new_arg)
+		{
+			free(command->arguments[var_arg_data->argument_number]);
+			command->arguments[var_arg_data->argument_number] = new_arg;
+		}
+		next_wildcard = get_next_wildcard(&var_args, next_wildcard);
+	}
+}
+
+static void	move_variable_arguments_number(t_list *var_args)
+{
+	size_t	min_index;
+	t_variable_argument	*var_arg_data;
+
+	var_arg_data = var_args->content;
+	min_index = var_arg_data->argument_number;
+	while (var_args)
+	{
+		var_arg_data = var_args->content;
+		if (var_arg_data->argument_number > min_index)
+			var_arg_data->argument_number++;
+		var_args = var_args->next;
+	}
+}
+
+void	insert_wildarguments(t_list *var_args, t_list *files, t_command *cmd)
+{
+	char				*new_insert_arg;
+	char				*new_arg;
+	struct dirent		*file;
+	size_t				i;
+	t_variable_argument	*var_arg_data;
+
+	file = files->content;
+	new_arg = ft_strdup(file->d_name);
+	var_arg_data = var_args->content;
+	i = var_arg_data->argument_number + 1;
+	while (files->next)
+	{
+		file = files->next->content;
+		new_insert_arg = ft_strdup(file->d_name);
+		if (new_insert_arg)
+		{
+			cmd->arguments = ft_strs_insert_str(cmd->arguments, new_insert_arg, i++);
+			move_variable_arguments_number(var_args);
+		}
+		files = files->next;
+	}
+	if (new_arg)
+		free(cmd->arguments[var_arg_data->argument_number]);
+	if (new_arg)
+		cmd->arguments[var_arg_data->argument_number] = new_arg;
+}
+
+void	manage_wildcard(t_list *var_args, t_command *command)
 {
 	t_list	*files;
 	DIR		*dir;
@@ -156,22 +178,12 @@ char	*manage_wildcard(t_list *var_args, t_command *command)
 		ft_lstremoveif(&files, match_reg, NULL, &is_file_corresponding);
 		ft_lstclear(&match_reg, free);
 		if (files == NULL)
-		{
-			// todo remake base argument with stars
-		}
+			restore_wildargument(var_args, command);
 		else
 		{
 			sort_files(files);
-			// todo separate into multiple arguments
-			{
-				while (files)
-				{
-					ft_printf("\'%s'\n", ((struct dirent *) files->content)->d_name);
-					files = files->next;
-				}
-			}
+			insert_wildarguments(var_args, files, command);
 		}
 	}
 	closedir(dir);
-	return (NULL);
 }

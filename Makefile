@@ -45,8 +45,10 @@ SRC		=	src/get/get_path.c \
 			src/file/here_doc/hd_create_data.c \
 			src/file/here_doc/hd_generate_file.c \
 			src/execution/execute_cmd.c \
-			src/execution/wildcard/wildcard.c \
-			src/execution/wildcard/sort_files.c \
+			src/execution/variable_arguments/convert_variable_arguments.c \
+			src/execution/variable_arguments/wildcard/wildcard.c \
+			src/execution/variable_arguments/wildcard/sort_files.c \
+			src/file/ls_dir.c \
 			src/execution/find_close_cmd.c \
 			src/signal/handler.c \
 			src/free_utils.c \

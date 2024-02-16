@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_string.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 21:59:42 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/29 16:16:20 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/15 23:46:38 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ void	ft_free_strs(char **strs);
 size_t	ft_strs_len(char **strs);
 char	**ft_strs_dup(char **src);
 char	*ft_str_insert(char *src, char *str, size_t pos);
+char	**ft_strs_insert_str(char **src, char *new_elem, size_t pos);
 
 #endif

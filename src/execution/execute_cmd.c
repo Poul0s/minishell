@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:00:20 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/15 13:31:20 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/15 21:25:52 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,146 +14,6 @@
 #include "command_Int.h"
 #include <errno.h>
 #include <unistd.h>
-
-extern int	g_exit_status;
-
-char	**ft_strs_insert_str(char **src, char *new_elem, size_t pos)
-{
-	size_t	i;
-	size_t	j;
-	char	**res;
-	size_t	res_size;
-
-	res_size = ft_strs_len(src) + 1;
-	res = malloc((res_size + 1) * sizeof(char *));
-	if (!res)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (i < res_size)
-	{
-		if (i == pos)
-			res[i] = new_elem;
-		else
-			res[i] = src[j++];
-		i++;
-	}
-	res[i] = NULL;
-	return (res);
-}
-
-static void	insert_argument(t_list *variable_arguments, t_command *command, char *argument)
-{
-	t_variable_argument	*var_arg_data;
-	char				**new_argument_list;
-	size_t				insert_pos;
-
-	var_arg_data = variable_arguments->content;
-	insert_pos = var_arg_data->argument_number;
-	while (variable_arguments)
-	{
-		var_arg_data = variable_arguments->content;
-		if (var_arg_data->argument_number >= insert_pos)
-			var_arg_data->argument_number++;
-		variable_arguments = variable_arguments->next;
-	}
-	new_argument_list = ft_strs_insert_str(command->arguments, argument, insert_pos);
-	if (new_argument_list)
-	{
-		free(command->arguments);
-		command->arguments = new_argument_list;
-	}
-	else
-	{
-		free(new_argument_list);
-		free(argument);
-	}
-}
-
-static char	*insert_variable_data(t_list *variable_argument, t_command *command)
-{
-	t_variable_argument	*var_arg_data;
-	char				**var_arg_strs;
-	char				*res;
-	size_t				i;
-
-	var_arg_data = variable_argument->content;
-	if (var_arg_data->disable_multiple_args)
-		res = ft_strdup(get_env_var(*(command->env), var_arg_data->data));
-	else
-	{
-		var_arg_strs = ft_split(get_env_var(*(command->env), var_arg_data->data), ' ');
-		if (!var_arg_strs || var_arg_strs[0] == NULL)
-		{
-			free(var_arg_strs);
-			return (NULL);
-		}
-		i = 0;
-		while (var_arg_strs[i] && var_arg_strs[i + 1])
-		{
-			insert_argument(variable_argument, command, var_arg_strs[i]);
-			i++;
-		}
-		res = var_arg_strs[i];
-		free(var_arg_strs);
-	}
-	return (res);
-}
-
-static void	move_variable_arguments_index(t_list *variable_arguments, char *var_arg_str)
-{
-	size_t				var_arg_len;
-	t_variable_argument	*var_arg;
-	t_variable_argument	*current_var_arg;
-
-	var_arg_len = ft_strlen(var_arg_str);
-	var_arg = variable_arguments->content;
-	variable_arguments = variable_arguments->next;
-	while (variable_arguments)
-	{
-		current_var_arg = variable_arguments->content;
-		if (current_var_arg->argument_number == var_arg->argument_number)
-		{
-			if (current_var_arg->argument_index >= var_arg->argument_index)
-				current_var_arg->argument_index += var_arg_len;
-		}
-		variable_arguments = variable_arguments->next;
-	}
-}
-
-static void	convert_variable_arguments(t_command *command)
-{
-	t_list				*variable_argument;
-	t_variable_argument	*var_arg_data;
-	char				*var_arg_str;
-	char				*new_arg;
-
-	variable_argument = command->argument_variables;
-	while (variable_argument != NULL) // todo parse env var before wildcard for case such as 'export z="*"; echo a*e$ze (echo a*e*e)'
-	{
-		var_arg_data = variable_argument->content;
-		if (var_arg_data->type == ENV_VAR)
-		{
-			if (ft_strncmp(var_arg_data->data, "?", 2) == 0)
-				var_arg_str = ft_itoa(g_exit_status);
-			else
-				var_arg_str = insert_variable_data(variable_argument, command);
-		}
-		else
-			var_arg_str = manage_wildcard(variable_argument, command);
-		if (var_arg_str)
-		{
-			move_variable_arguments_index(variable_argument, var_arg_str);
-			new_arg = ft_str_insert(command->arguments[var_arg_data->argument_number],
-									var_arg_str,
-									var_arg_data->argument_index);
-			free(var_arg_str);
-			free(command->arguments[var_arg_data->argument_number]);
-			command->arguments[var_arg_data->argument_number] = new_arg;
-		}
-		variable_argument = variable_argument->next;
-	}
-}
 
 static int	get_pid_res(int pid)
 {
@@ -179,12 +39,10 @@ static int	get_pid_res(int pid)
 int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 {
 	int		child_pid;
-	int		baby_pid;
 	int		child_pid_res;
 
 	convert_variable_arguments(command);
 	command->executable = command->arguments[0];
-	baby_pid = -1;
 	if (is_command_builtin(command->executable))
 		child_pid = execute_builtin_command(command);
 	else
