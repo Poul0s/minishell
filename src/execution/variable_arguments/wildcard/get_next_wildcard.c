@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:08:27 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/16 14:08:50 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/16 15:29:56 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ ssize_t	get_next_wildcard(t_list **var_args)
 			var_arg_data = (*var_args)->content;
 			if (res == -1)
 			{
-				if (var_arg_data->arg_nb == arg_number)
+				if (var_arg_data->arg_nb == arg_number
+					&& var_arg_data->type == WILDCARD)
 					res = var_arg_data->arg_idx;
 				*var_args = (*var_args)->next;
 			}

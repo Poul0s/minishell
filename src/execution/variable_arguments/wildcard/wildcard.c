@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 19:03:47 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/16 14:10:30 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/16 15:29:37 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ static char	*get_wildcard_part(ssize_t wildcard_pos, char *argument, size_t i)
 	if (wildcard_pos == -1)
 		res = ft_substr(argument, i, ft_strlen(argument) - i);
 	else
+	{
 		res = ft_substr(argument, i, wildcard_pos - i);
+	}
 	return (res);
 }
 
@@ -60,15 +62,14 @@ static int	is_file_corresponding(struct dirent *file, t_list *match_reg)
 	size_t	len;
 
 	len = ft_strlen(match_reg->content);
-	str = ft_strnstr(file->d_name, match_reg->content, len);
-	if (!str)
+	if (ft_strncmp(file->d_name, match_reg->content, len))
 		return (false);
-	str += len;
+	str = file->d_name + len;
 	match_reg = match_reg->next;
 	while (match_reg && match_reg->next != NULL)
 	{
 		len = ft_strlen(match_reg->content);
-		str = ft_strnstr(file->d_name, match_reg->content, len);
+		str = ft_strnstr(str, match_reg->content, ft_strlen(file->d_name));
 		if (!str)
 			return (false);
 		str += len;
@@ -87,19 +88,22 @@ void	restore_wildargument(t_list *var_args, t_command *command)
 	t_variable_argument	*var_arg_data;
 	char				*new_arg;
 	ssize_t				next_wildcard;
+	ssize_t				offset;
 
 	var_arg_data = var_args->content;
 	next_wildcard = get_next_wildcard(&var_args);
+	offset = 0;
 	while (next_wildcard != -1)
 	{
 		new_arg = ft_str_insert(command->arguments[var_arg_data->arg_nb],
 				"*",
-				next_wildcard);
+				next_wildcard + offset);
 		if (new_arg)
 		{
 			free(command->arguments[var_arg_data->arg_nb]);
 			command->arguments[var_arg_data->arg_nb] = new_arg;
 		}
+		offset++;
 		next_wildcard = get_next_wildcard(&var_args);
 	}
 }
