@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 13:31:48 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/15 21:19:38 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/16 13:09:47 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ static void	calculate_var_arg_pos(t_variable_argument *var_arg,
 								char **current_arg,
 								t_list **prev_arguments)
 {
-	var_arg->argument_index = ft_strlen(*current_arg);
+	var_arg->arg_idx = ft_strlen(*current_arg);
 	if (*current_arg == NULL)
 		*current_arg = ft_strdup("");
-	var_arg->argument_number = ft_lstsize(*prev_arguments);
+	var_arg->arg_nb = ft_lstsize(*prev_arguments);
 }
 
 t_list	*insert_var_arg(t_current_focus *foc,

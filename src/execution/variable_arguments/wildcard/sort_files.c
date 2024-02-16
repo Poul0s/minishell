@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 14:27:35 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/15 16:06:06 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/16 14:10:39 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 static int	chrcmp_ordered(char a, char b)
 {
 	const char	*sort_table = SORT_TABLE;
-	long	posa;
-	long	posb;
+	long		posa;
+	long		posb;
 
 	posa = (long)ft_strchr(sort_table, a);
 	posb = (long)ft_strchr(sort_table, b);

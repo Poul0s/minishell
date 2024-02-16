@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:01:28 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/16 01:25:20 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/16 13:09:47 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ typedef enum e_variable_argument_types
 
 typedef struct s_variable_argument
 {
-	size_t						argument_number;
-	size_t						argument_index;
+	size_t						arg_nb;
+	size_t						arg_idx;
 	bool						disable_multiple_args;
 
 	char						*data;
