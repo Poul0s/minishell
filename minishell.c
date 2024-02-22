@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:50:08 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/06 20:20:50 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/22 18:45:31 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int	main(int ac, char **av, char **envp)
 	t_sh_data	shell_data;
 
 	(void) ac;
+	rl_catch_signals = 0;
 	rl_completion_entry_function = autocompletion;
 	init_shell_data(&shell_data, av, envp);
 	line_readed = NULL;
