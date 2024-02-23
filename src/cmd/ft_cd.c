@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:41:11 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/24 17:03:03 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/16 22:07:34 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	ft_cd(const char **path)
 {
 	char	*final_path;
 
+	// variable pwd and old pwd cd - and cd ~
 	if (!path)
 		return (127);
 	else if (path[0] && !path[1])

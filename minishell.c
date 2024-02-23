@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:50:08 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/06 20:20:50 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/23 22:21:46 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 	t_command_group		*command_line;
 	int					res_command_line;
 	t_execution_data	exec_data;
+	int					error_here_doc;
 
 	syntax_res = check_syntax(command_line_str);
 	if (syntax_res.error && 0)
@@ -46,13 +47,15 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 		command_line = parse_cmd_line(command_line_str, &(shell_data->env));
 		if (command_line)
 		{
-			manage_here_doc(command_line);
+			error_here_doc = 0;
+			manage_here_doc(command_line, &error_here_doc);
 			toggle_signal_handler(false);
 			exec_data.forked = false;
 			exec_data.base_command_line = command_line;
 			exec_data.shell_data = shell_data;
-			res_command_line = execute_command_line(command_line, exec_data);
-			if (res_command_line != -1)
+			if (!error_here_doc)
+				res_command_line = execute_command_line(command_line, exec_data);
+			if (!error_here_doc && res_command_line != -1)
 				g_exit_status = res_command_line;
 			free_here_doc(command_line);
 			free_command_line(command_line, false);

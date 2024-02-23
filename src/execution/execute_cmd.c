@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:00:20 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/15 21:25:52 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/23 21:49:08 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 {
 	int		child_pid;
 	int		child_pid_res;
+	int		file_error;
 
 	convert_variable_arguments(command);
 	command->executable = command->arguments[0];
@@ -57,14 +58,15 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 				close(fd[0]);
 				close(fd[1]);
 			}
-			manage_infile(command->infiles, STDIN_FILENO);
-			manage_outfile(command->outfiles, STDOUT_FILENO);
+			file_error = manage_infile(command->infiles, STDIN_FILENO);
+			if (!file_error)
+				file_error = manage_outfile(command->outfiles, STDOUT_FILENO);
 			if (command->executable == NULL)
 			{
 				ft_dprintf(2, "%s: command not found\n",command->arguments[0]);
 				find_close_cmd(command->arguments[0]); // todo fix leak
 			}
-			else
+			else if (!file_error)
 			{
 				execve(command->executable, command->arguments, *(command->env));
 				ft_dprintf(2, "%s: %s: %s\n", command->exec_data.shell_data->exec_name, command->arguments[0], strerror(errno));

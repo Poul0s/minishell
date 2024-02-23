@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:02:49 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/02 23:39:43 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/23 21:10:41 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define EXECUTION_H
 
 # include "command.h"
-# include "minishell.h"
 # include <sys/types.h>
 # include <sys/wait.h>
 
@@ -33,8 +32,8 @@ int		execute_command(t_command *command, t_command_group *group_data,
 
 void	pipe_cmd(t_command_group *command_line, t_execution_data exec_data,
 			t_pipe *data_pipe);
-void	manage_infile(t_list *infile, int fd);
-void	manage_outfile(t_list *outfiles, int fd);
+int		manage_infile(t_list *infile, int fd);
+int		manage_outfile(t_list *outfiles, int fd);
 
 int		execute_command_line(t_command_group *command_line,
 			t_execution_data exec_data);

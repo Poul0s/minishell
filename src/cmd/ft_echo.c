@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 19:39:16 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/29 16:43:50 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/16 19:41:57 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,19 @@
 
 bool	is_valid_flag(const char *flag)
 {
+	const char	*tmp;
+
 	if (!flag)
 		return (false);
-	if (!ft_strncmp(flag, "-n", 3))
-		return (true);
-	return (false);
+	tmp = flag;
+	if (*tmp != '-')
+		return (false);
+	tmp++;
+	while (*tmp && *tmp == 'n')
+		tmp++;
+	if (*tmp != 0)
+		return (false);
+	return (true);
 }
 
 int	ft_echo(const char **strs)
