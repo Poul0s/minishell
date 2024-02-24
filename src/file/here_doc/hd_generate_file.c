@@ -6,13 +6,13 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 18:36:57 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/06 18:37:52 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/23 23:01:16 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include <fcntl.h>
 #include <stdlib.h>
-#include "libft.h"
 
 char	*create_tmp_file(int *fd)
 {

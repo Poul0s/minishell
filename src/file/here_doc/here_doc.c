@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 17:29:55 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/23 22:21:57 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/23 23:09:14 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@ int	read_here_doc(char *delimiter, int fd, char *file_name)
 	delimiter_len = ft_strlen(delimiter) + 1;
 	while (1)
 	{
-		if (access(file_name, W_OK) == -1)
+		if (fd != -1 && access(file_name, W_OK) == -1)
 		{
-			ft_dprintf(2, "minishell: here_doc temporary file has ben deleted\n");
+			ft_dprintf(2,
+				"minishell: here_doc temporary file has ben deleted\n");
 			return (1);
 		}
 		line_read = readline(">");

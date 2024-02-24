@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/01 14:50:08 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/23 22:21:46 by babonnet         ###   ########.fr       */
+/*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
+/*   Updated: 2024/02/23 23:11:23 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "here_doc.h"
 #include "autocompletion.h"
+#include "here_doc.h"
 
 int	g_exit_status;
 
@@ -45,11 +45,11 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 	else
 	{
 		command_line = parse_cmd_line(command_line_str, &(shell_data->env));
+		toggle_signal_handler(false);
 		if (command_line)
 		{
 			error_here_doc = 0;
-			manage_here_doc(command_line, &error_here_doc);
-			toggle_signal_handler(false);
+			manage_here_doc(command_line,&error_here_doc);
 			exec_data.forked = false;
 			exec_data.base_command_line = command_line;
 			exec_data.shell_data = shell_data;
@@ -57,11 +57,10 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 				res_command_line = execute_command_line(command_line, exec_data);
 			if (!error_here_doc && res_command_line != -1)
 				g_exit_status = res_command_line;
-			free_here_doc(command_line);
 			free_command_line(command_line, false);
 			free_command_line(NULL, true);
-			toggle_signal_handler(true);
 		}
+		toggle_signal_handler(true);
 	}
 }
 
@@ -107,6 +106,7 @@ int	main(int ac, char **av, char **envp)
 	t_sh_data	shell_data;
 
 	(void) ac;
+	rl_catch_signals = 0;
 	rl_completion_entry_function = autocompletion;
 	init_shell_data(&shell_data, av, envp);
 	line_readed = NULL;

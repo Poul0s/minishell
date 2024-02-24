@@ -6,23 +6,23 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 18:35:31 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/06 20:20:38 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/23 23:01:21 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.h"
 #include <unistd.h>
 
-void pop_infile(void *content)
+void	pop_infile(void *content)
 {
 	free(((t_infile *)content)->filename);
 	free(((t_infile *)content)->delimiter);
 	free(content);
 }
 
-void close_here_doc(t_command *cmd)
+void	close_here_doc(t_command *cmd)
 {
-	t_infile *infile;
+	t_infile	*infile;
 
 	if (!cmd->infiles)
 		return ;
@@ -31,7 +31,7 @@ void close_here_doc(t_command *cmd)
 		unlink(infile->filename);
 }
 
-void free_here_doc(t_command_group *cmd)
+void	free_here_doc(t_command_group *cmd)
 {
 	if (cmd->command)
 		close_here_doc(cmd->command);

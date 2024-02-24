@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command_line.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:02:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/09 18:43:07 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/23 23:02:28 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 #include <errno.h>
 #include <unistd.h>
 
-int count_pipe(t_command_group *command_line)
+int	count_pipe(t_command_group *command_line)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(command_line)
+	while (command_line)
 	{
 		command_line = command_line->pipe_next;
 		i++;
@@ -29,7 +29,8 @@ int count_pipe(t_command_group *command_line)
 	return (i);
 }
 
-int	execute_command_line(t_command_group *command_line, t_execution_data exec_data)
+int	execute_command_line(t_command_group *command_line,
+		t_execution_data exec_data)
 {
 	t_pipe	data_pipe;
 	int		*pid;
@@ -43,7 +44,8 @@ int	execute_command_line(t_command_group *command_line, t_execution_data exec_da
 	if (command_line->pipe_next == NULL)
 	{
 		command_line->command->exec_data = exec_data;
-		last_pid_res = execute_command(command_line->command, command_line, NULL);
+		last_pid_res = execute_command(command_line->command, command_line,
+				NULL);
 	}
 	else
 	{
