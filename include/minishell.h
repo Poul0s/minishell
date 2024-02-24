@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:36 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/15 15:34:58 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/24 14:15:42 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "libft.h"
 # include "command.h"
 # include "environment_manager.h"
 # include "execution.h"
+# include "libft.h"
 # include "syntax.h"
 # include <fcntl.h>
 # include <readline/history.h>
@@ -26,10 +26,10 @@
 
 typedef struct s_sh_data
 {
-	char		*exec_name;
-	char		*prompt;
-	char		*hostname;
-	char		**env;
+	char	*exec_name;
+	char	*prompt;
+	char	*hostname;
+	char	**env;
 }			t_sh_data;
 
 char		*get_hostname(void);
@@ -42,7 +42,7 @@ void		print_command_line(t_command_group *command, int depth);
 
 void		toggle_signal_handler(bool toggle);
 
-int			ft_cd(const char **path);
+int			ft_cd(const char **path, char ***env);
 int			ft_env(char **env);
 int			ft_echo(const char **strs);
 int			ft_pwd(void);

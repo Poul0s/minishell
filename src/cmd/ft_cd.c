@@ -6,18 +6,21 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:41:11 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/16 22:07:34 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/24 14:37:06 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "minishell.h"
 
-char	*get_home_path(void)
+static char	*get_home_path(char **env)
 {
 	char	*path;
 	char	**tmp;
 
-	tmp = ft_split(getenv("PATH"), ':');
+	while (*env && ft_strncmp(*env, "PATH=", 5))
+		env++;
+	tmp = ft_split(*env, ':');
 	if (!tmp)
 		return (NULL);
 	path = ft_strdup(tmp[0]);
@@ -25,21 +28,12 @@ char	*get_home_path(void)
 	return (path);
 }
 
-int	ft_cd(const char **path)
+static int	_cd(char *final_path, char ***env)
 {
-	char	*final_path;
+	char	*old_pwd;
+	char	*pwd;
 
-	// variable pwd and old pwd cd - and cd ~
-	if (!path)
-		return (127);
-	else if (path[0] && !path[1])
-		final_path = get_home_path();
-	else if (path[2])
-	{
-		ft_dprintf(2, "minishell: cd: too many arguments\n");
-		return (1);
-	}
-	final_path = ft_strdup(path[1]);
+	old_pwd = return_pwd();
 	if (chdir(final_path) == -1)
 	{
 		ft_dprintf(2, "minishell: cd: %s: No such file or directory\n",
@@ -47,6 +41,33 @@ int	ft_cd(const char **path)
 		free(final_path);
 		return (1);
 	}
+	pwd = return_pwd();
+	edit_env_var(*env, "PWD", pwd);
+	edit_env_var(*env, "OLDPWD", old_pwd);
+	free(pwd);
+	free(old_pwd);
 	free(final_path);
 	return (0);
+}
+
+int	ft_cd(const char **path, char ***env)
+{
+	char	*final_path;
+
+	// variable pwd and old pwd cd -
+	if (!path)
+		return (127);
+	else if (path[0] && !path[1])
+		final_path = get_home_path(*env);
+	else if (path[2])
+	{
+		ft_dprintf(2, "minishell: cd: too many arguments\n");
+		return (1);
+	}
+
+	if (!ft_strncmp(path[1], "-", ft_strlen(path[1])))
+		final_path = ft_strdup(get_env_var(*env, "OLDPWD"));	
+	else 
+		final_path = ft_strdup(path[1]);
+	return (_cd(final_path, env));
 }
