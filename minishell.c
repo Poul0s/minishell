@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/23 23:11:23 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/24 14:01:17 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 	int					error_here_doc;
 
 	syntax_res = check_syntax(command_line_str);
-	if (syntax_res.error && 0)
+	if (syntax_res.error)
 		print_syntax_error(&syntax_res, shell_data);
 	else
 	{

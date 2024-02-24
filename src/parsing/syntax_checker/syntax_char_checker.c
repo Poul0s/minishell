@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_char_checker.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 16:30:24 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/29 16:30:42 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/24 14:05:18 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ static void	check_fileredirection_syntax(t_string_index *stri,
 	short	token_size;
 
 	c = stri->str[stri->i];
-	if (syntax->current_token == '>' || syntax->current_token == '<')
+	if ((syntax->current_token == '>' || syntax->current_token == '<')
+		&& syntax->has_content != true)
 	{
 		res->error = true;
 		token_size = 1;
