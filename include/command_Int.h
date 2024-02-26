@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:41:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/16 01:14:13 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/26 13:29:13 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 # include "string_index.h"
 # include <sys/types.h>
 # include <dirent.h>
-# define SORT_TABLE "!\"#%&'()*+,-:;<=>?@[\\]^_`{|}~$0123456789aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ"
+# define SORT_TABLE "!\"#%&'()*+,-:;<=>?@[\\]^_`{|}~$0123456789aAbBcCdDeEfFgGh\
+HiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ"
 
 typedef struct s_current_focus
 {

@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:01:28 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/16 13:09:47 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/26 13:31:11 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ typedef struct s_variable_argument
 	bool						disable_multiple_args;
 
 	char						*data;
-	t_var_arg_type	type;
-}	t_variable_argument; // todo add support for infile outfile && heredoc
+	t_var_arg_type				type;
+}	t_variable_argument;
 
 // files structures
 
@@ -57,7 +57,7 @@ typedef struct s_infile
 
 typedef struct s_outfile
 {
-	int		fd; // if fd == -1 : write all outputs
+	int		fd;
 	char	*filename;
 	bool	append;
 }	t_outfile;
@@ -68,7 +68,7 @@ typedef struct s_command
 {
 	char					**arguments;
 	t_list					*infiles;
-	t_list					*outfiles; // if multime outfile has same fd -> write only on last file but create both files
+	t_list					*outfiles;
 	t_list					*argument_variables;
 	char					***env;
 
