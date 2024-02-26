@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:33:31 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/24 18:52:57 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:28:36 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ char	*autocompletion(const char *str, int status)
 		word = wich_word();
 		if (!word)
 			return (NULL);
-		if (!word->word && word->path && word->word[ft_strlen(word->path) - 1] != '/')	
-			lst = ft_lstnew(ft_strjoin(word->path , "/"));
+		if (!word->word && word->path && word->word[ft_strlen(word->path)
+			- 1] != '/')
+			lst = ft_lstnew(ft_strjoin(word->path, "/"));
 		else if (is_first() && !word->path)
 		{
 			lst = find_match_cmd(word->word);

@@ -3,13 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:41:11 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/26 15:08:36 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/26 20:12:26 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "environment_manager.h"
+#include "ft_print.h"
 #include "libft.h"
 #include "minishell.h"
 
@@ -29,7 +31,43 @@ static char	*get_home_path(char **env)
 	return (path);
 }
 
-static int	_cd(char *final_path, char ***env)
+static int	too_many_cd_args(char *arg, char *program_name)
+{
+	if (!arg)
+		return (0);
+	ft_dprintf(2, "%s: cd: too many arguments\n", program_name);
+	return (1);
+}
+
+static char	*cd_arg(char *arg, char ***env, char *program_name)
+{
+	char	*old_pwd;
+	char	*pwd;
+
+	if (ft_strncmp(arg, "-", ft_strlen(arg)) || !*arg)
+		return (ft_strdup(arg));
+	old_pwd = get_env_var(*env, "OLDPWD");
+	if (!old_pwd || !*old_pwd)
+	{
+		ft_dprintf(2, "%s: cd: OLDPWD not set\n", program_name);
+		return (NULL);
+	}
+	pwd = return_pwd();
+	if (chdir(old_pwd) == -1)
+	{
+		ft_dprintf(2, "%s: cd: %s: No such file or directory\n", program_name,
+			old_pwd);
+		free(pwd);
+		return (NULL);
+	}
+	printf("%s\n", old_pwd);
+	edit_env_var(*env, "PWD", old_pwd);
+	edit_env_var(*env, "OLDPWD", pwd);
+	free(pwd);
+	return ("");
+}
+
+static int	_cd(char *final_path, char ***env, char *program_name)
 {
 	char	*old_pwd;
 	char	*pwd;
@@ -37,7 +75,7 @@ static int	_cd(char *final_path, char ***env)
 	old_pwd = return_pwd();
 	if (chdir(final_path) == -1)
 	{
-		ft_dprintf(2, "minishell: cd: %s: No such file or directory\n",
+		ft_dprintf(2, "%s: cd: %s: No such file or directory\n", program_name,
 			final_path);
 		free(final_path);
 		return (1);
@@ -65,14 +103,15 @@ int	ft_cd(t_command *command)
 		return (127);
 	else if (path[0] && !path[1])
 		final_path = get_home_path(*env);
-	else if (path[2])
-	{
-		ft_dprintf(2, "%s: cd: too many arguments\n", program_name);
+	else if (path[0] && !*path[1])
+		return (0);
+	else if (too_many_cd_args(path[2], program_name))
 		return (1);
-	}
-	else if (!ft_strncmp(path[1], "-", ft_strlen(path[1])))
-		final_path = ft_strdup(get_env_var(*env, "OLDPWD"));
 	else
-		final_path = ft_strdup(path[1]);
-	return (_cd(final_path, env));
+		final_path = cd_arg(path[1], env, program_name);
+	if (!final_path || !path[1])
+		return (1);
+	if (!*final_path)
+		return (0);
+	return (_cd(final_path, env, program_name));
 }

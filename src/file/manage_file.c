@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 18:05:32 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/26 14:29:55 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:27:20 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,10 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-
-void here_doc(char *delimiter, int fd)
+void	here_doc(char *delimiter, int fd)
 {
-	char *line_read;
-	int	delimiter_len;
+	char	*line_read;
+	int		delimiter_len;
 
 	if (!delimiter)
 		return ;
@@ -30,7 +29,7 @@ void here_doc(char *delimiter, int fd)
 	{
 		line_read = readline(">");
 		if (*line_read && !ft_strncmp(line_read, delimiter, delimiter_len))
-			break;
+			break ;
 		if (fd != -1)
 		{
 			ft_putstr_fd(line_read, fd);
@@ -39,23 +38,23 @@ void here_doc(char *delimiter, int fd)
 	}
 }
 
-int manage_infile(t_list *infile, int fd)
+int	manage_infile(t_list *infile, int fd)
 {
-	t_infile *infile_content;
+	t_infile	*infile_content;
 
 	if (!infile)
 	{
 		dup2(fd, STDIN_FILENO);
 		return (0);
 	}
-	while(infile)
+	while (infile)
 	{
 		infile_content = infile->content;
-		if (infile_content->here_doc == false 
+		if (infile_content->here_doc == false
 			&& access(infile_content->filename, R_OK) == -1)
 		{
 			ft_dprintf(2, "minishell: %s: No such file or directory\n",
-			  infile_content->filename);
+				infile_content->filename);
 			return (1);
 		}
 		infile = infile->next;
@@ -66,17 +65,17 @@ int manage_infile(t_list *infile, int fd)
 	return (0);
 }
 
-int manage_outfile(t_list *outfiles, int fd)
+int	manage_outfile(t_list *outfiles, int fd)
 {
-	t_outfile *out;
+	t_outfile	*out;
 
-	while(outfiles)
+	while (outfiles)
 	{
 		out = outfiles->content;
 		if (out->append)
 			fd = open(out->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else
-			fd = open(out->filename, O_WRONLY | O_CREAT , 0644);
+			fd = open(out->filename, O_WRONLY | O_CREAT, 0644);
 		if (fd == -1)
 		{
 			ft_dprintf(2, "minishell: %s: Permission denied\n", out->filename);
@@ -92,4 +91,3 @@ int manage_outfile(t_list *outfiles, int fd)
 	close(fd);
 	return (0);
 }
-
