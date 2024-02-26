@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:41:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/26 13:53:03 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/26 14:01:40 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void			parse_file_redirection(t_string_index *command_line,
 
 bool			is_var_arg_char_correct(t_string_index *cmd_line,
 										int start,
-										int current)
+										int current);
 
 void			convert_variable_arguments(t_command *command);
 void			manage_wildcard(t_list *variable_arguments,
