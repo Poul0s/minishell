@@ -19,6 +19,7 @@ SRC		=	src/get/get_path.c \
 			src/parsing/syntax_checker/token_generator.c \
 			src/parsing/syntax_checker/syntax_char_checker.c \
 			src/parsing/syntax_checker/syntax_checker.c \
+			src/parsing/syntax_checker/print_syntax_error.c \
 			src/parsing/insert_var_arg.c \
 			src/parsing/parse_command_line.c \
 			src/parsing/parse_command_group.c \

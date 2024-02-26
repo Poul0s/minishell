@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/24 18:34:44 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/26 13:41:58 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,51 +16,40 @@
 
 int	g_exit_status;
 
-static void	print_syntax_error(t_syntax *syntax, t_sh_data *shell_data)
+static void	execute_line_res(t_command_group *cmd_line, t_sh_data *shell_data)
 {
-	char	*token;
+	int					error_here_doc;
+	t_execution_data	exec_data;
+	int					res_cmd_line;
 
-	ft_dprintf(2, "%s: ", shell_data->exec_name);
-	if (syntax->no_end)
-		ft_dprintf(2, "syntax error: unexpected end of file\n");
-	else
-	{
-		token = syntax->token;
-		ft_dprintf(2, "syntax error near unexpected token `%s'\n", token);
-	}
-	g_exit_status = 2;
+	error_here_doc = 0;
+	manage_here_doc(cmd_line, &error_here_doc);
+	exec_data.forked = false;
+	exec_data.base_command_line = cmd_line;
+	exec_data.shell_data = shell_data;
+	if (!error_here_doc)
+		res_cmd_line = execute_command_line(cmd_line, exec_data);
+	if (!error_here_doc && res_cmd_line != -1)
+		g_exit_status = res_cmd_line;
+	close_all_fd(cmd_line);
+	free_command_line(cmd_line, false);
+	free_command_line(NULL, true);
 }
 
-static void	execute_line(char *command_line_str, t_sh_data *shell_data)
+static void	execute_line(char *cmd_line_str, t_sh_data *shell_data)
 {
 	t_syntax			syntax_res;
-	t_command_group		*command_line;
-	int					res_command_line;
-	t_execution_data	exec_data;
-	int					error_here_doc;
+	t_command_group		*cmd_line;
 
-	syntax_res = check_syntax(command_line_str);
+	syntax_res = check_syntax(cmd_line_str);
 	if (syntax_res.error)
 		print_syntax_error(&syntax_res, shell_data);
 	else
 	{
-		command_line = parse_cmd_line(command_line_str, &(shell_data->env));
+		cmd_line = parse_cmd_line(cmd_line_str, &(shell_data->env));
 		toggle_signal_handler(false);
-		if (command_line)
-		{
-			error_here_doc = 0;
-			manage_here_doc(command_line, &error_here_doc);
-			exec_data.forked = false;
-			exec_data.base_command_line = command_line;
-			exec_data.shell_data = shell_data;
-			if (!error_here_doc)
-				res_command_line = execute_command_line(command_line, exec_data);
-			if (!error_here_doc && res_command_line != -1)
-				g_exit_status = res_command_line;
-			close_all_fd(command_line);
-			free_command_line(command_line, false);
-			free_command_line(NULL, true);
-		}
+		if (cmd_line)
+			execute_line_res(cmd_line, shell_data);
 		toggle_signal_handler(true);
 	}
 }
