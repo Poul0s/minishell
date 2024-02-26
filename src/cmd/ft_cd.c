@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:41:11 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/24 14:37:06 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/24 16:36:35 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@ static char	*get_home_path(char **env)
 	char	*path;
 	char	**tmp;
 
-	while (*env && ft_strncmp(*env, "PATH=", 5))
-		env++;
-	tmp = ft_split(*env, ':');
+	path = get_env_var(env, "HOME");
+	if (!path)
+		return (NULL);
+	tmp = ft_split(path, ':');
 	if (!tmp)
 		return (NULL);
 	path = ft_strdup(tmp[0]);
@@ -64,10 +65,9 @@ int	ft_cd(const char **path, char ***env)
 		ft_dprintf(2, "minishell: cd: too many arguments\n");
 		return (1);
 	}
-
-	if (!ft_strncmp(path[1], "-", ft_strlen(path[1])))
+	else if (!ft_strncmp(path[1], "-", ft_strlen(path[1])))
 		final_path = ft_strdup(get_env_var(*env, "OLDPWD"));	
-	else 
+	else
 		final_path = ft_strdup(path[1]);
 	return (_cd(final_path, env));
 }

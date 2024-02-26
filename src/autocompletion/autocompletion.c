@@ -6,16 +6,11 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:33:31 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/25 00:22:48 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/24 18:52:57 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocompletion.h"
-
-void	pop(void *value)
-{
-	(void)value;
-}
 
 char	*autocompletion(const char *str, int status)
 {
@@ -44,7 +39,7 @@ char	*autocompletion(const char *str, int status)
 		lst = lst->next;
 	if (!lst)
 	{
-		ft_lstclear(head, pop);
+		ft_lstclear(head, free);
 		return (NULL);
 	}
 	return ((char *)lst->content);

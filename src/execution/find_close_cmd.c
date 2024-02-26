@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 01:21:22 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/24 17:02:22 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/24 18:53:23 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,11 +133,6 @@ static void	free_split(char **strs)
 	free(strs);
 }
 
-static void pop(void *content)
-{
-	free(content);
-}
-
 void find_close_cmd(const char *cmd)
 {
 	char	*env;
@@ -162,5 +157,5 @@ void find_close_cmd(const char *cmd)
 		ft_dprintf(2, "	do you mean :%s\n", head->content);
 		head = head->next;
 	}
-	ft_lstclear(&head, pop);
+	ft_lstclear(&head, free);
 }

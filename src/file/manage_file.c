@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 18:05:32 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/23 21:33:34 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/24 18:25:07 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,9 @@ int manage_infile(t_list *infile, int fd)
 		}
 		infile = infile->next;
 	}
+	if (infile_content->here_doc == false)
+		infile_content->fd = open(infile_content->filename, O_RDONLY);
 	dup2(infile_content->fd, STDIN_FILENO);
-	close(infile_content->fd);
 	return (0);
 }
 

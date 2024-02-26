@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/24 13:21:05 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/24 18:34:44 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 		if (command_line)
 		{
 			error_here_doc = 0;
-			manage_here_doc(command_line,&error_here_doc);
+			manage_here_doc(command_line, &error_here_doc);
 			exec_data.forked = false;
 			exec_data.base_command_line = command_line;
 			exec_data.shell_data = shell_data;
@@ -57,6 +57,7 @@ static void	execute_line(char *command_line_str, t_sh_data *shell_data)
 				res_command_line = execute_command_line(command_line, exec_data);
 			if (!error_here_doc && res_command_line != -1)
 				g_exit_status = res_command_line;
+			close_all_fd(command_line);
 			free_command_line(command_line, false);
 			free_command_line(NULL, true);
 		}

@@ -40,6 +40,7 @@ SRC		=	src/get/get_path.c \
 			src/execution/get_path.c \
 			src/execution/pipe.c \
 			src/file/manage_file.c \
+			src/file/clean_fd.c \
 			src/file/here_doc/here_doc.c \
 			src/file/here_doc/hd_free.c \
 			src/file/here_doc/hd_create_data.c \

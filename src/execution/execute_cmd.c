@@ -6,11 +6,12 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:00:20 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/23 21:49:08 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/24 18:45:27 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "here_doc.h"
 #include "command_Int.h"
 #include <errno.h>
 #include <unistd.h>
@@ -19,6 +20,7 @@ static int	get_pid_res(int pid)
 {
 	int	pid_res;
 
+	pid_res = 0;
 	waitpid(pid, &pid_res, 0);
 	if (!WIFEXITED(pid_res))
 	{
