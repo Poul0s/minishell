@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 17:29:55 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/23 23:09:14 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/26 20:00:28 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	read_here_doc(char *delimiter, int fd, char *file_name)
 				"minishell: here_doc temporary file has ben deleted\n");
 			return (1);
 		}
-		line_read = readline(">");
+		line_read = readline("> ");
 		if (!line_read)
 		{
 			ft_dprintf(2, "minishell: warning: here-document ");
@@ -78,10 +78,10 @@ void	manage_here_doc(t_command_group *g_cmd, int *error)
 {
 	if (g_cmd->command)
 		generate_here_doc(g_cmd->command->infiles, error);
-	if (g_cmd->pipe_next)
+	if (g_cmd->pipe_next && !*error)
 		manage_here_doc(g_cmd->pipe_next, error);
-	if (g_cmd->on_success)
+	if (g_cmd->on_success && !*error)
 		manage_here_doc(g_cmd->on_success, error);
-	if (g_cmd->on_error)
+	if (g_cmd->on_error && !*error)
 		manage_here_doc(g_cmd->on_error, error);
 }
