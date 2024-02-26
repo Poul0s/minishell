@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 22:36:42 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/24 14:14:34 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/26 14:18:27 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,3 @@ int	execute_builtin_command(t_command *command)
 	dup2(out, STDOUT_FILENO);
 	return (command_res);
 }
-
-// child_pid = execute_builtin_command(command, group_data);

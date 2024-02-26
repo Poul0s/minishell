@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:19:10 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/23 23:02:13 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/26 14:18:00 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,8 @@ void	pipe_cmd(t_command_group *command_line, t_execution_data exec_data,
 	if (data_pipe->index != 0)
 		close_pipe(data_pipe->fd[(data_pipe->index + 1) % 2]);
 	if (command_line->pipe_next)
-	{
 		data_pipe->index++;
+	if (command_line->pipe_next)
 		pipe_cmd(command_line->pipe_next, exec_data, data_pipe);
-	}
 	close_pipe(data_pipe->fd[data_pipe->index % 2]);
 }
