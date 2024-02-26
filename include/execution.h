@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:02:49 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/26 14:59:44 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/26 16:11:38 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
-typedef int (*t_builtin_function)(t_command *);
+typedef int	(*t_builtin_function)(t_command *);
 
 typedef struct s_pipe
 {

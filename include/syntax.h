@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 14:07:43 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/26 13:37:00 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/26 16:11:17 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,5 @@ char		*token_to_str(char c, int token_size);
 char		*get_unexpected_token(t_string_index *stri);
 t_syntax	check_syntax(char *command_line);
 void		print_syntax_error(t_syntax *syntax, void *shell_data);
-
 
 #endif
