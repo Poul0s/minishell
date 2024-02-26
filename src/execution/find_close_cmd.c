@@ -6,15 +6,15 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 01:21:22 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/26 21:30:24 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:57:20 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <dirent.h>
 #include "ft_string.h"
 #include "libft.h"
-#include <dirent.h>
 
-static int	min_of_3(int a, int b, int c)
+static int min_of_3(int a, int b, int c)
 {
 	if (a < b && a < c)
 		return (a);
@@ -35,10 +35,10 @@ static void	free_matrix(int **matrix, int s1)
 	free(matrix);
 }
 
-static int	**init_matrix(int w1_len, int w2_len)
+static int **init_matrix(int w1_len, int w2_len)
 {
-	int	**matrix;
-	int	i;
+	int **matrix;
+	int i;
 
 	matrix = malloc((w1_len + 1) * sizeof(int *));
 	if (!matrix)
@@ -60,15 +60,15 @@ static int	**init_matrix(int w1_len, int w2_len)
 	i = -1;
 	while (++i < w1_len + 1)
 		matrix[i][w2_len] = w1_len - i;
-	return (0);
+	return (matrix);
 }
 
-static int	find_distance(int **matrix, char *word1, char *word2)
+static int find_distance(int **matrix, char *word1, char *word2)
 {
-	int	i;
-	int	j;
-	int	w1_len;
-	int	w2_len;
+	int i;
+	int j;
+	int w1_len;
+	int w2_len;
 
 	w1_len = ft_strlen(word1);
 	w2_len = ft_strlen(word2);
@@ -81,8 +81,7 @@ static int	find_distance(int **matrix, char *word1, char *word2)
 			if (word1[i] == word2[j])
 				matrix[i][j] = matrix[i + 1][j + 1];
 			else
-				matrix[i][j] = 1 + min_of_3(matrix[i + 1][j], matrix[i][j + 1],
-						matrix[i + 1][j + 1]);
+				matrix[i][j] = 1 + min_of_3(matrix[i + 1][j], matrix[i][j + 1], matrix[i + 1][j + 1]);
 			j--;
 		}
 		i--;
@@ -90,26 +89,26 @@ static int	find_distance(int **matrix, char *word1, char *word2)
 	return (matrix[0][0]);
 }
 
-int	levenshtein(char *word1, char *word2)
+int levenshtein(char *word1, char *word2)
 {
-	int	**matrix;
-	int	w1_len;
-	int	w2_len;
-	int	result;
+	int **matrix;
+	int w1_len;
+	int w2_len;
+	int result;
 
 	w1_len = ft_strlen(word1);
 	w2_len = ft_strlen(word2);
 	matrix = init_matrix(w1_len, w2_len);
 	if (!matrix)
-		return (-1);
+		return (3);
 	result = find_distance(matrix, word1, word2);
 	free_matrix(matrix, w1_len);
-	return (result);
+	return (result);	
 }
 
-static bool	is_allready_there(t_list *head, char *str)
+static bool is_allready_there(t_list *head, char *str)
 {
-	while (head)
+	while(head)
 	{
 		if (!ft_strncmp(head->content, str, ft_strlen(head->content)))
 			return (true);
@@ -120,9 +119,9 @@ static bool	is_allready_there(t_list *head, char *str)
 
 static void	find_match_from_dir(t_list **head, char *pwd, const char *cmd)
 {
-	int				start_len;
-	DIR				*dir;
-	struct dirent	*dirent;
+	int		start_len;
+	DIR		*dir;
+	struct dirent  *dirent;
 
 	if (!pwd || !cmd)
 		return ;
@@ -132,17 +131,16 @@ static void	find_match_from_dir(t_list **head, char *pwd, const char *cmd)
 	dirent = readdir(dir);
 	start_len = ft_strlen(cmd);
 	(void)start_len;
-	while (dirent)
+	while(dirent)
 	{
-		if (levenshtein((char *)cmd, dirent->d_name) < 2
-			&& !is_allready_there(*head, dirent->d_name))
+		if (levenshtein((char *)cmd, dirent->d_name) < 2 && !is_allready_there(*head, dirent->d_name))
 			ft_lstadd_front(head, ft_lstnew(ft_strdup(dirent->d_name)));
 		dirent = readdir(dir);
 	}
 	closedir(dir);
 }
 
-void	find_close_cmd(const char *cmd)
+void find_close_cmd(const char *cmd)
 {
 	char	*env;
 	char	**paths;
@@ -155,7 +153,7 @@ void	find_close_cmd(const char *cmd)
 	if (!paths)
 		return ;
 	paths_cpy = paths;
-	while (*paths)
+	while(*paths)
 	{
 		find_match_from_dir(&head, *paths, cmd);
 		paths++;

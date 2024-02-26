@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 19:03:47 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/16 15:29:37 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/26 21:39:09 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "command_Int.h"
 #include "../variable_arguments_Int.h"
+#include "command_Int.h"
+#include "minishell.h"
 
 static char	*get_wildcard_part(ssize_t wildcard_pos, char *argument, size_t i)
 {
@@ -76,7 +76,7 @@ static int	is_file_corresponding(struct dirent *file, t_list *match_reg)
 		match_reg = match_reg->next;
 	}
 	len = ft_strlen(match_reg->content);
-	folder = (((char *) match_reg->content)[len - 1] == '/');
+	folder = (((char *)match_reg->content)[len - 1] == '/');
 	if (ft_strlen(str) < len - folder || (folder && file->d_type != DT_DIR))
 		return (false);
 	str = str + ft_strlen(str) - len;
@@ -95,8 +95,7 @@ void	restore_wildargument(t_list *var_args, t_command *command)
 	offset = 0;
 	while (next_wildcard != -1)
 	{
-		new_arg = ft_str_insert(command->arguments[var_arg_data->arg_nb],
-				"*",
+		new_arg = ft_str_insert(command->arguments[var_arg_data->arg_nb], "*",
 				next_wildcard + offset);
 		if (new_arg)
 		{
