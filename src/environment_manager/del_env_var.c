@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:48:34 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/05 18:27:42 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/26 13:48:11 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ char	**del_env_var(char **env, char *key)
 		if (ft_strncmp(env[i], key, key_len) != 0
 			|| (env[i][key_len] != '=' && env[i][key_len] != 0))
 		{
-			new_env[j] = env[i];
-			j++;
+			new_env[j++] = env[i];
 		}
 		else
 			free(env[i]);

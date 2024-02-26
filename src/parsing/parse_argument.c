@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/02 20:35:27 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/26 13:52:01 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,6 @@ static bool	is_end_arg(t_string_index *command_line, bool stop_file_redirect)
 			|| command_line->str[command_line->i] == '>')
 			return (true);
 	}
-	return (false);
-}
-
-static bool	is_var_arg_char_correct(t_string_index *cmd_line, int start, int current)
-{
-	if (cmd_line->str[current] == '_')
-		return (true);
-	else if (start != current && ft_isalnum(cmd_line->str[current]))
-		return (true);
-	else if (ft_isalpha(cmd_line->str[current]))
-		return (true);
 	return (false);
 }
 
