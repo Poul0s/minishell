@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hd_generate_file.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 18:36:57 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/23 23:01:16 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/26 20:52:54 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

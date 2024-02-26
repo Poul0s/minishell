@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:49:50 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/01 14:49:51 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:27:07 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,19 @@ static void	free_argument_variable(void *data)
 	}
 }
 
+static void	free_infile(void *data)
+{
+	t_infile	*infile;
+	
+	infile = data;
+	free(infile->delimiter);
+	free(infile);
+}
+
 void	free_command(t_command *command)
 {
 	ft_free_strs(command->arguments);
-	ft_lstclear(&(command->infiles), &free);
+	ft_lstclear(&(command->infiles), &free_infile);
 	ft_lstclear(&(command->outfiles), &free);
 	ft_lstclear(&(command->argument_variables), &free_argument_variable);
 	free(command);

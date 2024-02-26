@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/26 13:45:12 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/26 20:40:59 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ static void	execute_line_res(t_command_group *cmd_line, t_sh_data *shell_data)
 	int					res_cmd_line;
 
 	error_here_doc = 0;
-	manage_here_doc(cmd_line, &error_here_doc);
 	exec_data.forked = false;
 	exec_data.base_command_line = cmd_line;
 	exec_data.shell_data = shell_data;
+	manage_here_doc(cmd_line, &error_here_doc, exec_data);
 	if (!error_here_doc)
 		res_cmd_line = execute_command_line(cmd_line, exec_data);
 	if (!error_here_doc && res_cmd_line != -1)
