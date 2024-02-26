@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:27:43 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/29 16:47:31 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/26 14:49:56 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,11 @@ char	*return_pwd(void)
 	return (buff);
 }
 
-int	ft_pwd(void)
+int	ft_pwd(t_command *command)
 {
 	char	*buff;
 
+	(void) command;
 	buff = return_pwd();
 	if (!buff)
 		return (1);

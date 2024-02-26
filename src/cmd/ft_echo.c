@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 19:39:16 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/16 19:41:57 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/26 15:02:19 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "minishell.h"
 
 bool	is_valid_flag(const char *flag)
 {
@@ -29,10 +30,12 @@ bool	is_valid_flag(const char *flag)
 	return (true);
 }
 
-int	ft_echo(const char **strs)
+int	ft_echo(t_command *command)
 {
 	bool	n_flag;
+	char	**strs;
 
+	strs = command->arguments + 1;
 	if (!strs)
 		return (1);
 	n_flag = false;

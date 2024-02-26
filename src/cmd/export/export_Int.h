@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:54:01 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/02 15:24:48 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/26 14:48:56 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "environment_manager.h"
 # include "libft.h"
+# include "minishell.h"
 # include <errno.h>
 # include <string.h>
 

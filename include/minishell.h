@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:36 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/24 14:15:42 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/26 14:52:45 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ void		print_command_line(t_command_group *command, int depth);
 
 void		toggle_signal_handler(bool toggle);
 
-int			ft_cd(const char **path, char ***env);
-int			ft_env(char **env);
-int			ft_echo(const char **strs);
-int			ft_pwd(void);
-int			ft_export(char **arguments, char ***env, char *shell_name);
-int			ft_unset(char **arguments, char ***env);
+int			ft_cd(t_command *command);
+int			ft_echo(t_command *command);
+int			ft_env(t_command *command);
+int			ft_pwd(t_command *command);
+int			ft_export(t_command *command);
+int			ft_unset(t_command *command);
 int			ft_exit(t_command *command);
 
 void		free_command(t_command *command);

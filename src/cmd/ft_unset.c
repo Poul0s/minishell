@@ -6,20 +6,22 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 23:49:31 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 23:51:46 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/26 14:46:06 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "environment_manager.h"
+#include "minishell.h"
 
-int	ft_unset(char **arguments, char ***env)
+int	ft_unset(t_command *command)
 {
 	size_t	i;
+	char	***env;
 
+	env = command->env;
 	i = 1;
-	while (arguments[i])
+	while (command->arguments[i])
 	{
-		*env = del_env_var(*env, arguments[i]);
+		*env = del_env_var(*env, command->arguments[i]);
 		i++;
 	}
 	return (0);

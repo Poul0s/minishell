@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:41:11 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/24 16:36:35 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/26 15:08:36 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,22 +51,27 @@ static int	_cd(char *final_path, char ***env)
 	return (0);
 }
 
-int	ft_cd(const char **path, char ***env)
+int	ft_cd(t_command *command)
 {
 	char	*final_path;
+	char	**path;
+	char	***env;
+	char	*program_name;
 
-	// variable pwd and old pwd cd -
+	program_name = command->exec_data.shell_data->exec_name;
+	path = command->arguments;
+	env = command->env;
 	if (!path)
 		return (127);
 	else if (path[0] && !path[1])
 		final_path = get_home_path(*env);
 	else if (path[2])
 	{
-		ft_dprintf(2, "minishell: cd: too many arguments\n");
+		ft_dprintf(2, "%s: cd: too many arguments\n", program_name);
 		return (1);
 	}
 	else if (!ft_strncmp(path[1], "-", ft_strlen(path[1])))
-		final_path = ft_strdup(get_env_var(*env, "OLDPWD"));	
+		final_path = ft_strdup(get_env_var(*env, "OLDPWD"));
 	else
 		final_path = ft_strdup(path[1]);
 	return (_cd(final_path, env));

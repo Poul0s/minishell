@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:52:06 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/05 18:21:53 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/26 15:09:21 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	parse_env_var_data(char *argument, char ***env, char *shell_name)
 	}
 	res = set_env_var_data(argument, sep, env, append);
 	if (res)
-		ft_dprintf(2, "%s: export: `%s': %s\n", shell_name, argument, strerror(res));
+		ft_dprintf(2, "%s: export: `%s': %s\n",
+			shell_name, argument, strerror(res));
 	return (res);
 }

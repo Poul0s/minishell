@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 21:03:09 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/02 16:27:52 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/26 15:09:35 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	is_key_good_format(char *str)
 void	print_invalid_identifier(char *id, char *program_name)
 {
 	ft_dprintf(2, "%s: export: `%s': not a valid identifier\n",
-				program_name, id);
+		program_name, id);
 }
 
 static int	insert_single_env_var(char **arguments,
@@ -74,8 +74,15 @@ static int	insert_multiple_env_var(char **arguments,
 	return (res);
 }
 
-int	ft_export(char **arguments, char ***env, char *program_name)
+int	ft_export(t_command *command)
 {
+	char	**arguments;
+	char	***env;
+	char	*program_name;
+
+	arguments = command->arguments;
+	env = command->env;
+	program_name = command->exec_data.shell_data->exec_name;
 	if (arguments[1] == NULL)
 		return (print_env_sorted(*env, program_name));
 	else
