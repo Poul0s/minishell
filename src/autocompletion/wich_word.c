@@ -6,17 +6,17 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 03:32:08 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/18 19:30:18 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:29:35 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocompletion.h"
 
-static char *create_string(const char *start, const char *end)
+static char	*create_string(const char *start, const char *end)
 {
-	int i;
-	char *str;
-	int str_len;
+	int		i;
+	char	*str;
+	int		str_len;
 
 	str_len = end - start;
 	str = malloc((str_len + 1) * sizeof(char));
@@ -32,11 +32,11 @@ static char *create_string(const char *start, const char *end)
 	return (str);
 }
 
-static t_word *create_word(const char *start, const char *end)
+static t_word	*create_word(const char *start, const char *end)
 {
-	t_word *word;
-	char *str;
-	char *mid;
+	t_word	*word;
+	char	*str;
+	char	*mid;
 
 	word = malloc(sizeof(t_word));
 	if (!word)
@@ -76,10 +76,10 @@ t_word	*wich_word(void)
 		cursor--;
 	start = &line[cursor];
 	end = &line[cursor];
-	while(start >= line && (ft_isalpha(*start) || ft_strchr("./", *start)))
+	while (start >= line && (ft_isalpha(*start) || ft_strchr("./", *start)))
 		start--;
 	start++;
-	while(*end && (ft_isalpha(*end) || ft_strchr("./", *start)))
+	while (*end && (ft_isalpha(*end) || ft_strchr("./", *start)))
 		end++;
 	return (create_word(start, end));
 }

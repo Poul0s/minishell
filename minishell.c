@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/26 13:45:12 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/26 20:18:59 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "autocompletion.h"
+#include "environment_manager.h"
 #include "here_doc.h"
+#include "minishell.h"
 
-int	g_exit_status;
+int			g_exit_status;
 
 static void	execute_line_res(t_command_group *cmd_line, t_sh_data *shell_data)
 {
@@ -38,8 +39,8 @@ static void	execute_line_res(t_command_group *cmd_line, t_sh_data *shell_data)
 
 static void	execute_line(char *cmd_line_str, t_sh_data *shell_data)
 {
-	t_syntax			syntax_res;
-	t_command_group		*cmd_line;
+	t_syntax		syntax_res;
+	t_command_group	*cmd_line;
 
 	syntax_res = check_syntax(cmd_line_str);
 	if (syntax_res.error)
@@ -71,6 +72,8 @@ static void	init_shell_data(t_sh_data *shell_data, char **av, char **envp)
 		shell_lvl = 0;
 	shell_lvl_str = ft_itoa(shell_lvl);
 	shell_data->env = edit_env_var(shell_data->env, "SHLVL", shell_lvl_str);
+	edit_env_var(shell_data->env, "OLDPWD", get_env_var(shell_data->env,
+			"PWD"));
 	free(shell_lvl_str);
 	shell_data->hostname = get_hostname();
 	g_exit_status = 0;
@@ -95,7 +98,7 @@ int	main(int ac, char **av, char **envp)
 	char		*line_readed;
 	t_sh_data	shell_data;
 
-	(void) ac;
+	(void)ac;
 	rl_catch_signals = 0;
 	rl_completion_entry_function = autocompletion;
 	init_shell_data(&shell_data, av, envp);

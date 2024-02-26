@@ -6,21 +6,21 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:59:51 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/25 00:14:26 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:30:14 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "autocompletion.h"
 #include "ft_string.h"
-#include "libft.h" 
-#include "autocompletion.h" 
-#include <stdlib.h>
+#include "libft.h"
 #include <dirent.h>
+#include <stdlib.h>
 
 static void	find_match_from_dir(t_list **head, char *pwd, const char *start_cmd)
 {
-	int		start_len;
-	DIR		*dir;
-	struct dirent  *dirent;
+	int				start_len;
+	DIR				*dir;
+	struct dirent	*dirent;
 
 	if (!pwd || !start_cmd)
 		return ;
@@ -30,7 +30,7 @@ static void	find_match_from_dir(t_list **head, char *pwd, const char *start_cmd)
 	dirent = readdir(dir);
 	start_len = ft_strlen(start_cmd);
 	(void)start_len;
-	while(dirent)
+	while (dirent)
 	{
 		if (ft_strncmp(start_cmd, dirent->d_name, start_len) == 0)
 			ft_lstadd_front(head, ft_lstnew(ft_strdup(dirent->d_name)));
@@ -55,7 +55,7 @@ static void	free_split(char **strs)
 	free(strs);
 }
 
-t_list *find_match_cmd(const char *start_cmd)
+t_list	*find_match_cmd(const char *start_cmd)
 {
 	char	*env;
 	char	**paths;
@@ -68,7 +68,7 @@ t_list *find_match_cmd(const char *start_cmd)
 	if (!paths)
 		return (NULL);
 	paths_cpy = paths;
-	while(*paths)
+	while (*paths)
 	{
 		find_match_from_dir(&head, *paths, start_cmd);
 		paths++;
@@ -77,7 +77,7 @@ t_list *find_match_cmd(const char *start_cmd)
 	return (head);
 }
 
-static int is_all_path(const char *str)
+static int	is_all_path(const char *str)
 {
 	while (*str)
 	{
@@ -88,7 +88,7 @@ static int is_all_path(const char *str)
 	return (1);
 }
 
-t_list *find_match_file(t_word *word)
+t_list	*find_match_file(t_word *word)
 {
 	t_list			*head;
 	char			*dir_path_str;
@@ -124,19 +124,19 @@ t_list *find_match_file(t_word *word)
 	return (head);
 }
 
-t_list *find_match_file1(t_word *word)
+t_list	*find_match_file1(t_word *word)
 {
-	t_list *head;
-	DIR		*dir;
-	struct dirent *dirent;
-	char   *full_dname;
-	char	*full_path;
+	t_list			*head;
+	DIR				*dir;
+	struct dirent	*dirent;
+	char			*full_dname;
+	char			*full_path;
 
 	head = NULL;
 	if (!word->path)
 		word->path = ft_strdup("./");
 	full_path = ft_strjoin(word->path, word->word);
-	if (!word->path || !full_path)	
+	if (!word->path || !full_path)
 	{
 		if (full_path)
 			free(full_path);
@@ -146,16 +146,17 @@ t_list *find_match_file1(t_word *word)
 	if (!dir)
 		return (NULL);
 	dirent = readdir(dir);
-	while(dirent)
+	while (dirent)
 	{
 		full_dname = ft_strjoin(word->path, dirent->d_name);
 		if (full_dname)
 		{
-			ft_printf("\n%s    %s", full_path,  full_dname);
+			ft_printf("\n%s    %s", full_path, full_dname);
 			if (ft_strncmp(full_path, full_dname, ft_strlen(word->word)) == 0)
 			{
 				if (dirent->d_type == DT_DIR)
-					ft_lstadd_back(&head, ft_lstnew(ft_strjoin(full_dname, "/")));
+					ft_lstadd_back(&head, ft_lstnew(ft_strjoin(full_dname,
+								"/")));
 				else if (full_dname)
 					ft_lstadd_back(&head, ft_lstnew(ft_strdup(full_dname)));
 			}

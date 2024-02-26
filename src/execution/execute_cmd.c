@@ -6,13 +6,13 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:00:20 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/24 18:45:27 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:31:40 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "here_doc.h"
 #include "command_Int.h"
+#include "here_doc.h"
+#include "minishell.h"
 #include <errno.h>
 #include <unistd.h>
 
@@ -40,9 +40,10 @@ static int	get_pid_res(int pid)
 
 int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 {
-	int		child_pid;
-	int		child_pid_res;
-	int		file_error;
+	int	child_pid;
+	int	child_pid_res;
+	int	file_error;
+	int	forked;
 
 	convert_variable_arguments(command);
 	command->executable = command->arguments[0];
@@ -65,13 +66,16 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 				file_error = manage_outfile(command->outfiles, STDOUT_FILENO);
 			if (command->executable == NULL)
 			{
-				ft_dprintf(2, "%s: command not found\n",command->arguments[0]);
+				ft_dprintf(2, "%s: command not found\n", command->arguments[0]);
 				find_close_cmd(command->arguments[0]); // todo fix leak
 			}
 			else if (!file_error)
 			{
-				execve(command->executable, command->arguments, *(command->env));
-				ft_dprintf(2, "%s: %s: %s\n", command->exec_data.shell_data->exec_name, command->arguments[0], strerror(errno));
+				execve(command->executable, command->arguments,
+					*(command->env));
+				ft_dprintf(2, "%s: %s: %s\n",
+					command->exec_data.shell_data->exec_name,
+					command->arguments[0], strerror(errno));
 			}
 			free(command->executable);
 			free(command->exec_data.pid);
@@ -86,14 +90,17 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 		child_pid_res = -child_pid - 1;
 	else
 		child_pid_res = get_pid_res(child_pid);
-	if ((child_pid_res != 0 && group_data->on_error != NULL) || (child_pid_res == 0 && group_data->on_success != NULL))
+	if ((child_pid_res != 0 && group_data->on_error != NULL)
+		|| (child_pid_res == 0 && group_data->on_success != NULL))
 	{
-		int	forked = command->exec_data.forked;
+		forked = command->exec_data.forked;
 		command->exec_data.forked = false;
 		if (child_pid_res != 0 && group_data->on_error != NULL)
-			child_pid_res = execute_command_line(group_data->on_error, command->exec_data);
+			child_pid_res = execute_command_line(group_data->on_error,
+					command->exec_data);
 		else if (child_pid_res == 0 && group_data->on_success != NULL)
-			child_pid_res = execute_command_line(group_data->on_success, command->exec_data);
+			child_pid_res = execute_command_line(group_data->on_success,
+					command->exec_data);
 		command->exec_data.forked = forked;
 	}
 	if (command->exec_data.forked)
