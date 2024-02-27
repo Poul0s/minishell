@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   find_close_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 01:21:22 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 15:20:08 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/27 20:40:52 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_string.h"
 #include "libft.h"
+#include "environment_manager.h"
 #include <dirent.h>
 
 static int	min_of_3(int a, int b, int c)
@@ -27,9 +28,9 @@ static void	free_matrix(int **matrix, int s1)
 {
 	if (!matrix)
 		return ;
-	while (s1 > 0)
+	while (s1 >= 0)
 	{
-		free(matrix[s1 - 1]);
+		free(matrix[s1]);
 		s1--;
 	}
 	free(matrix);
@@ -40,7 +41,7 @@ static int	**init_matrix(int w1_len, int w2_len)
 	int	**matrix;
 	int	i;
 
-	matrix = malloc((w1_len + 1) * sizeof(int *));
+	matrix = ft_calloc((w1_len + 1), sizeof(int *));
 	if (!matrix)
 		return (NULL);
 	i = 0;
@@ -142,16 +143,17 @@ static void	find_match_from_dir(t_list **head, char *pwd, const char *cmd)
 	closedir(dir);
 }
 
-void	find_close_cmd(const char *cmd)
+void	find_close_cmd(const char *cmd, char **env)
 {
-	char	*env;
+	char	*path;
 	char	**paths;
 	char	**paths_cpy;
 	t_list	*head;
+	t_list	*node;
 
 	head = NULL;
-	env = getenv("PATH");
-	paths = ft_split(env, ':');
+	path = get_env_var(env, "PATH");
+	paths = ft_split(path, ':');
 	if (!paths)
 		return ;
 	paths_cpy = paths;
@@ -161,10 +163,11 @@ void	find_close_cmd(const char *cmd)
 		paths++;
 	}
 	ft_free_strs(paths_cpy);
-	while (head)
+	node = head;
+	while (node)
 	{
-		ft_dprintf(2, "	do you mean :%s\n", head->content);
-		head = head->next;
+		ft_dprintf(2, "	do you mean :%s\n", node->content);
+		node = node->next;
 	}
 	ft_lstclear(&head, free);
 }

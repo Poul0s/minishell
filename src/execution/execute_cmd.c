@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:00:20 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 20:22:37 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 20:37:30 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	try_execute_bin_cmd(t_command *command,
 	if (command->executable == NULL)
 	{
 		ft_dprintf(2, "%s: command not found\n", command->arguments[0]);
-		find_close_cmd(command->arguments[0]);
+		find_close_cmd(command->arguments[0], *(command->env));
 	}
 	else if (!file_error)
 	{
