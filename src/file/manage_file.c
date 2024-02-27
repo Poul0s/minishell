@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_file.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 18:05:32 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/26 21:39:09 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/27 18:30:41 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	manage_outfile(t_list *outfiles, int fd)
 		if (out->append)
 			fd = open(out->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else
-			fd = open(out->filename, O_WRONLY | O_CREAT, 0644);
+			fd = open(out->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd == -1)
 		{
 			ft_dprintf(2, "minishell: %s: Permission denied\n", out->filename);

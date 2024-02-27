@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/27 16:55:08 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 18:28:35 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ char	*parse_argument(t_string_index *command_line,
 	{
 		if (parse_argument_char(command_line, cmd, prev_arguments, &foc))
 			break ;
-		else if (!(foc.quote) && !(foc.dblquote))
+		else if (!(foc.quote) && !(foc.dblquote) && foc.data != NULL)
 		{
 			c = command_line->str[command_line->i];
 			if (c == '<' || c == '>')
