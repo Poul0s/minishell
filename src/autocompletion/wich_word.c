@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 03:32:08 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 23:22:54 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:55:14 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,12 @@ static t_word	*create_word(const char *start, const char *end)
 	char	*str;
 	char	*mid;
 
+	str = create_string(start, end);
+	if (!str)
+		return (NULL);
 	word = malloc(sizeof(t_word));
 	if (!word)
 		return (NULL);
-	str = create_string(start, end);
-	if (!str)
-	{
-		free(word);
-		return (NULL);
-	}
 	mid = ft_strrchr(str, '/');
 	if (!mid)
 		mid = ft_strrchr(str, '.');
@@ -63,11 +60,6 @@ static t_word	*create_word(const char *start, const char *end)
 	return (word);
 }
 
-int ft_isspace(int c)
-{
-	return (c == 32 || (c >= 9 && c <= 13));
-}
-
 t_word	*wich_word(void)
 {
 	const char	*line;
@@ -77,8 +69,6 @@ t_word	*wich_word(void)
 
 	line = rl_line_buffer;
 	cursor = rl_point;
-	if (cursor > 1)
-		cursor--;
 	start = &line[cursor];
 	end = &line[cursor];
 	while (start >= line && (ft_isalpha(*start) || ft_strchr("./", *start)))

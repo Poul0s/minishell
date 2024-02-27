@@ -55,7 +55,8 @@ SRC		=	src/get/get_path.c \
 			src/execution/variable_arguments/wildcard/insert_wildarguments.c \
 			src/execution/variable_arguments/wildcard/sort_files.c \
 			src/file/ls_dir.c \
-			src/execution/find_close_cmd.c \
+			src/execution/find_close_cmd/find_close_cmd.c \
+			src/execution/find_close_cmd/find_close_cmd_utils.c \
 			src/signal/handler.c \
 			src/free_utils.c \
 			src/free_iofile.c \

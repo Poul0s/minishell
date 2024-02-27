@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:59:51 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 23:06:07 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:34:10 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,52 +84,5 @@ t_list	*find_match_file(t_word *word)
 		dirent = readdir(dir);
 	}
 	closedir(dir);
-	return (head);
-}
-
-t_list	*find_match_file1(t_word *word)
-{
-	/// osu fsefsef
-	///
-	t_list			*head;
-	DIR				*dir;
-	struct dirent	*dirent;
-	char			*full_dname;
-	char			*full_path;
-
-	head = NULL;
-	if (!word->path)
-		word->path = ft_strdup("./");
-	full_path = ft_strjoin(word->path, word->word);
-	if (!word->path || !full_path)
-	{
-		if (full_path)
-			free(full_path);
-		return (NULL);
-	}
-	dir = opendir(word->path);
-	if (!dir)
-		return (NULL);
-	dirent = readdir(dir);
-	while (dirent)
-	{
-		full_dname = ft_strjoin(word->path, dirent->d_name);
-		if (full_dname)
-		{
-			ft_printf("\n%s    %s", full_path, full_dname);
-			if (ft_strncmp(full_path, full_dname, ft_strlen(word->word)) == 0)
-			{
-				if (dirent->d_type == DT_DIR)
-					ft_lstadd_back(&head, ft_lstnew(ft_strjoin(full_dname,
-								"/")));
-				else if (full_dname)
-					ft_lstadd_back(&head, ft_lstnew(ft_strdup(full_dname)));
-			}
-			dirent = readdir(dir);
-			free(full_dname);
-		}
-	}
-	closedir(dir);
-	free(full_path);
 	return (head);
 }

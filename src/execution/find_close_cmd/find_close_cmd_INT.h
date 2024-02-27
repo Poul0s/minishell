@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   autocompletion.h                                   :+:      :+:    :+:   */
+/*   find_close_cmd_INT.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 16:20:55 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 23:45:00 by babonnet         ###   ########.fr       */
+/*   Created: 2024/02/27 23:39:26 by babonnet          #+#    #+#             */
+/*   Updated: 2024/02/27 23:41:18 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AUTOCOMPLETION_H
-# define AUTOCOMPLETION_H
+#ifndef FIND_CLOSE_CMD_INT_H
+# define FIND_CLOSE_CMD_INT_H
 
+# include "environment_manager.h"
+# include "ft_string.h"
 # include "libft.h"
 # include <dirent.h>
-# include <readline/readline.h>
 
-typedef struct s_word
-{
-	char	*word;
-	char	*path;
-}			t_word;
-
-t_list		*find_match_cmd(const char *start_cmd);
-t_list		*find_match_file(t_word *word);
-t_word		*wich_word(void);
-t_list		*autocompletion_dir(const char *path);
-char		*autocompletion(const char *str, int status);
-int			is_first(void);
-void		add_file(t_list **head, struct dirent *dirent);
+int		min_of_3(int a, int b, int c);
+void	free_matrix(int **matrix, int s1);
+bool	is_allready_there(t_list *head, char *str);
+int		**init_matrix(int w1_len, int w2_len);
 
 #endif

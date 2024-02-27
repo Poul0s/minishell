@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_argument.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/27 18:28:35 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 23:52:08 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,8 @@ static bool	is_end_arg(t_string_index *command_line, bool stop_file_redirect)
 	return (false);
 }
 
-static void	parse_variable(t_current_focus *foc,
-							t_string_index *cmd_line,
-							t_list **prev_args,
-							t_command *command)
+static void	parse_variable(t_current_focus *foc, t_string_index *cmd_line,
+		t_list **prev_args, t_command *command)
 {
 	size_t	start;
 	size_t	end;
@@ -61,9 +59,8 @@ static void	parse_variable(t_current_focus *foc,
 	cmd_line->i = end - 1;
 }
 
-static void	parse_wildcard(t_current_focus *foc,
-							t_list **prev_arguments,
-							t_command *command)
+static void	parse_wildcard(t_current_focus *foc, t_list **prev_arguments,
+		t_command *command)
 {
 	t_list	*var_arg_node;
 
@@ -71,10 +68,8 @@ static void	parse_wildcard(t_current_focus *foc,
 	ft_lstadd_back(&(command->argument_variables), var_arg_node);
 }
 
-static bool	parse_argument_char(t_string_index *command_line,
-								t_command *cmd,
-								t_list **prev_arguments,
-								t_current_focus *foc)
+static bool	parse_argument_char(t_string_index *command_line, t_command *cmd,
+		t_list **prev_arguments, t_current_focus *foc)
 {
 	char	c;
 
@@ -103,12 +98,11 @@ static bool	parse_argument_char(t_string_index *command_line,
 	return (false);
 }
 
-char	*parse_argument(t_string_index *command_line,
-						t_command *cmd,
-						t_list **prev_arguments)
+char	*parse_argument(t_string_index *command_line, t_command *cmd,
+		t_list **prev_arguments)
 {
 	t_current_focus	foc;
-	char	c;
+	char			c;
 
 	ft_bzero(&foc, sizeof(t_current_focus));
 	str_i_skip_spaces(command_line);
@@ -120,7 +114,7 @@ char	*parse_argument(t_string_index *command_line,
 		{
 			c = command_line->str[command_line->i];
 			if (c == '<' || c == '>')
-				break;
+				break ;
 		}
 	}
 	return (foc.data);

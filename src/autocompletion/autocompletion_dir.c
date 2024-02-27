@@ -6,16 +6,16 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 17:28:34 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 21:18:41 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:43:54 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <dirent.h>
 
-void add_file(t_list **head, struct dirent *dirent)
+void	add_file(t_list **head, struct dirent *dirent)
 {
-	char *file;
+	char	*file;
 
 	if (dirent->d_type == DT_DIR)
 	{
@@ -34,7 +34,6 @@ void add_file(t_list **head, struct dirent *dirent)
 			free(file);
 	}
 }
-
 
 t_list	*autocompletion_dir(const char *path)
 {
