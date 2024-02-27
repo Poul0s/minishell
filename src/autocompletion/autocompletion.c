@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   autocompletion.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:33:31 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 23:06:52 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:17:11 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*autocompletion(const char *str, int status)
 {
-	static t_list	**head;
+	static t_list	*head;
 	static t_list	*lst;
 	t_word			*word;
 
@@ -33,7 +33,7 @@ char	*autocompletion(const char *str, int status)
 		}
 		else
 			lst = find_match_file(word);
-		head = &lst;
+		head = lst;
 		free(word->word);
 		free(word->path);
 		free(word);
@@ -42,10 +42,9 @@ char	*autocompletion(const char *str, int status)
 		lst = lst->next;
 	if (!lst)
 	{
-		ft_lstclear(head, free);
-		free(*head);
+		ft_lstclear(&head, &free);
 		return (NULL);
 	}
-	return ((char *)lst->content);
+	return ((char *)ft_strdup(lst->content));
 	(void)str;
 }
