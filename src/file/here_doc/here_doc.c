@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 17:29:55 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/26 20:41:38 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 13:15:10 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	generate_here_doc(t_list *infiles, int *error,  t_execution_data exec_data)
 	int			fd_file;
 
 	fd_file = -1;
+	file = NULL;
 	while (infiles)
 	{
 		infile_content = infiles->content;

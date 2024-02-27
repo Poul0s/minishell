@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:17:35 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/26 21:09:06 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 12:57:42 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ static void	parse_here_doc(t_string_index *command_line,
 	heredoc_data->here_doc = true;
 	heredoc_data->delimiter = delimiter;
 	node->content = heredoc_data;
-	command_line->i--;
+	if (command_line->str[command_line->i] == 0)
+		command_line->i--;
 	ft_lstadd_back(&(cmd->infiles), node);
 }
 

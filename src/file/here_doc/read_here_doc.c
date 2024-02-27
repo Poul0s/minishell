@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:05:06 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/26 21:31:30 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 13:15:17 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static void	toggle_hd_garbage(t_hd_reader_data *_hd_data)
 	else
 	{
 		free(hd_data->file_name);
-		close(hd_data->fd);
+		if (hd_data->fd > 0)
+			close(hd_data->fd);
 		free_command_line(hd_data->exec_data.base_command_line, false);
 		free_command_line(NULL, true);
 		free_shell_data(hd_data->exec_data.shell_data, false);
