@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:00:20 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 16:40:33 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 17:06:14 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 #include <errno.h>
 #include <unistd.h>
 
-static void	free_all_minishell(t_command *command)
+static void	free_all_minishell(t_command *command, t_command_group *cmd_grp)
 {
 	free(command->exec_data.pid);
 	free_shell_data(command->exec_data.shell_data, false);
+	close_all_fd(cmd_grp);
 	free_command_line(command->exec_data.base_command_line, false);
 	free_command_line(NULL, true);
 }
@@ -41,7 +42,9 @@ static void	try_execute_bin_cmd(t_command *command, int file_error)
 	}
 }
 
-static int	execute_binary_command(t_command *command, int fd[2])
+static int	execute_binary_command(t_command *command,
+				int fd[2],
+				t_command_group *cmd_grp)
 {
 	int	pid;
 	int	file_error;
@@ -61,7 +64,7 @@ static int	execute_binary_command(t_command *command, int fd[2])
 			file_error = manage_outfile(command->outfiles, STDOUT_FILENO);
 		try_execute_bin_cmd(command, file_error);
 		free(command->executable);
-		free_all_minishell(command);
+		free_all_minishell(command, cmd_grp);
 		exit(127);
 	}
 	free(command->executable);
@@ -99,13 +102,13 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 	if (is_command_builtin(command->executable))
 		child_pid = execute_builtin_command(command);
 	else
-		child_pid = execute_binary_command(command, fd);
+		child_pid = execute_binary_command(command, fd, group_data);
 	if (child_pid < 0)
 		child_pid_res = -child_pid - 1;
 	else
 		child_pid_res = get_pid_res(child_pid);
 	execute_cmd_operator(command, group_data, &child_pid_res);
 	if (command->exec_data.forked)
-		free_all_minishell(command);
+		free_all_minishell(command, group_data);
 	return (child_pid_res);
 }

@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:17:35 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/27 16:49:36 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 17:04:38 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static void	parse_here_doc(t_string_index *command_line,
 		return ;
 	}
 	heredoc_data->here_doc = true;
+	heredoc_data->fd = 0;
 	heredoc_data->delimiter = delimiter;
 	node->content = heredoc_data;
 	if (command_line->str[command_line->i] == 0)
@@ -59,6 +60,7 @@ static void	parse_outfile(t_string_index *command_line,
 		return ;
 	}
 	outfile_data->append = append_mode;
+	outfile_data->fd = -1;
 	outfile_data->filename = filename;
 	node->content = outfile_data;
 	if (command_line->str[command_line->i] == 0)
@@ -85,6 +87,7 @@ static void	parse_infile(t_string_index *command_line,
 		return ;
 	}
 	infile_data->filename = filename;
+	infile_data->fd = 0;
 	infile_data->here_doc = false;
 	node->content = infile_data;
 	if (command_line->str[command_line->i] == 0)
