@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:59:51 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/26 21:30:14 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:06:07 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,26 +33,10 @@ static void	find_match_from_dir(t_list **head, char *pwd, const char *start_cmd)
 	while (dirent)
 	{
 		if (ft_strncmp(start_cmd, dirent->d_name, start_len) == 0)
-			ft_lstadd_front(head, ft_lstnew(ft_strdup(dirent->d_name)));
+			add_file(head, dirent);
 		dirent = readdir(dir);
 	}
 	closedir(dir);
-}
-
-static void	free_split(char **strs)
-{
-	int	i;
-
-	i = 0;
-	if (!strs)
-		return ;
-	while (strs[i])
-	{
-		if (strs[i])
-			free(strs[i]);
-		i++;
-	}
-	free(strs);
 }
 
 t_list	*find_match_cmd(const char *start_cmd)
@@ -73,25 +57,13 @@ t_list	*find_match_cmd(const char *start_cmd)
 		find_match_from_dir(&head, *paths, start_cmd);
 		paths++;
 	}
-	free_split(paths_cpy);
+	ft_free_strs(paths_cpy);
 	return (head);
-}
-
-static int	is_all_path(const char *str)
-{
-	while (*str)
-	{
-		if (ft_strchr("./", *str))
-			return (0);
-		str++;
-	}
-	return (1);
 }
 
 t_list	*find_match_file(t_word *word)
 {
 	t_list			*head;
-	char			*dir_path_str;
 	DIR				*dir;
 	struct dirent	*dirent;
 
@@ -108,16 +80,7 @@ t_list	*find_match_file(t_word *word)
 	while (dirent)
 	{
 		if (ft_strncmp(word->word, dirent->d_name, ft_strlen(word->word)) == 0)
-		{
-			if (word->path && !is_all_path(word->path))
-				dir_path_str = ft_strjoin(word->path, dirent->d_name);
-			else
-				dir_path_str = dirent->d_name;
-			if (dir_path_str && dirent->d_type == DT_DIR)
-				ft_lstadd_back(&head, ft_lstnew(ft_strjoin(dir_path_str, "/")));
-			else if (dir_path_str)
-				ft_lstadd_back(&head, ft_lstnew(ft_strdup(dir_path_str)));
-		}
+			add_file(&head, dirent);
 		dirent = readdir(dir);
 	}
 	closedir(dir);
@@ -126,6 +89,8 @@ t_list	*find_match_file(t_word *word)
 
 t_list	*find_match_file1(t_word *word)
 {
+	/// osu fsefsef
+	///
 	t_list			*head;
 	DIR				*dir;
 	struct dirent	*dirent;

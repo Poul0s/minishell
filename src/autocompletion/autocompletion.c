@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:33:31 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/26 21:39:09 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:06:52 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ char	*autocompletion(const char *str, int status)
 		else
 			lst = find_match_file(word);
 		head = &lst;
+		free(word->word);
+		free(word->path);
 		free(word);
 	}
 	if (status)
@@ -41,6 +43,7 @@ char	*autocompletion(const char *str, int status)
 	if (!lst)
 	{
 		ft_lstclear(head, free);
+		free(*head);
 		return (NULL);
 	}
 	return ((char *)lst->content);

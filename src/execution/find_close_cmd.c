@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_close_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 01:21:22 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 20:40:52 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 21:06:35 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
