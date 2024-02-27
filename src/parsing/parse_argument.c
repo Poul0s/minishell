@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/27 12:53:59 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 16:55:08 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ static bool	parse_argument_char(t_string_index *command_line,
 		parse_wildcard(foc, prev_arguments, cmd);
 	else if (!foc->quote && !foc->dblquote && is_end_arg(command_line, !cmd))
 		return (true);
-	else if (c == '<' || c == '>')
-		parse_file_redirection(command_line, &(foc->data), cmd);
+	else if (!foc->quote && !foc->dblquote && (c == '<' || c == '>'))
+		parse_file_redirection(command_line, cmd);
 	else
 		foc->data = ft_strfjoin_chr(foc->data, c);
 	command_line->i++;
@@ -108,6 +108,7 @@ char	*parse_argument(t_string_index *command_line,
 						t_list **prev_arguments)
 {
 	t_current_focus	foc;
+	char	c;
 
 	ft_bzero(&foc, sizeof(t_current_focus));
 	str_i_skip_spaces(command_line);
@@ -115,6 +116,12 @@ char	*parse_argument(t_string_index *command_line,
 	{
 		if (parse_argument_char(command_line, cmd, prev_arguments, &foc))
 			break ;
+		else if (!(foc.quote) && !(foc.dblquote))
+		{
+			c = command_line->str[command_line->i];
+			if (c == '<' || c == '>')
+				break;
+		}
 	}
 	return (foc.data);
 }

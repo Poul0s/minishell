@@ -6,31 +6,14 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:17:35 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/27 13:28:20 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 16:49:36 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command_Int.h"
 
-static bool	is_str_digits(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	if (str)
-	{
-		while (str[i])
-			if (!ft_isdigit(str[i++]))
-				return (false);
-		return (true);
-	}
-	else
-		return (false);
-}
-
 static void	parse_here_doc(t_string_index *command_line,
-						t_command *cmd,
-						int fd)
+						t_command *cmd)
 {
 	char		*delimiter;
 	t_infile	*heredoc_data;
@@ -47,9 +30,6 @@ static void	parse_here_doc(t_string_index *command_line,
 		free(node);
 		return ;
 	}
-	if (fd == -1)
-		fd = 0;
-	heredoc_data->fd = fd;
 	heredoc_data->here_doc = true;
 	heredoc_data->delimiter = delimiter;
 	node->content = heredoc_data;
@@ -59,8 +39,7 @@ static void	parse_here_doc(t_string_index *command_line,
 }
 
 static void	parse_outfile(t_string_index *command_line,
-						t_command *cmd,
-						int fd)
+						t_command *cmd)
 {
 	char		*filename;
 	t_outfile	*outfile_data;
@@ -79,7 +58,6 @@ static void	parse_outfile(t_string_index *command_line,
 		free(node);
 		return ;
 	}
-	outfile_data->fd = fd;
 	outfile_data->append = append_mode;
 	outfile_data->filename = filename;
 	node->content = outfile_data;
@@ -89,8 +67,7 @@ static void	parse_outfile(t_string_index *command_line,
 }
 
 static void	parse_infile(t_string_index *command_line,
-						t_command *cmd,
-						int fd)
+						t_command *cmd)
 {
 	char		*filename;
 	t_infile	*infile_data;
@@ -107,9 +84,6 @@ static void	parse_infile(t_string_index *command_line,
 		free(node);
 		return ;
 	}
-	if (fd == -1)
-		fd = 0;
-	infile_data->fd = fd;
 	infile_data->filename = filename;
 	infile_data->here_doc = false;
 	node->content = infile_data;
@@ -118,25 +92,15 @@ static void	parse_infile(t_string_index *command_line,
 	ft_lstadd_back(&(cmd->infiles), node);
 }
 
-void	parse_file_redirection(t_string_index *command_line,
-							char **argument,
-							t_command *cmd)
+void	parse_file_redirection(t_string_index *command_line, t_command *cmd)
 {
-	int	fd;
-
-	fd = -1;
-	if (is_str_digits(*argument))
-	{
-		fd = atoi(*argument);
-		*argument = NULL;
-	}
 	if (command_line->str[command_line->i] == '<')
 	{
 		if (command_line->str[command_line->i + 1] == '<')
-			parse_here_doc(command_line, cmd, fd);
+			parse_here_doc(command_line, cmd);
 		else
-			parse_infile(command_line, cmd, fd);
+			parse_infile(command_line, cmd);
 	}
 	else
-		parse_outfile(command_line, cmd, fd);
+		parse_outfile(command_line, cmd);
 }

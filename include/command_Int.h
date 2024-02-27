@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:41:32 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/26 16:11:59 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 16:49:53 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void			parse_command_grp_operators(t_command_group *grp,
 					char ***env);
 
 void			parse_file_redirection(t_string_index *command_line,
-					char **argument,
 					t_command *cmd);
 
 bool			is_var_arg_char_correct(t_string_index *cmd_line,
