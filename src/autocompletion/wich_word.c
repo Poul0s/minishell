@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 03:32:08 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/26 21:29:35 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:22:54 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,11 @@ static t_word	*create_word(const char *start, const char *end)
 	return (word);
 }
 
+int ft_isspace(int c)
+{
+	return (c == 32 || (c >= 9 && c <= 13));
+}
+
 t_word	*wich_word(void)
 {
 	const char	*line;
@@ -72,7 +77,7 @@ t_word	*wich_word(void)
 
 	line = rl_line_buffer;
 	cursor = rl_point;
-	if (cursor >= 1)
+	if (cursor > 1)
 		cursor--;
 	start = &line[cursor];
 	end = &line[cursor];

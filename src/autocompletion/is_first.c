@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 00:33:17 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/26 21:39:09 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:25:22 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	is_first(void)
 
 	line = rl_line_buffer;
 	pos = rl_point - 1;
-	while (pos && ft_isalpha(line[pos]))
+	while (pos >= 0 && ft_isalpha(line[pos]))
 		pos--;
-	while (pos && !ft_strchr("|&", line[pos]))
+	while (pos >= 0 && !ft_strchr("|&", line[pos]))
 	{
 		if (ft_isalpha(line[pos]))
 			return (0);
