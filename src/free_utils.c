@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:49:50 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/26 21:27:07 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 13:31:12 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ static void	free_infile(void *data)
 	t_infile	*infile;
 	
 	infile = data;
-	free(infile->delimiter);
+	if (infile->here_doc)
+		free(infile->delimiter);
+	else
+		free(infile->filename);
 	free(infile);
 }
 
