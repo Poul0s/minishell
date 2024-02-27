@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 17:29:55 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 13:15:10 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 13:59:58 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 #include "here_doc.h"
 #include <readline/readline.h>
 
-void	generate_here_doc(t_list *infiles, int *error,  t_execution_data exec_data)
+void	generate_here_doc(t_list *infiles,
+						int *error,
+						t_execution_data exec_data)
 {
 	t_infile	*infile_content;
 	char		*file;
@@ -30,7 +32,10 @@ void	generate_here_doc(t_list *infiles, int *error,  t_execution_data exec_data)
 		{
 			if (!infiles->next)
 				file = create_tmp_file(&fd_file);
-			*error += read_here_doc(infile_content->delimiter, fd_file, file, exec_data);
+			*error += read_here_doc(infile_content->delimiter,
+					fd_file,
+					file,
+					exec_data);
 			if (!infiles->next)
 				add_here_doc_data(infiles->content, fd_file, file);
 		}
@@ -40,7 +45,9 @@ void	generate_here_doc(t_list *infiles, int *error,  t_execution_data exec_data)
 		close(fd_file);
 }
 
-void	manage_here_doc(t_command_group *g_cmd, int *error, t_execution_data exec_data)
+void	manage_here_doc(t_command_group *g_cmd,
+					int *error,
+					t_execution_data exec_data)
 {
 	if (g_cmd->command)
 		generate_here_doc(g_cmd->command->infiles, error, exec_data);

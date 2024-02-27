@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:05:06 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/27 13:25:51 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 14:02:32 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,14 @@ static void	heredoc_reader(t_hd_reader_data *hd_data)
 		if (!ft_strncmp(line_read, hd_data->delimiter, hd_data->delimiter_len))
 			break ;
 		if (hd_data->fd != -1)
-		{
-			ft_putstr_fd(line_read, hd_data->fd);
-			write(hd_data->fd, "\n", 1);
-		}
+			ft_putendl_fd(line_read, hd_data->fd);
 	}
 }
 
-void	start_heredoc_process(char *delimiter, int fd, char *file_name, t_execution_data exec_data)
+void	start_heredoc_process(char *delimiter,
+							int fd,
+							char *file_name,
+							t_execution_data exec_data)
 {
 	t_hd_reader_data	*hd_data;
 
@@ -97,7 +97,10 @@ void	start_heredoc_process(char *delimiter, int fd, char *file_name, t_execution
 	exit(0);
 }
 
-int	read_here_doc(char *delimiter, int fd, char *file_name, t_execution_data exec_data)
+int	read_here_doc(char *delimiter,
+				int fd,
+				char *file_name,
+				t_execution_data exec_data)
 {
 	int		pid;
 	int		pid_res;
