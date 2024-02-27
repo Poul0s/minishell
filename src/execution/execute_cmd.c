@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:00:20 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 16:23:14 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 16:40:33 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	free_all_minishell(t_command *command)
 	free_command_line(NULL, true);
 }
 
-static void	try_execute_bin_cmd(t_command *command)
+static void	try_execute_bin_cmd(t_command *command, int file_error)
 {
 	if (command->executable == NULL)
 	{
@@ -59,7 +59,7 @@ static int	execute_binary_command(t_command *command, int fd[2])
 		file_error = manage_infile(command->infiles, STDIN_FILENO);
 		if (!file_error)
 			file_error = manage_outfile(command->outfiles, STDOUT_FILENO);
-		try_execute_bin_cmd(command);
+		try_execute_bin_cmd(command, file_error);
 		free(command->executable);
 		free_all_minishell(command);
 		exit(127);
