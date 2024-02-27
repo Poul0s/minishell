@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 22:36:42 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/27 16:57:04 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 20:20:00 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,12 @@ int	execute_builtin_command(t_command *command)
 
 	in = dup(STDIN_FILENO);
 	out = dup(STDOUT_FILENO);
-	manage_infile(command->infiles, STDIN_FILENO);
-	manage_outfile(command->outfiles, STDOUT_FILENO);
+	if (manage_iofiles(command))
+	{
+		close(in);
+		close(out);
+		return (-2);
+	}
 	fct = get_builtin_function(command->executable);
 	if (fct)
 		command_res = fct(command);

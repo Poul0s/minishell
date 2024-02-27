@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:02:49 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/27 16:18:41 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 20:18:42 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	pipe_cmd(t_command_group *command_line, t_execution_data exec_data,
 			t_pipe *data_pipe);
 int		manage_infile(t_list *infile, int fd);
 int		manage_outfile(t_list *outfiles, int fd);
+int		manage_iofiles(t_command *command);
+
 
 int		execute_command_line(t_command_group *command_line,
 			t_execution_data exec_data);

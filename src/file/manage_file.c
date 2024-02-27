@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 18:05:32 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 18:30:41 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 20:17:44 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,14 @@ int	manage_outfile(t_list *outfiles, int fd)
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
 	return (0);
+}
+
+int	manage_iofiles(t_command *command)
+{
+	int	file_error;
+
+	file_error = manage_infile(command->infiles, STDIN_FILENO);
+	if (!file_error)
+		file_error = manage_outfile(command->outfiles, STDOUT_FILENO);
+	return (file_error);
 }

@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:00:20 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 17:06:14 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 20:22:37 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ static void	free_all_minishell(t_command *command, t_command_group *cmd_grp)
 	free_command_line(NULL, true);
 }
 
-static void	try_execute_bin_cmd(t_command *command, int file_error)
+static void	try_execute_bin_cmd(t_command *command,
+								int file_error,
+								int *error_res)
 {
 	if (command->executable == NULL)
 	{
@@ -40,6 +42,8 @@ static void	try_execute_bin_cmd(t_command *command, int file_error)
 			command->exec_data.shell_data->exec_name,
 			command->arguments[0], strerror(errno));
 	}
+	else
+		*error_res = 1;
 }
 
 static int	execute_binary_command(t_command *command,
@@ -48,7 +52,9 @@ static int	execute_binary_command(t_command *command,
 {
 	int	pid;
 	int	file_error;
+	int	error_res;
 
+	error_res = 127;
 	command->executable = find_cmd(command->executable, *(command->env));
 	pid = fork();
 	if (pid == 0)
@@ -59,13 +65,11 @@ static int	execute_binary_command(t_command *command,
 			close(fd[0]);
 			close(fd[1]);
 		}
-		file_error = manage_infile(command->infiles, STDIN_FILENO);
-		if (!file_error)
-			file_error = manage_outfile(command->outfiles, STDOUT_FILENO);
-		try_execute_bin_cmd(command, file_error);
+		file_error = manage_iofiles(command);
+		try_execute_bin_cmd(command, file_error, &error_res);
 		free(command->executable);
 		free_all_minishell(command, cmd_grp);
-		exit(127);
+		exit(error_res);
 	}
 	free(command->executable);
 	return (pid);
