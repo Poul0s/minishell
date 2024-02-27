@@ -6,11 +6,14 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:49:50 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 16:41:04 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 18:19:19 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_infile(void *data);
+void	free_outfile(void *data);
 
 static void	free_argument_variable(void *data)
 {
@@ -24,23 +27,11 @@ static void	free_argument_variable(void *data)
 	}
 }
 
-static void	free_infile(void *data)
-{
-	t_infile	*infile;
-
-	infile = data;
-	if (infile->here_doc)
-		free(infile->delimiter);
-	else
-		free(infile->filename);
-	free(infile);
-}
-
 void	free_command(t_command *command)
 {
 	ft_free_strs(command->arguments);
 	ft_lstclear(&(command->infiles), &free_infile);
-	ft_lstclear(&(command->outfiles), &free);
+	ft_lstclear(&(command->outfiles), &free_outfile);
 	ft_lstclear(&(command->argument_variables), &free_argument_variable);
 	free(command);
 }
