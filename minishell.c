@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/26 21:38:57 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 09:49:45 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ static void	init_shell_data(t_sh_data *shell_data, char **av, char **envp)
 		shell_lvl = 0;
 	shell_lvl_str = ft_itoa(shell_lvl);
 	shell_data->env = edit_env_var(shell_data->env, "SHLVL", shell_lvl_str);
-	edit_env_var(shell_data->env, "OLDPWD", get_env_var(shell_data->env,
-			"PWD"));
+	shell_data->env = edit_env_var(shell_data->env, "OLDPWD",
+			get_env_var(shell_data->env, "PWD"));
 	free(shell_lvl_str);
 	shell_data->hostname = get_hostname();
 	g_exit_status = 0;
