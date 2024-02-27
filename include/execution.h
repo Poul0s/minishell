@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:02:49 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/26 16:11:38 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 16:18:41 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,6 @@ int		execute_command_line(t_command_group *command_line,
 			t_execution_data exec_data);
 char	*find_cmd(char *cmd, char **path);
 void	*find_close_cmd(const char *cmd);
+int		get_pid_res(int pid);
 
 #endif

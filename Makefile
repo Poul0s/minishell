@@ -39,6 +39,7 @@ SRC		=	src/get/get_path.c \
 			src/execution/execute_builtin.c \
 			src/execution/execute_command_line.c \
 			src/execution/get_path.c \
+			src/execution/get_pid_res.c \
 			src/execution/pipe.c \
 			src/file/manage_file.c \
 			src/file/clean_fd.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:00:20 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/26 21:31:40 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/27 16:23:14 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,99 +16,96 @@
 #include <errno.h>
 #include <unistd.h>
 
-static int	get_pid_res(int pid)
+static void	free_all_minishell(t_command *command)
 {
-	int	pid_res;
+	free(command->exec_data.pid);
+	free_shell_data(command->exec_data.shell_data, false);
+	free_command_line(command->exec_data.base_command_line, false);
+	free_command_line(NULL, true);
+}
 
-	pid_res = 0;
-	waitpid(pid, &pid_res, 0);
-	if (!WIFEXITED(pid_res))
+static void	try_execute_bin_cmd(t_command *command)
+{
+	if (command->executable == NULL)
 	{
-		if ((WCOREDUMP(pid_res)))
-		{
-			ft_dprintf(2, "Quit (core dumped)\n");
-			return (131);
-		}
-		else
-		{
-			ft_dprintf(2, "\n");
-			return (130);
-		}
+		ft_dprintf(2, "%s: command not found\n", command->arguments[0]);
+		find_close_cmd(command->arguments[0]);
 	}
-	return (WEXITSTATUS(pid_res));
+	else if (!file_error)
+	{
+		execve(command->executable, command->arguments,
+			*(command->env));
+		ft_dprintf(2, "%s: %s: %s\n",
+			command->exec_data.shell_data->exec_name,
+			command->arguments[0], strerror(errno));
+	}
+}
+
+static int	execute_binary_command(t_command *command, int fd[2])
+{
+	int	pid;
+	int	file_error;
+
+	command->executable = find_cmd(command->executable, *(command->env));
+	pid = fork();
+	if (pid == 0)
+	{
+		if (fd != NULL)
+		{
+			dup2(fd[1], STDOUT_FILENO);
+			close(fd[0]);
+			close(fd[1]);
+		}
+		file_error = manage_infile(command->infiles, STDIN_FILENO);
+		if (!file_error)
+			file_error = manage_outfile(command->outfiles, STDOUT_FILENO);
+		try_execute_bin_cmd(command);
+		free(command->executable);
+		free_all_minishell(command);
+		exit(127);
+	}
+	free(command->executable);
+	return (pid);
+}
+
+static void	execute_cmd_operator(t_command *cmd,
+								t_command_group *grp_data,
+								int *child_pid_res)
+{
+	int	forked;
+
+	if ((*child_pid_res != 0 && grp_data->on_error != NULL)
+		|| (*child_pid_res == 0 && grp_data->on_success != NULL))
+	{
+		forked = cmd->exec_data.forked;
+		cmd->exec_data.forked = false;
+		if (*child_pid_res != 0 && grp_data->on_error != NULL)
+			*child_pid_res = execute_command_line(grp_data->on_error,
+					cmd->exec_data);
+		else if (*child_pid_res == 0 && grp_data->on_success != NULL)
+			*child_pid_res = execute_command_line(grp_data->on_success,
+					cmd->exec_data);
+		cmd->exec_data.forked = forked;
+	}
 }
 
 int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 {
 	int	child_pid;
 	int	child_pid_res;
-	int	file_error;
-	int	forked;
 
 	convert_variable_arguments(command);
 	command->executable = command->arguments[0];
 	if (is_command_builtin(command->executable))
 		child_pid = execute_builtin_command(command);
 	else
-	{
-		command->executable = find_cmd(command->executable, *(command->env));
-		child_pid = fork();
-		if (child_pid == 0)
-		{
-			if (fd != NULL)
-			{
-				dup2(fd[1], STDOUT_FILENO);
-				close(fd[0]);
-				close(fd[1]);
-			}
-			file_error = manage_infile(command->infiles, STDIN_FILENO);
-			if (!file_error)
-				file_error = manage_outfile(command->outfiles, STDOUT_FILENO);
-			if (command->executable == NULL)
-			{
-				ft_dprintf(2, "%s: command not found\n", command->arguments[0]);
-				find_close_cmd(command->arguments[0]); // todo fix leak
-			}
-			else if (!file_error)
-			{
-				execve(command->executable, command->arguments,
-					*(command->env));
-				ft_dprintf(2, "%s: %s: %s\n",
-					command->exec_data.shell_data->exec_name,
-					command->arguments[0], strerror(errno));
-			}
-			free(command->executable);
-			free(command->exec_data.pid);
-			free_shell_data(command->exec_data.shell_data, false);
-			free_command_line(command->exec_data.base_command_line, false);
-			free_command_line(NULL, true);
-			exit(127);
-		}
-		free(command->executable);
-	}
+		child_pid = execute_binary_command(command, fd);
 	if (child_pid < 0)
 		child_pid_res = -child_pid - 1;
 	else
 		child_pid_res = get_pid_res(child_pid);
-	if ((child_pid_res != 0 && group_data->on_error != NULL)
-		|| (child_pid_res == 0 && group_data->on_success != NULL))
-	{
-		forked = command->exec_data.forked;
-		command->exec_data.forked = false;
-		if (child_pid_res != 0 && group_data->on_error != NULL)
-			child_pid_res = execute_command_line(group_data->on_error,
-					command->exec_data);
-		else if (child_pid_res == 0 && group_data->on_success != NULL)
-			child_pid_res = execute_command_line(group_data->on_success,
-					command->exec_data);
-		command->exec_data.forked = forked;
-	}
+	execute_cmd_operator(command, group_data, &child_pid_res);
 	if (command->exec_data.forked)
-	{
-		free(command->exec_data.pid);
-		free_shell_data(command->exec_data.shell_data, false);
-		free_command_line(command->exec_data.base_command_line, false);
-		free_command_line(NULL, true);
-	}
+		free_all_minishell(command);
 	return (child_pid_res);
 }

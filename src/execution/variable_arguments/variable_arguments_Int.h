@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   variable_arguments_Int.h                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:55:51 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/26 21:44:33 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/27 16:23:44 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VARIABLE_ARGUMENTS_INT_H
 # define VARIABLE_ARGUMENTS_INT_H
 
-#include "command.h"
-#include "ft_linkedList.h"
-#include <unistd.h>
+# include "command.h"
+# include "ft_linkedList.h"
+# include <unistd.h>
 
 void	move_variable_arguments_index(t_list *variable_arguments,
 			char *var_arg_str);
