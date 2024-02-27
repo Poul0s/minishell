@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 22:36:42 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/26 14:59:56 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/27 16:57:04 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,7 @@ int	execute_builtin_command(t_command *command)
 	command_res = -command_res - 1;
 	dup2(in, STDIN_FILENO);
 	dup2(out, STDOUT_FILENO);
+	close(in);
+	close(out);
 	return (command_res);
 }
