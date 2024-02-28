@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 19:13:09 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/28 18:31:34 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/28 18:36:07 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static char	*_find_cmd(char *cmd, char **env)
 	char	*tmp;
 	char	**path;
 
-	if (is_directory(cmd))
+	if (ft_strchr(cmd, '/') && is_directory(cmd))
 		return ("");
 	if (access(cmd, F_OK) != -1 && ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));
