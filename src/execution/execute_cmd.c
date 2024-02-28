@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:00:20 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 20:37:30 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/28 13:33:37 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,11 @@ int	execute_command(t_command *command, t_command_group *group_data, int fd[2])
 	int	child_pid;
 	int	child_pid_res;
 
-	convert_variable_arguments(command);
-	command->executable = command->arguments[0];
+	if (command->arguments)
+	{
+		convert_variable_arguments(command);
+		command->executable = command->arguments[0];
+	}
 	if (is_command_builtin(command->executable))
 		child_pid = execute_builtin_command(command);
 	else

@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 16:36:03 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/24 21:54:14 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/28 13:32:01 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,17 @@ static void	parse_command_data(t_string_index *command_line,
 	ft_lstclear(&arguments, NULL);
 }
 
+static bool	is_command_empty(t_command *cmd)
+{
+	if (cmd->arguments != NULL && cmd->arguments[0] != NULL)
+		return (false);
+	if (cmd->argument_variables)
+		return (false);
+	if (cmd->infiles || cmd->outfiles)
+		return (false);
+	return (true);
+}
+
 t_command	*parse_command(t_string_index *command_line, char ***env)
 {
 	t_command	*cmd;
@@ -59,7 +70,7 @@ t_command	*parse_command(t_string_index *command_line, char ***env)
 		return (cmd);
 	cmd->env = env;
 	parse_command_data(command_line, cmd);
-	if (cmd->arguments == NULL || cmd->arguments[0] == NULL)
+	if (is_command_empty(cmd))
 	{
 		free(cmd);
 		cmd = NULL;
