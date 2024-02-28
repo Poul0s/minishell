@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 13:34:57 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/26 13:37:54 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/28 14:21:03 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	print_syntax_error(t_syntax *syntax, void *shell_data)
 	{
 		token = syntax->token;
 		ft_dprintf(2, "syntax error near unexpected token `%s'\n", token);
+		free(token);
 	}
 	g_exit_status = 2;
 }
