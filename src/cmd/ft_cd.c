@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:41:11 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/26 21:39:03 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/28 15:51:48 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ static char	*cd_arg(char *arg, char ***env, char *program_name)
 		return (NULL);
 	}
 	printf("%s\n", old_pwd);
-	edit_env_var(*env, "PWD", old_pwd);
-	edit_env_var(*env, "OLDPWD", pwd);
+	*env = edit_env_var(*env, "PWD", old_pwd);
+	*env = edit_env_var(*env, "OLDPWD", pwd);
 	free(pwd);
 	return ("");
 }
@@ -81,8 +81,8 @@ static int	_cd(char *final_path, char ***env, char *program_name)
 		return (1);
 	}
 	pwd = return_pwd();
-	edit_env_var(*env, "PWD", pwd);
-	edit_env_var(*env, "OLDPWD", old_pwd);
+	*env = edit_env_var(*env, "PWD", pwd);
+	*env = edit_env_var(*env, "OLDPWD", old_pwd);
 	free(pwd);
 	free(old_pwd);
 	free(final_path);
