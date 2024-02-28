@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 16:20:55 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 23:45:00 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/28 14:46:53 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@ t_word		*wich_word(void);
 t_list		*autocompletion_dir(const char *path);
 char		*autocompletion(const char *str, int status);
 int			is_first(void);
-void		add_file(t_list **head, struct dirent *dirent);
+void		add_file(t_list **head, struct dirent *dirent, t_word *word);
 
 #endif

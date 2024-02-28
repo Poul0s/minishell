@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:59:51 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 23:34:10 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/28 14:47:08 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	find_match_from_dir(t_list **head, char *pwd, const char *start_cmd)
 	while (dirent)
 	{
 		if (ft_strncmp(start_cmd, dirent->d_name, start_len) == 0)
-			add_file(head, dirent);
+			add_file(head, dirent, NULL);
 		dirent = readdir(dir);
 	}
 	closedir(dir);
@@ -80,7 +80,7 @@ t_list	*find_match_file(t_word *word)
 	while (dirent)
 	{
 		if (ft_strncmp(word->word, dirent->d_name, ft_strlen(word->word)) == 0)
-			add_file(&head, dirent);
+			add_file(&head, dirent, word);
 		dirent = readdir(dir);
 	}
 	closedir(dir);
