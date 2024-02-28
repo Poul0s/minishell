@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/28 16:12:07 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/28 18:22:49 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	parse_variable(t_current_focus *foc, t_string_index *cmd_line,
 	}
 	cmd_line->i = end;
 	if (end == start && (is_end_arg(cmd_line, true)
-		|| (cmd_line->str[end] == '"' && foc->dblquote)))
+			|| (cmd_line->str[end] == '"' && foc->dblquote)))
 		foc->data = ft_strfjoin_chr(foc->data, '$');
 	else
 	{

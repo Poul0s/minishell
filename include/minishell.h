@@ -3,11 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:36 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/28 17:59:13 by psalame          ###   ########.fr       */
-/*   Updated: 2024/02/28 16:11:45 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/28 18:34:01 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +40,8 @@ char		*get_exec_name(char *bin_path);
 
 void		print_command_line(t_command_group *command, int depth);
 
-void		toggle_signal_handler(bool toggle_handler, bool toggle_termios_print);
+void		toggle_signal_handler(bool toggle_handler,
+				bool toggle_termios_print);
 
 int			ft_cd(t_command *command);
 int			ft_echo(t_command *command);

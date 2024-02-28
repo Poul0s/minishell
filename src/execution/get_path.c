@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 19:13:09 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/28 18:08:58 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/28 18:31:34 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,19 @@ static char	**create_path(char **env)
 
 static int	is_directory(char *cmd)
 {
-	int fd;
+	int	fd;
 
 	fd = open(cmd, O_RDWR);
 	if (errno == EISDIR)
 	{
-		ft_dprintf(2, "minishell: %s: Is a directory\n", cmd); // change for the bin name
+		ft_dprintf(2, "minishell: %s: Is a directory\n", cmd);
 		if (fd > 0)
 			close(fd);
 		return (1);
 	}
-	close(fd);
+	if (fd > 0)
+		close(fd);
 	return (0);
-
 }
 
 static char	*_find_cmd(char *cmd, char **env)

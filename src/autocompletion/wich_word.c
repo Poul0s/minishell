@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wich_word.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 03:32:08 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/28 14:55:19 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/28 18:32:27 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static t_word	*create_word(const char *start, const char *end)
 	return (word);
 }
 
-static int ft_isspace(int c)
+static int	ft_isspace(int c)
 {
 	return (c == 32 || (c >= 9 && c <= 13));
 }

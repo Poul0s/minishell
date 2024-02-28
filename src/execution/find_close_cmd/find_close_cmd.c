@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_close_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 01:21:22 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/28 14:18:22 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/28 18:29:48 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,7 @@ void	find_close_cmd(const char *cmd, char **env)
 		return ;
 	paths_cpy = paths;
 	while (*paths)
-	{
-		find_match_from_dir(&head, *paths, cmd);
-		paths++;
-	}
+		find_match_from_dir(&head, *paths++, cmd);
 	ft_free_strs(paths_cpy);
 	node = head;
 	while (node)

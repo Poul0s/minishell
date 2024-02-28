@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:41:11 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/28 15:58:49 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/28 18:33:16 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,11 @@ static int	_cd(char *final_path, char ***env, char *program_name)
 	if (chdir(final_path) == -1)
 	{
 		if (access(final_path, F_OK))
-			ft_dprintf(2, "%s: cd: %s: No such file or directory\n", program_name,
-			final_path);
+			ft_dprintf(2, "%s: cd: %s: No such file or directory\n",
+				program_name, final_path);
 		else
-			ft_dprintf(2, "%s: cd: %s: Permission denied\n", program_name,
-			final_path);
+			ft_dprintf(2, "%s: cd: %s: Permission denied\n",
+				program_name, final_path);
 		free(final_path);
 		return (1);
 	}
