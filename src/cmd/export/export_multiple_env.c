@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:52:06 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/26 15:09:21 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/28 15:55:49 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	set_env_var_data(char *key, char *value, char ***env, bool append)
 				return (ENOMEM);
 		}
 	}
-	else
+	else if (value != NULL || get_env_var(*env, key) == NULL)
 		*env = edit_env_var(*env, key, value);
 	return (0);
 }
