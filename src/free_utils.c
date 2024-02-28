@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:49:50 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 18:19:19 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/28 17:59:29 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,6 @@ void	free_shell_data(t_sh_data *shell_data, bool disable_signal)
 	free(shell_data->exec_name);
 	ft_free_strs(shell_data->env);
 	if (disable_signal)
-		toggle_signal_handler(false);
+		toggle_signal_handler(false, true);
 	clear_history();
 }

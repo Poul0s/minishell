@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:05:06 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/28 16:38:38 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/28 18:09:51 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,14 @@ static void	toggle_hd_garbage(t_hd_reader_data *_hd_data)
 static void	hd_signal_handler(int signal)
 {
 	(void) signal;
-	toggle_hd_garbage(NULL);
-	ft_printf("^C\n");
-	exit(130);
+	if (signal == SIGINT)
+	{
+		toggle_hd_garbage(NULL);
+		ft_dprintf(2, "^C\n");
+		exit(127);
+	}
+	else
+		ft_dprintf(1, "\r\033[%dC", rl_point + ft_strlen(rl_prompt));
 }
 
 static void	heredoc_reader(t_hd_reader_data *hd_data)
@@ -77,6 +82,7 @@ void	start_heredoc_process(char *delimiter,
 {
 	t_hd_reader_data	hd_data;
 
+	rl_catch_signals = 1;
 	hd_data.delimiter = delimiter;
 	hd_data.delimiter_len = ft_strlen(delimiter) + 1;
 	hd_data.fd = fd;
@@ -84,6 +90,7 @@ void	start_heredoc_process(char *delimiter,
 	hd_data.exec_data = exec_data;
 	toggle_hd_garbage(&hd_data);
 	signal(SIGINT, &hd_signal_handler);
+	signal(SIGQUIT, &hd_signal_handler);
 	heredoc_reader(&hd_data);
 	toggle_hd_garbage(NULL);
 	exit(0);
@@ -99,12 +106,14 @@ int	read_here_doc(char *delimiter,
 
 	if (!delimiter)
 		return (0);
+	toggle_signal_handler(false, false);
 	pid = fork();
 	if (pid == 0)
 		start_heredoc_process(delimiter, fd, file_name, exec_data);
 	else if (pid == -1)
 		return (1);
 	waitpid(pid, &pid_res, 0);
+	toggle_signal_handler(false, true);
 	if (WIFEXITED(pid_res))
 		g_exit_status = WEXITSTATUS(pid_res);
 	return (WIFEXITED(pid_res) != true || WEXITSTATUS(pid_res) != 0);

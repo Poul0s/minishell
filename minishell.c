@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/27 09:49:45 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/28 17:59:25 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ static void	execute_line(char *cmd_line_str, t_sh_data *shell_data)
 	else
 	{
 		cmd_line = parse_cmd_line(cmd_line_str, &(shell_data->env));
-		toggle_signal_handler(false);
+		toggle_signal_handler(false, true);
 		if (cmd_line)
 			execute_line_res(cmd_line, shell_data);
-		toggle_signal_handler(true);
+		toggle_signal_handler(true, false);
 	}
 }
 
@@ -79,7 +79,7 @@ static void	init_shell_data(t_sh_data *shell_data, char **av, char **envp)
 	g_exit_status = 0;
 	shell_data->prompt = NULL;
 	refresh_prompt(shell_data);
-	toggle_signal_handler(true);
+	toggle_signal_handler(true, false);
 }
 
 static bool	is_str_empty(char *str)

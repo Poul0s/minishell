@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handler.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:38:09 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/23 23:09:28 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/28 18:00:31 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	signal_handler(int signal)
 	if (signal == 2)
 	{
 		g_exit_status = 130;
-		ft_dprintf(1, "^C\n");
+		ft_dprintf(2, "^C\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
@@ -33,23 +33,26 @@ static void	ign(int signal)
 	(void) signal;
 }
 
-void	toggle_signal_handler(bool toggle)
+void	toggle_signal_handler(bool toggle_handler, bool toggle_termios_print)
 {
 	struct termios		term_data;
+	void				(*fct_handler)(int);
 
+	if (toggle_handler)
+		fct_handler = &signal_handler;
+	else
+		fct_handler = &ign;
+	signal(SIGINT, fct_handler);
+	signal(SIGQUIT, fct_handler);
 	tcgetattr(0, &term_data);
-	if (toggle)
+	if (!toggle_termios_print)
 	{
 		term_data.c_lflag = term_data.c_lflag & (~ECHOCTL);
 		tcsetattr(0, 0, &term_data);
-		signal(SIGINT, signal_handler);
-		signal(SIGQUIT, signal_handler);
 	}
 	else
 	{
 		term_data.c_lflag = term_data.c_lflag | ECHOCTL;
 		tcsetattr(0, 0, &term_data);
-		signal(SIGINT, ign);
-		signal(SIGQUIT, ign);
 	}
 }
