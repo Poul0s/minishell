@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_here_doc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:05:06 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/27 14:02:32 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/28 18:16:50 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,13 @@ static void	toggle_hd_garbage(t_hd_reader_data *_hd_data)
 static void	hd_signal_handler(int signal)
 {
 	(void) signal;
+	ft_dprintf(2, "\r\033[%dC", rl_point + ft_strlen(rl_prompt));
 	if (signal == SIGINT)
 	{
 		toggle_hd_garbage(NULL);
 		ft_dprintf(2, "^C\n");
 		exit(127);
 	}
-	else
-		ft_dprintf(1, "\r\033[%dC", rl_point + ft_strlen(rl_prompt));
 }
 
 static void	heredoc_reader(t_hd_reader_data *hd_data)
