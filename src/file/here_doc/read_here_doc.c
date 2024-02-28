@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:05:06 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/27 14:02:32 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/28 16:38:38 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static void	toggle_hd_garbage(t_hd_reader_data *_hd_data)
 		free_command_line(hd_data->exec_data.base_command_line, false);
 		free_command_line(NULL, true);
 		free_shell_data(hd_data->exec_data.shell_data, false);
-		free(hd_data);
 	}
 }
 
@@ -76,23 +75,16 @@ void	start_heredoc_process(char *delimiter,
 							char *file_name,
 							t_execution_data exec_data)
 {
-	t_hd_reader_data	*hd_data;
+	t_hd_reader_data	hd_data;
 
-	hd_data = malloc(sizeof(t_hd_reader_data));
-	if (!hd_data)
-	{
-		free(delimiter);
-		free(file_name);
-		exit(1);
-	}
-	hd_data->delimiter = delimiter;
-	hd_data->delimiter_len = ft_strlen(delimiter) + 1;
-	hd_data->fd = fd;
-	hd_data->file_name = file_name;
-	hd_data->exec_data = exec_data;
-	toggle_hd_garbage(hd_data);
+	hd_data.delimiter = delimiter;
+	hd_data.delimiter_len = ft_strlen(delimiter) + 1;
+	hd_data.fd = fd;
+	hd_data.file_name = file_name;
+	hd_data.exec_data = exec_data;
+	toggle_hd_garbage(&hd_data);
 	signal(SIGINT, &hd_signal_handler);
-	heredoc_reader(hd_data);
+	heredoc_reader(&hd_data);
 	toggle_hd_garbage(NULL);
 	exit(0);
 }
@@ -110,8 +102,9 @@ int	read_here_doc(char *delimiter,
 	pid = fork();
 	if (pid == 0)
 		start_heredoc_process(delimiter, fd, file_name, exec_data);
+	else if (pid == -1)
+		return (1);
 	waitpid(pid, &pid_res, 0);
-	return (0);
 	if (WIFEXITED(pid_res))
 		g_exit_status = WEXITSTATUS(pid_res);
 	return (WIFEXITED(pid_res) != true || WEXITSTATUS(pid_res) != 0);
