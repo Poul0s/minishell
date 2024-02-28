@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 01:21:22 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 23:40:28 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/28 14:18:22 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,8 @@ void	find_close_cmd(const char *cmd, char **env)
 	node = head;
 	while (node)
 	{
-		ft_dprintf(2, "	do you mean :%s\n", node->content);
+		if (ft_strlen(node->content) > 1)
+			ft_dprintf(2, "	do you mean :%s\n", node->content);
 		node = node->next;
 	}
 	ft_lstclear(&head, free);

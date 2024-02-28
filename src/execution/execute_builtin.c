@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 22:36:42 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/28 13:32:18 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/28 14:15:03 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ bool	is_command_builtin(char *str)
 static int	ft_void_builtin(t_command *cmd)
 {
 	(void) cmd;
-	return (1);
+	return (0);
 }
 
 static t_builtin_function	get_builtin_function(char *executable)

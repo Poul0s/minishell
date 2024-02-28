@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 03:32:08 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/27 23:55:14 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/28 14:20:35 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_word	*wich_word(void)
 	cursor = rl_point;
 	start = &line[cursor];
 	end = &line[cursor];
-	while (start >= line && (ft_isalpha(*start) || ft_strchr("./", *start)))
+	while (start >= line && (ft_isalpha(*start) || *start != '/'))
 		start--;
 	start++;
 	while (*end && (ft_isalpha(*end) || ft_strchr("./", *start)))
