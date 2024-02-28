@@ -1,3 +1,6 @@
+NAME	=	minishell
+NAME_BONUS	=	minishell
+
 CC		=	cc
 
 CFLAGS	=	-Wall -Wextra -Werror -g
@@ -62,7 +65,68 @@ SRC		=	src/get/get_path.c \
 			src/free_iofile.c \
 			minishell.c \
 
+SRC_BONUS		=	src_bonus/get/get_path_bonus.c \
+					src_bonus/get/get_hostname_bonus.c \
+					src_bonus/get/get_exec_name_bonus.c \
+					src_bonus/get/refresh_prompt_prefix_bonus.c \
+					src_bonus/autocompletion/find_match_bonus.c \
+					src_bonus/autocompletion/wich_word_bonus.c \
+					src_bonus/autocompletion/autocompletion_bonus.c \
+					src_bonus/autocompletion/autocompletion_dir_bonus.c \
+					src_bonus/autocompletion/is_first_bonus.c \
+					src_bonus/environment_manager/del_env_var_bonus.c \
+					src_bonus/environment_manager/edit_env_var_bonus.c \
+					src_bonus/environment_manager/get_env_var_bonus.c \
+					src_bonus/environment_manager/has_env_var_bonus.c \
+					src_bonus/parsing/utils_bonus.c \
+					src_bonus/parsing/syntax_checker/token_generator_bonus.c \
+					src_bonus/parsing/syntax_checker/syntax_char_checker_bonus.c \
+					src_bonus/parsing/syntax_checker/syntax_checker_bonus.c \
+					src_bonus/parsing/syntax_checker/print_syntax_error_bonus.c \
+					src_bonus/parsing/insert_var_arg_bonus.c \
+					src_bonus/parsing/parse_command_line_bonus.c \
+					src_bonus/parsing/parse_command_group_bonus.c \
+					src_bonus/parsing/parse_operator_bonus.c \
+					src_bonus/parsing/parse_command_bonus.c \
+					src_bonus/parsing/parse_argument_bonus.c \
+					src_bonus/parsing/parse_file_redirection_bonus.c \
+					src_bonus/cmd/ft_cd_bonus.c \
+					src_bonus/cmd/ft_echo_bonus.c \
+					src_bonus/cmd/ft_env_bonus.c \
+					src_bonus/cmd/ft_pwd_bonus.c \
+					src_bonus/cmd/export/print_env_sorted_bonus.c \
+					src_bonus/cmd/export/export_multiple_env_bonus.c \
+					src_bonus/cmd/export/ft_export_bonus.c \
+					src_bonus/cmd/ft_unset_bonus.c \
+					src_bonus/cmd/ft_exit_bonus.c \
+					src_bonus/execution/execute_builtin_bonus.c \
+					src_bonus/execution/execute_command_line_bonus.c \
+					src_bonus/execution/get_path_bonus.c \
+					src_bonus/execution/get_pid_res_bonus.c \
+					src_bonus/execution/pipe_bonus.c \
+					src_bonus/file/manage_file_bonus.c \
+					src_bonus/file/clean_fd_bonus.c \
+					src_bonus/file/here_doc/here_doc_bonus.c \
+					src_bonus/file/here_doc/read_here_doc_bonus.c \
+					src_bonus/file/here_doc/hd_create_data_bonus.c \
+					src_bonus/file/here_doc/hd_generate_file_bonus.c \
+					src_bonus/execution/execute_cmd_bonus.c \
+					src_bonus/execution/variable_arguments/convert_variable_arguments_bonus.c \
+					src_bonus/execution/variable_arguments/move_var_args_bonus.c \
+					src_bonus/execution/variable_arguments/wildcard/wildcard_bonus.c \
+					src_bonus/execution/variable_arguments/wildcard/get_next_wildcard_bonus.c \
+					src_bonus/execution/variable_arguments/wildcard/insert_wildarguments_bonus.c \
+					src_bonus/execution/variable_arguments/wildcard/sort_files_bonus.c \
+					src_bonus/file/ls_dir_bonus.c \
+					src_bonus/execution/find_close_cmd/find_close_cmd_bonus.c \
+					src_bonus/execution/find_close_cmd/find_close_cmd_utils_bonus.c \
+					src_bonus/signal/handler_bonus.c \
+					src_bonus/free_utils_bonus.c \
+					src_bonus/free_iofile_bonus.c \
+					minishell_bonus.c \
+
 OBJ		=	$(addprefix obj/, $(SRC:.c=.o))
+OBJ_BONUS		=	$(addprefix obj/, $(SRC_BONUS:.c=.o))
 
 OBJ_DIR	=	$(sort $(dir $(OBJ)))
 
@@ -73,8 +137,8 @@ LFT		=	$(LFT_DIR)/libft.a
 LIBS	=	-lreadline -L$(LFT_DIR) -lft
 
 HEADER	=	-I$(LFT_DIR)/header -Iinclude
+HEADER_BONUS	=	-Iinclude_bonus
 
-NAME	=	minishell
 
 RED = \033[0;31m
 GREEN = \033[0;32m
@@ -96,9 +160,14 @@ $(NAME): $(LFT) $(OBJ_DIR) $(OBJ)
 	@echo "$(GREEN)Linking $(NAME)...$(NC)"
 	@$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
 
+bonus: $(LFT) $(OBJ_DIR) $(OBJ_BONUS)
+	@echo "$(GREEN)Linking $(NAME_BONUS)...$(NC)"
+	@$(CC) $(CFLAGS) $(OBJ_BONUS) $(LIBS) -o $(NAME_BONUS)
+
 obj/%.o: %.c
+	@mkdir -p $(dir $@)
 	@echo "$(YELLOW)Compiling $(notdir $<)...$(NC)"
-	@$(CC) $(CFLAGS) $(HEADER) $^ -o $@ -c
+	@$(CC) $(CFLAGS) $(HEADER) $(HEADER_BONUS) -c $< -o $@
 
 $(OBJ_DIR):
 	@mkdir -p $@

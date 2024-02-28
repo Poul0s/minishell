@@ -1,0 +1,42 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   del_env_var.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/24 17:48:34 by psalame           #+#    #+#             */
+/*   Updated: 2024/02/28 19:37:38 by babonnet         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "environment_manager_bonus.h"
+
+char	**del_env_var(char **env, char *key)
+{
+	char	**new_env;
+	size_t	i;
+	size_t	j;
+	size_t	key_len;
+
+	if (!has_env_var(env, key))
+		return (env);
+	key_len = ft_strlen(key);
+	new_env = malloc(ft_strs_len(env) * sizeof(char *));
+	i = 0;
+	j = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], key, key_len) != 0
+			|| (env[i][key_len] != '=' && env[i][key_len] != 0))
+		{
+			new_env[j++] = env[i];
+		}
+		else
+			free(env[i]);
+		i++;
+	}
+	new_env[j] = NULL;
+	free(env);
+	return (new_env);
+}
