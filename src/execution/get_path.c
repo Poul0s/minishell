@@ -6,11 +6,14 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 19:13:09 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/23 23:02:21 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/28 18:08:58 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <dirent.h>
+#include <errno.h>
+#include <fcntl.h>
 
 static char	**create_path(char **env)
 {
@@ -41,15 +44,34 @@ static char	**create_path(char **env)
 	return (path);
 }
 
-char	*find_cmd(char *cmd, char **env)
+static int	is_directory(char *cmd)
+{
+	int fd;
+
+	fd = open(cmd, O_RDWR);
+	if (errno == EISDIR)
+	{
+		ft_dprintf(2, "minishell: %s: Is a directory\n", cmd); // change for the bin name
+		if (fd > 0)
+			close(fd);
+		return (1);
+	}
+	close(fd);
+	return (0);
+
+}
+
+static char	*_find_cmd(char *cmd, char **env)
 {
 	int		i;
 	char	*tmp;
 	char	**path;
 
-	path = create_path(env);
-	if (access(cmd, F_OK) != -1)
+	if (is_directory(cmd))
+		return ("");
+	if (access(cmd, F_OK) != -1 && ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));
+	path = create_path(env);
 	if (!path)
 		return (NULL);
 	i = 0;
@@ -66,4 +88,24 @@ char	*find_cmd(char *cmd, char **env)
 	}
 	ft_free_strs(path);
 	return (NULL);
+}
+
+char	*find_cmd(char *cmd, char **env, int *error_res)
+{
+	char	*result;
+
+	result = _find_cmd(cmd, env);
+	if (!result)
+	{
+		ft_dprintf(2, "%s: command not found\n", cmd);
+		return (NULL);
+	}
+	if (!*result)
+	{
+		*error_res = 126;
+		return (NULL);
+	}
+	if (access(result, X_OK) == -1)
+		*error_res = 126;
+	return (result);
 }

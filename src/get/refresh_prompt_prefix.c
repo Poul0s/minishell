@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   refresh_prompt_prefix.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:46:29 by psalame           #+#    #+#             */
-/*   Updated: 2024/01/29 16:41:36 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/28 16:14:03 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	refresh_prompt(t_sh_data *shell_data)
 	size_t	prompt_str_len;
 
 	username = getenv("USER");
-	pwd = get_path();
+	pwd = get_path(shell_data->env);
 	prompt_str_len = ft_strlen(username) + ft_strlen(shell_data->hostname)
 		+ ft_strlen(pwd) + 5;
 	if (shell_data->prompt)

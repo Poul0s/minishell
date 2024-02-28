@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:36 by psalame           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/02/28 17:59:13 by psalame          ###   ########.fr       */
+=======
+/*   Updated: 2024/02/28 16:11:45 by babonnet         ###   ########.fr       */
+>>>>>>> 11ac608 (error and find_cmd)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +39,7 @@ typedef struct s_sh_data
 char		*get_hostname(void);
 void		refresh_prompt(t_sh_data *shell_data);
 char		*return_pwd(void);
-char		*get_path(void);
+char		*get_path(char **env);
 char		*get_exec_name(char *bin_path);
 
 void		print_command_line(t_command_group *command, int depth);

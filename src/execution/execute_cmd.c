@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:00:20 by babonnet          #+#    #+#             */
-/*   Updated: 2024/02/28 13:33:37 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/28 18:00:11 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,7 @@ static void	try_execute_bin_cmd(t_command *command,
 								int *error_res)
 {
 	if (command->executable == NULL)
-	{
-		ft_dprintf(2, "%s: command not found\n", command->arguments[0]);
 		find_close_cmd(command->arguments[0], *(command->env));
-	}
 	else if (!file_error)
 	{
 		execve(command->executable, command->arguments,
@@ -55,7 +52,7 @@ static int	execute_binary_command(t_command *command,
 	int	error_res;
 
 	error_res = 127;
-	command->executable = find_cmd(command->executable, *(command->env));
+	command->executable = find_cmd(command->executable, *(command->env), &error_res);
 	pid = fork();
 	if (pid == 0)
 	{

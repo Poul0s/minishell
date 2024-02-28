@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:02:49 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/27 23:45:12 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/28 18:03:16 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int			manage_iofiles(t_command *command);
 
 int			execute_command_line(t_command_group *command_line,
 				t_execution_data exec_data);
-char		*find_cmd(char *cmd, char **path);
+char		*find_cmd(char *cmd, char **env, int *error_res);
 void		*find_close_cmd(const char *cmd, char **env);
 int			get_pid_res(int pid);
 

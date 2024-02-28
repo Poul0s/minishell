@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:39:42 by babonnet          #+#    #+#             */
-/*   Updated: 2024/01/29 16:40:51 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/28 16:11:26 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 
-char	*get_path(void)
+char	*get_path(char **env)
 {
 	char	*pass;
 	char	*home;
@@ -23,7 +23,7 @@ char	*get_path(void)
 	pass = return_pwd();
 	if (!pass)
 		return (NULL);
-	home = getenv("HOME");
+	home = get_env_var(env, "HOME");
 	if (!home || !home[0])
 		return (pass);
 	home_len = ft_strlen(home);
