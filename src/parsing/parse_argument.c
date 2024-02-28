@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_argument.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:12:07 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/27 23:52:08 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/28 16:12:07 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,17 @@ static void	parse_variable(t_current_focus *foc, t_string_index *cmd_line,
 	t_list	*var_arg_node;
 
 	start = cmd_line->i + 1;
-	end = cmd_line->i + 1;
-	while (cmd_line->str[end])
+	end = cmd_line->i;
+	while (cmd_line->str[++end])
 	{
 		if ((end != start && cmd_line->str[start] == '?')
 			|| (!is_var_arg_char_correct(cmd_line, start, end)
 				&& (cmd_line->str[end] != '?' || end != start)))
 			break ;
-		end++;
 	}
 	cmd_line->i = end;
-	if (end == start && is_end_arg(cmd_line, true))
+	if (end == start && (is_end_arg(cmd_line, true)
+		|| (cmd_line->str[end] == '"' && foc->dblquote)))
 		foc->data = ft_strfjoin_chr(foc->data, '$');
 	else
 	{
