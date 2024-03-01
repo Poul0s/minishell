@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_exit_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 23:58:47 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/28 19:37:38 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/03/01 10:14:46 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
-#define ERR_NUM_ARG_REQ "%s: exit: %s: numeric argument required\n"
+#define ERR_NUM_ARG_REQ "exit\n%s: exit: %s: numeric argument required\n"
 #define ERR_TOO_MANY_ARG "%s: exit: too many arguments\n"
 
 extern int	g_exit_status;
@@ -59,7 +59,10 @@ int	ft_exit(t_command *command)
 
 	exec_name = command->exec_data.shell_data->exec_name;
 	if (command->arguments[1] == NULL)
+	{
+		ft_dprintf(2, "exit\n");
 		exit_code = g_exit_status;
+	}
 	else if (!is_str_num(command->arguments[1]))
 	{
 		ft_dprintf(2, ERR_NUM_ARG_REQ, exec_name, command->arguments[1]);
@@ -71,7 +74,10 @@ int	ft_exit(t_command *command)
 		return (1);
 	}
 	else
+	{
+		ft_dprintf(2, "exit\n");
 		exit_code = ft_atouc(command->arguments[1]);
+	}
 	free(command->exec_data.pid);
 	free_shell_data(command->exec_data.shell_data, command->exec_data.forked);
 	free_command_line(command->exec_data.base_command_line, false);

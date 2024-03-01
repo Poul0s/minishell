@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 13:59:47 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/16 14:41:35 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/29 18:11:23 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@ static bool	is_folder_only(t_command *cmd, t_list *var_args)
 {
 	t_variable_argument	*var_arg_data;
 	char				*argument;
+	size_t				argument_size;
 
 	var_arg_data = var_args->content;
 	argument = cmd->arguments[var_arg_data->arg_nb];
-	return (argument[ft_strlen(argument) - 1] == '/');
+	argument_size = ft_strlen(argument);
+	return (argument_size != 0 && argument[argument_size - 1] == '/');
 }
 
 static void	insert_arg(struct dirent *file,

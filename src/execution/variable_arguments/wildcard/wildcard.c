@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 19:03:47 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/26 21:39:09 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/29 18:11:24 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static int	is_file_corresponding(struct dirent *file, t_list *match_reg)
 		match_reg = match_reg->next;
 	}
 	len = ft_strlen(match_reg->content);
-	folder = (((char *)match_reg->content)[len - 1] == '/');
+	folder = len != 0 && (((char *)match_reg->content)[len - 1] == '/');
 	if (ft_strlen(str) < len - folder || (folder && file->d_type != DT_DIR))
 		return (false);
 	str = str + ft_strlen(str) - len;
@@ -132,4 +132,5 @@ void	manage_wildcard(t_list *var_args, t_command *command)
 		}
 	}
 	closedir(dir);
+	ft_lstclear(&files, NULL);
 }

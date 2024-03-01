@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/28 17:59:25 by psalame          ###   ########.fr       */
+/*   Updated: 2024/02/29 17:53:25 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ int	main(int ac, char **av, char **envp)
 	{
 		if (line_readed && *line_readed)
 			add_history(line_readed);
+		if (line_readed)
+			free(line_readed);
 		line_readed = readline(shell_data.prompt);
 		if (!line_readed)
 			break ;

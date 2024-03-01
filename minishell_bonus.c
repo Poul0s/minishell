@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:18:21 by psalame           #+#    #+#             */
-/*   Updated: 2024/02/28 19:04:29 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/02/29 17:58:22 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ int	main(int ac, char **av, char **envp)
 	{
 		if (line_readed && *line_readed)
 			add_history(line_readed);
+		if (line_readed)
+			free(line_readed);
 		line_readed = readline(shell_data.prompt);
 		if (!line_readed)
 			break ;
